@@ -172,7 +172,7 @@ extension SessionManager : MCSessionDelegate {
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
         NSLog("%@", "didReceiveData: \(data)");
-        playerChunkManager.addNodeChunk(<#T##chunkNumber: Int##Int#>, musicData: <#T##NSData#>)
+        
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
