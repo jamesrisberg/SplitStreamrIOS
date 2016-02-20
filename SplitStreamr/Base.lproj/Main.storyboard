@@ -21,7 +21,7 @@
             </objects>
             <point key="canvasLocation" x="-500" y="355"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
@@ -34,8 +34,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fao-3i-wmU">
-                                <rect key="frame" x="237" y="285" width="126" height="30"/>
-                                <state key="normal" title="Start New Session"/>
+                                <rect key="frame" x="262" y="285" width="76" height="30"/>
+                                <state key="normal" title="Add Nodes"/>
                                 <connections>
                                     <segue destination="2IC-vk-THX" kind="show" id="oGN-tb-gLZ"/>
                                 </connections>
@@ -54,16 +54,25 @@
                                     <segue destination="c8i-Gz-dd3" kind="show" id="KZu-Zm-OZ5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CDW-0R-a17">
+                                <rect key="frame" x="245" y="247" width="110" height="30"/>
+                                <state key="normal" title="Current Session"/>
+                                <connections>
+                                    <segue destination="Ojw-vh-Nod" kind="show" id="Kx3-pR-1CX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="CDW-0R-a17" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Afy-vV-Vtq"/>
+                            <constraint firstItem="Fao-3i-wmU" firstAttribute="top" secondItem="CDW-0R-a17" secondAttribute="bottom" constant="8" id="CnY-6N-Qlo"/>
                             <constraint firstItem="mgu-Ox-kph" firstAttribute="top" secondItem="Fao-3i-wmU" secondAttribute="bottom" constant="8" id="Gfs-lE-04B"/>
                             <constraint firstItem="Fao-3i-wmU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ebs-YG-kM5"/>
                             <constraint firstItem="mgu-Ox-kph" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nA7-a6-TXq"/>
                             <constraint firstItem="Fao-3i-wmU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ugL-1W-Y2e"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Ujv-wl-r78"/>
+                    <navigationItem key="navigationItem" title="Menu" id="JNu-My-VZe"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -151,7 +160,45 @@
             </objects>
             <point key="canvasLocation" x="266" y="1171"/>
         </scene>
-        <!--Join Session View Controller-->
+        <!--Current Session-->
+        <scene sceneID="c7F-ma-pao">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Ojw-vh-Nod" customClass="CurrentSessionViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zU8-8b-eam"/>
+                        <viewControllerLayoutGuide type="bottom" id="y4T-Bk-wga"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh5-hz-Xoy">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-QM-akX">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Ojw-vh-Nod" id="EkA-MX-HN9"/>
+                                    <outlet property="delegate" destination="Ojw-vh-Nod" id="4xu-tM-nbT"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dkr-QM-akX" firstAttribute="top" secondItem="zU8-8b-eam" secondAttribute="bottom" id="CXQ-8J-2d6"/>
+                            <constraint firstAttribute="trailing" secondItem="dkr-QM-akX" secondAttribute="trailing" id="bQV-mm-EsE"/>
+                            <constraint firstItem="dkr-QM-akX" firstAttribute="leading" secondItem="kh5-hz-Xoy" secondAttribute="leading" id="bjs-aF-7Xa"/>
+                            <constraint firstItem="y4T-Bk-wga" firstAttribute="top" secondItem="dkr-QM-akX" secondAttribute="bottom" id="e2H-qG-WBF"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Current Session" id="uQh-7N-No3"/>
+                    <connections>
+                        <outlet property="sessionTableView" destination="dkr-QM-akX" id="ofT-Uv-l7W"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UUh-88-2c2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="334" y="1119"/>
+        </scene>
+        <!--Join Session-->
         <scene sceneID="7O6-76-dXY">
             <objects>
                 <viewController id="wMF-iX-N7r" customClass="JoinSessionViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
@@ -164,15 +211,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Join Session" id="LnF-Bm-v36"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uim-CG-Du0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1014" y="629"/>
         </scene>
-        <!--Start New Session View Controller-->
+        <!--Start Session-->
         <scene sceneID="4dJ-19-l2Y">
             <objects>
-                <viewController id="2IC-vk-THX" customClass="StartNewSessionViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="2IC-vk-THX" customClass="StartNewSessionViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EwJ-2W-MKP"/>
                         <viewControllerLayoutGuide type="bottom" id="MJ6-P2-waq"/>
@@ -198,6 +246,7 @@
                             <constraint firstAttribute="trailing" secondItem="Lbv-na-VmG" secondAttribute="trailing" id="guN-bW-Rtc"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Start Session" id="evk-af-NSp"/>
                     <connections>
                         <outlet property="peerTableView" destination="Lbv-na-VmG" id="wbg-M6-hEu"/>
                     </connections>

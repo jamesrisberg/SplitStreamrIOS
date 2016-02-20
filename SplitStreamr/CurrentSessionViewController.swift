@@ -1,5 +1,5 @@
 //
-//  StartNewSessionViewController.swift
+//  CurrentSessionViewController.swift
 //  SplitStreamr
 //
 //  Created by James on 2/20/16.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class StartNewSessionViewController: UIViewController {
-    
+class CurrentSessionViewController: UIViewController {
+
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
@@ -19,47 +19,40 @@ class StartNewSessionViewController: UIViewController {
     
     let manager = SessionManager.sharedInstance
     
-    @IBOutlet weak var peerTableView: UITableView!
+    @IBOutlet weak var sessionTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        peerTableView.addSubview(refreshControl)
-        
-        manager.startBrowsing()
+        sessionTableView.addSubview(refreshControl)
     }
-
+    
     func handleRefresh(refreshControl: UIRefreshControl) {
-        self.peerTableView.reloadData()
+        self.sessionTableView.reloadData()
         refreshControl.endRefreshing()
     }
 }
 
-extension StartNewSessionViewController : UITableViewDataSource {
+extension CurrentSessionViewController : UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return manager.peerCount()
+        return manager.connectedPeerCount()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         
-        cell.textLabel?.text = "Peer: " + manager.peerNameAtIndex(indexPath.row).displayName
-        
-        if manager.session.connectedPeers.contains(manager.peerNameAtIndex(indexPath.row)) {
-            cell.backgroundColor = UIColor.redColor()
-            cell.userInteractionEnabled = false
-        }
+        cell.textLabel?.text = "Peer: \(manager.session.connectedPeers[indexPath.row].displayName)"
         
         return cell
     }
 }
 
-extension StartNewSessionViewController : UITableViewDelegate {
+extension CurrentSessionViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        manager.invitePeerAtIndex(indexPath.row)
+        
     }
 }

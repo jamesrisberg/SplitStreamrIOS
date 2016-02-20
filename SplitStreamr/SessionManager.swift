@@ -62,12 +62,16 @@ class SessionManager: NSObject {
         self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: nil, timeout: 10)
     }
     
+    func connectedPeerCount() -> Int {
+        return session.connectedPeers.count
+    }
+    
     func peerCount() -> Int {
         return peers.count
     }
     
-    func peerNameAtIndex(index: Int) -> String {
-        return "\(peers[index])"
+    func peerNameAtIndex(index: Int) -> MCPeerID {
+        return peers[index]
     }
     
     func disconnectFromSession() {
