@@ -17,7 +17,13 @@ class SessionManager: NSObject {
     private let serviceAdvertiser : MCNearbyServiceAdvertiser;
     private let serviceBrowser : MCNearbyServiceBrowser;
     
-    private var peers: [MCPeerID] = [];
+    var peers: [MCPeerID] = [];
+    
+    var playerChunkManager: PlayerChunkManager!;
+    var nodeChunkManager: NodeChunkManager!;
+    var networkFacade: NetworkFacade!;
+    
+    var networkSessionId: String!;
     
     lazy var session : MCSession = {
         let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .None);
@@ -42,6 +48,38 @@ class SessionManager: NSObject {
         self.serviceBrowser.stopBrowsingForPeers();
     }
     
+    // MARK: Network Session Management
+    
+    func configureForPlayMode() {
+        nodeChunkManager = nil;
+        playerChunkManager = PlayerChunkManager();
+        networkFacade = NetworkFacade(delegate: playerChunkManager);
+    }
+    
+    func configureForNodeMode(playerPeer: MCPeerID) {
+        playerChunkManager = nil;
+        nodeChunkManager = NodeChunkManager(playerPeer: playerPeer);
+        networkFacade = NetworkFacade(delegate: nodeChunkManager);
+    }
+    
+    func createNewSession() {
+        networkFacade.createNewSession();
+    }
+    
+    func connectToSession() {
+        networkFacade.connectToSession(networkSessionId);
+    }
+    
+    func setSessionId(id: String) {
+        networkSessionId = id;
+    }
+    
+    func streamSong(song: Song) {
+        
+    }
+    
+    // MARK: Multipeer Session Management
+    
     func startAdvertising() {
         self.serviceAdvertiser.startAdvertisingPeer();
     }
@@ -59,7 +97,7 @@ class SessionManager: NSObject {
     }
     
     func invitePeerAtIndex(index: Int) {
-        self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: nil, timeout: 10);
+        self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: networkSessionId.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
         NSNotificationCenter.defaultCenter().postNotificationName("PeersUpdated", object: nil);
     }
     
@@ -100,6 +138,8 @@ extension SessionManager : MCNearbyServiceAdvertiserDelegate {
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
         invitationHandler(true, self.session);
+        self.setSessionId(String.init(data: context!, encoding: NSUTF8StringEncoding)!);
+        self.configureForNodeMode(peerID);
         NSNotificationCenter.defaultCenter().postNotificationName("InvitationAccepted", object: nil);
     }
 }
@@ -132,6 +172,7 @@ extension SessionManager : MCSessionDelegate {
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
         NSLog("%@", "didReceiveData: \(data)");
+        
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

@@ -12,8 +12,20 @@ class SongTableView: UITableView {
     
     var songs: Array<Song> = [];
     
-    func setSongs(songs: Array<Song>) {
-        self.songs = songs;
+    func getSongs() {
+        delegate = self;
+        dataSource = self;
+        
+        NetworkFacade().getSongs({ (error, list) -> Void in
+            if error != nil {
+                print(error.debugDescription);
+            } else {
+                if let songs = list {
+                    self.songs = songs;
+                    self.reloadData()
+                }
+            }
+        });
     }
 }
 

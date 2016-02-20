@@ -37,6 +37,8 @@
 		6E4645721C78D0740036BAA2 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */; };
 		6E4645741C78D5A10036BAA2 /* Ultralight Beam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */; };
 		6E4645761C78E2530036BAA2 /* SongTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645751C78E2530036BAA2 /* SongTableView.swift */; };
+		6E4645781C78FF150036BAA2 /* NodeChunkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */; };
+		6E46457A1C7901540036BAA2 /* PlayerChunkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -85,6 +87,8 @@
 		6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewController.swift; sourceTree = "<group>"; };
 		6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ultralight Beam.mp3"; sourceTree = "<group>"; };
 		6E4645751C78E2530036BAA2 /* SongTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableView.swift; sourceTree = "<group>"; };
+		6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeChunkManager.swift; sourceTree = "<group>"; };
+		6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerChunkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,8 +176,6 @@
 				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
 				150FFDF81C7850F30090B436 /* ViewController.swift */,
 				6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */,
-				150FFE001C78C3300090B436 /* SocketTesterViewController.swift */,
-				6E46456B1C7836220036BAA2 /* JoinSessionViewController.swift */,
 				6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */,
 				6E46456D1C783C6C0036BAA2 /* CurrentSessionViewController.swift */,
 				6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */,
@@ -182,6 +184,8 @@
 				6E4645751C78E2530036BAA2 /* SongTableView.swift */,
 				6E46454E1C781FC70036BAA2 /* Info.plist */,
 				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
+				6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */,
+				6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */,
 			);
 			path = SplitStreamr;
 			sourceTree = "<group>";
@@ -271,10 +275,11 @@
 				6E4645761C78E2530036BAA2 /* SongTableView.swift in Sources */,
 				6E4645431C781FC70036BAA2 /* AppDelegate.swift in Sources */,
 				150FFDF91C7850F30090B436 /* ViewController.swift in Sources */,
+				6E4645781C78FF150036BAA2 /* NodeChunkManager.swift in Sources */,
 				150FFDEB1C78375C0090B436 /* NetworkingAccessor.swift in Sources */,
 				150FFE051C78CEBA0090B436 /* NSError+LocalizedDescription.swift in Sources */,
 				6E4645701C785D6F0036BAA2 /* JoinSessionViewController.swift in Sources */,
-				6E4645641C7833970036BAA2 /* ViewController.swift in Sources */,
+				6E46457A1C7901540036BAA2 /* PlayerChunkManager.swift in Sources */,
 				6E4645551C7823230036BAA2 /* SessionManager.swift in Sources */,
 				150FFDFB1C78604F0090B436 /* String+JSON.swift in Sources */,
 				150FFE031C78C4D30090B436 /* SocketMessageParser.swift in Sources */,

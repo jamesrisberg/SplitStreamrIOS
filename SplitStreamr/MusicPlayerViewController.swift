@@ -15,6 +15,7 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var artistLabel: UILabel!;
     @IBOutlet weak var timeLabel: UILabel!;
     @IBOutlet weak var playPauseButton: UIButton!;
+    @IBOutlet weak var songTable: SongTableView!;
     
     var audioPlayer = AVAudioPlayer();
     var timer: NSTimer!;
@@ -33,6 +34,8 @@ class MusicPlayerViewController: UIViewController {
         } catch {
             print("error");
         }
+        
+        songTable.getSongs();
     }
     
     @IBAction func playOrPause() {

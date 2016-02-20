@@ -28,6 +28,7 @@ class StartNewSessionViewController: UIViewController {
         
         NSNotificationCenter.defaultCenter().addObserverForName("PeersUpdated", object: nil, queue: nil, usingBlock: peersUpdated);
         
+        manager.configureForPlayMode();
         manager.startBrowsing();
     }
     
