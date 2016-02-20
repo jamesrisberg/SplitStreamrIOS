@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Mev-pw-nKl">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="qoN-TO-8oe">
+            <objects>
+                <navigationController id="Mev-pw-nKl" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Kem-YF-33g">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="cY1-ZD-3ye"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="90d-Up-ybC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-500" y="355"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -16,11 +32,89 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fao-3i-wmU">
+                                <rect key="frame" x="237" y="285" width="126" height="30"/>
+                                <state key="normal" title="Start New Session"/>
+                                <connections>
+                                    <segue destination="2IC-vk-THX" kind="show" id="oGN-tb-gLZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mgu-Ox-kph">
+                                <rect key="frame" x="257" y="323" width="86" height="30"/>
+                                <state key="normal" title="Join Session"/>
+                                <connections>
+                                    <segue destination="wMF-iX-N7r" kind="show" id="Jdi-KJ-cLa"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mgu-Ox-kph" firstAttribute="top" secondItem="Fao-3i-wmU" secondAttribute="bottom" constant="8" id="Gfs-lE-04B"/>
+                            <constraint firstItem="Fao-3i-wmU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ebs-YG-kM5"/>
+                            <constraint firstItem="mgu-Ox-kph" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nA7-a6-TXq"/>
+                            <constraint firstItem="Fao-3i-wmU" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ugL-1W-Y2e"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Ujv-wl-r78"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="7O6-76-dXY">
+            <objects>
+                <viewController id="wMF-iX-N7r" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nxe-8x-5xv"/>
+                        <viewControllerLayoutGuide type="bottom" id="Q8g-Lf-hCW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LTZ-DZ-67z">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uim-CG-Du0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1014" y="629"/>
+        </scene>
+        <!--Start New Session View Controller-->
+        <scene sceneID="4dJ-19-l2Y">
+            <objects>
+                <viewController id="2IC-vk-THX" customClass="StartNewSessionViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EwJ-2W-MKP"/>
+                        <viewControllerLayoutGuide type="bottom" id="MJ6-P2-waq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iO8-2N-SYz">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Lbv-na-VmG">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="2IC-vk-THX" id="L4V-IR-HEk"/>
+                                    <outlet property="delegate" destination="2IC-vk-THX" id="Dcy-RV-uY6"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Lbv-na-VmG" firstAttribute="leading" secondItem="iO8-2N-SYz" secondAttribute="leading" id="7gk-jx-pNI"/>
+                            <constraint firstItem="MJ6-P2-waq" firstAttribute="top" secondItem="Lbv-na-VmG" secondAttribute="bottom" id="Pee-k7-UYM"/>
+                            <constraint firstItem="Lbv-na-VmG" firstAttribute="top" secondItem="EwJ-2W-MKP" secondAttribute="bottom" id="XtG-ho-Fvh"/>
+                            <constraint firstAttribute="trailing" secondItem="Lbv-na-VmG" secondAttribute="trailing" id="guN-bW-Rtc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="peerTableView" destination="Lbv-na-VmG" id="wbg-M6-hEu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d11-RO-VFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1014" y="-44"/>
         </scene>
     </scenes>
 </document>

@@ -10,8 +10,6 @@
 		150FFDD41C78288F0090B436 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDD31C78288F0090B436 /* UIColor+Hex.swift */; };
 		150FFDD71C7829830090B436 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDD61C7829830090B436 /* NavigationController.swift */; };
 		150FFDDA1C7829DA0090B436 /* SongCellBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDD91C7829DA0090B436 /* SongCellBackground.swift */; };
-		158D7F0A1C78244E00FDEA56 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; };
-		158D7F0F1C7826E900FDEA56 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0E1C7826E900FDEA56 /* Starscream.framework */; };
 		158D7F111C7827B900FDEA56 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158D7F101C7827B900FDEA56 /* Constants.swift */; };
 		6E4645431C781FC70036BAA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645421C781FC70036BAA2 /* AppDelegate.swift */; };
 		6E4645481C781FC70036BAA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645461C781FC70036BAA2 /* Main.storyboard */; };
@@ -20,7 +18,26 @@
 		6E4645551C7823230036BAA2 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645541C7823230036BAA2 /* SessionManager.swift */; };
 		6E4645641C7833970036BAA2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645621C7833970036BAA2 /* ViewController.swift */; };
 		6E4645651C7833970036BAA2 /* StartNewSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */; };
+		6E4645661C7833D30036BAA2 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0E1C7826E900FDEA56 /* Starscream.framework */; };
+		6E4645671C7833D30036BAA2 /* Starscream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0E1C7826E900FDEA56 /* Starscream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6E4645681C7833D30036BAA2 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; };
+		6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6E46456A1C7833D30036BAA2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6E4645671C7833D30036BAA2 /* Starscream.framework in Embed Frameworks */,
+				6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		150FFDD31C78288F0090B436 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
@@ -45,8 +62,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				158D7F0F1C7826E900FDEA56 /* Starscream.framework in Frameworks */,
-				158D7F0A1C78244E00FDEA56 /* Alamofire.framework in Frameworks */,
+				6E4645661C7833D30036BAA2 /* Starscream.framework in Frameworks */,
+				6E4645681C7833D30036BAA2 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,15 +118,15 @@
 		6E4645411C781FC70036BAA2 /* SplitStreamr */ = {
 			isa = PBXGroup;
 			children = (
-				6E4645621C7833970036BAA2 /* ViewController.swift */,
-				6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */,
 				150FFDD81C7829910090B436 /* UISubClasses */,
 				150FFDD51C7828920090B436 /* Utilities */,
 				6E4645461C781FC70036BAA2 /* Main.storyboard */,
-				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
 				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
-				6E46454E1C781FC70036BAA2 /* Info.plist */,
+				6E4645621C7833970036BAA2 /* ViewController.swift */,
+				6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */,
 				6E4645541C7823230036BAA2 /* SessionManager.swift */,
+				6E46454E1C781FC70036BAA2 /* Info.plist */,
+				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
 			);
 			path = SplitStreamr;
 			sourceTree = "<group>";
@@ -124,6 +141,7 @@
 				6E46453B1C781FC70036BAA2 /* Sources */,
 				6E46453C1C781FC70036BAA2 /* Frameworks */,
 				6E46453D1C781FC70036BAA2 /* Resources */,
+				6E46456A1C7833D30036BAA2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
