@@ -32,6 +32,7 @@
 		6E4645671C7833D30036BAA2 /* Starscream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0E1C7826E900FDEA56 /* Starscream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E4645681C7833D30036BAA2 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; };
 		6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6E46456C1C7836220036BAA2 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46456B1C7836220036BAA2 /* JoinSessionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -75,6 +76,7 @@
 		6E46454E1C781FC70036BAA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E4645541C7823230036BAA2 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartNewSessionViewController.swift; sourceTree = "<group>"; };
+		6E46456B1C7836220036BAA2 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JoinSessionViewController.swift; path = ../JoinSessionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				150FFDF81C7850F30090B436 /* ViewController.swift */,
 				6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */,
 				150FFE001C78C3300090B436 /* SocketTesterViewController.swift */,
+				6E46456B1C7836220036BAA2 /* JoinSessionViewController.swift */,
 				6E4645541C7823230036BAA2 /* SessionManager.swift */,
 				6E46454E1C781FC70036BAA2 /* Info.plist */,
 				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
@@ -253,6 +256,8 @@
 				150FFDF91C7850F30090B436 /* ViewController.swift in Sources */,
 				150FFDEB1C78375C0090B436 /* NetworkingAccessor.swift in Sources */,
 				150FFE051C78CEBA0090B436 /* NSError+LocalizedDescription.swift in Sources */,
+				6E4645641C7833970036BAA2 /* ViewController.swift in Sources */,
+				6E46456C1C7836220036BAA2 /* JoinSessionViewController.swift in Sources */,
 				6E4645551C7823230036BAA2 /* SessionManager.swift in Sources */,
 				150FFDFB1C78604F0090B436 /* String+JSON.swift in Sources */,
 				150FFE031C78C4D30090B436 /* SocketMessageParser.swift in Sources */,

@@ -17,7 +17,7 @@ class StartNewSessionViewController: UIViewController {
         return refreshControl
     }()
     
-    let sessionManager = SessionManager.sharedInstance
+    let manager = SessionManager.sharedInstance
     
     @IBOutlet weak var peerTableView: UITableView!
     
@@ -25,6 +25,8 @@ class StartNewSessionViewController: UIViewController {
         super.viewDidLoad()
         
         peerTableView.addSubview(refreshControl)
+        
+        manager.startBrowsing()
     }
 
     func handleRefresh(refreshControl: UIRefreshControl) {
@@ -39,13 +41,13 @@ extension StartNewSessionViewController : UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sessionManager.peerCount()
+        return manager.peerCount()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         
-        cell.textLabel?.text = "Peer: \(sessionManager.peerNameAtIndex(indexPath.row))"
+        cell.textLabel?.text = "Peer: \(manager.peerNameAtIndex(indexPath.row))"
         
         return cell
     }
@@ -53,6 +55,6 @@ extension StartNewSessionViewController : UITableViewDataSource {
 
 extension StartNewSessionViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        sessionManager.invitePeerAtIndex(indexPath.row)
+        manager.invitePeerAtIndex(indexPath.row)
     }
 }
