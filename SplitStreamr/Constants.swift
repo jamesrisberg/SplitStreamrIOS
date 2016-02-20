@@ -49,7 +49,4 @@ let networkErrorDomain = "com.splitstreamr.network";
 
 let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0];
 
-// MARK: Error Stuff
-
-let networkErrorDomain = "com.splitstreamr.network";
 
