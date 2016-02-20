@@ -29,7 +29,7 @@ class NodeChunkManager: NSObject {
 }
 
 extension NodeChunkManager : NetworkFacadeDelegate {
-    func musicPieceReceived(chunkNumber: Int, musicData: NSData) {
+    func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
         do {
             try SessionManager.sharedInstance.session.sendData(musicData, toPeers: [playerPeer], withMode: .Reliable);
         } catch {

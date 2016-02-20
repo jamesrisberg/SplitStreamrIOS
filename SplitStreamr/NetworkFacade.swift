@@ -148,13 +148,12 @@ extension NetworkFacade : WebSocketDelegate {
     }
     
     func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        print("socket message recieved: \(text)");
+        // DEBUG: print("socket message recieved: \(text)");
         socketMessageParser.parseJsonString(text);
     }
     
     func websocketDidReceiveData(socket: WebSocket, data: NSData) {
-        print("socket recieved data");
+        // DEBUG: print("socket recieved data");
         didReceiveChunk(data);
-        // TODO: Figure out what the data is, and call the appropriate delegate method
     }
 }
