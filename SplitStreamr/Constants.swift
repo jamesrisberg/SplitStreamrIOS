@@ -12,6 +12,8 @@ import UIKit
 
 typealias ErrorClosure = (error: NSError?) -> Void;
 typealias BooleanClosure = (success: Bool) -> Void;
+typealias SongClosure = (error: NSError?, song: Song?) -> Void;
+typealias SongArrayClosure = (error: NSError?, list: Array<Song>?) -> Void;
 typealias JsonClosure = (error: NSError?, jsonData: AnyObject?) -> Void;
 typealias DataClosure = (error: NSError?, data: NSData?) -> Void;
 typealias StringClosure = (error: NSError?, string: String?) -> Void;
