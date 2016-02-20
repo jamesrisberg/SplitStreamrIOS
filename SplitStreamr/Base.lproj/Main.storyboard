@@ -47,6 +47,13 @@
                                     <segue destination="wMF-iX-N7r" kind="show" id="Jdi-KJ-cLa"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hot-Gf-UpU">
+                                <rect key="frame" x="256" y="366" width="88" height="30"/>
+                                <state key="normal" title="Test Sockets"/>
+                                <connections>
+                                    <segue destination="c8i-Gz-dd3" kind="show" id="KZu-Zm-OZ5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -61,6 +68,88 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="271" y="381"/>
+        </scene>
+        <!--Socket Tester View Controller-->
+        <scene sceneID="c6X-95-aXD">
+            <objects>
+                <viewController id="c8i-Gz-dd3" customClass="SocketTesterViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pzK-QG-Vwm"/>
+                        <viewControllerLayoutGuide type="bottom" id="gkL-yA-cKh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="c3h-a3-1KP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaA-Sw-jfT">
+                                <rect key="frame" x="249" y="285" width="103" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="103" id="ldi-hy-Bs5"/>
+                                </constraints>
+                                <state key="normal" title="Create Session"/>
+                                <connections>
+                                    <action selector="createSession:" destination="c8i-Gz-dd3" eventType="touchUpInside" id="QqK-8b-dwy"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXL-Yz-ggG">
+                                <rect key="frame" x="257" y="328" width="86" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="86" id="0FL-YE-Tuo"/>
+                                </constraints>
+                                <state key="normal" title="Join Session"/>
+                                <connections>
+                                    <action selector="joinSession:" destination="c8i-Gz-dd3" eventType="touchUpInside" id="WcB-io-9Ob"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qFd-vq-g0l">
+                                <rect key="frame" x="250" y="374" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="4t3-Ic-vio"/>
+                                </constraints>
+                                <state key="normal" title="Request Song"/>
+                                <connections>
+                                    <action selector="requestSong:" destination="c8i-Gz-dd3" eventType="touchUpInside" id="e8o-Oy-ejq"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="sessionId" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tmD-vd-KMe">
+                                <rect key="frame" x="171" y="237" width="258" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="258" id="T53-sa-UG9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="songId" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WpN-BB-f2k">
+                                <rect key="frame" x="171" y="186" width="258" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="258" id="fjp-cs-KGE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="PXL-Yz-ggG" firstAttribute="centerX" secondItem="c3h-a3-1KP" secondAttribute="centerX" id="8Gu-Ea-U0B"/>
+                            <constraint firstItem="qFd-vq-g0l" firstAttribute="centerX" secondItem="c3h-a3-1KP" secondAttribute="centerX" id="JBY-sX-N4K"/>
+                            <constraint firstItem="tmD-vd-KMe" firstAttribute="top" secondItem="WpN-BB-f2k" secondAttribute="bottom" constant="21" id="N4v-Vq-bbf"/>
+                            <constraint firstItem="GaA-Sw-jfT" firstAttribute="top" secondItem="tmD-vd-KMe" secondAttribute="bottom" constant="18" id="c7l-Ut-W8h"/>
+                            <constraint firstItem="PXL-Yz-ggG" firstAttribute="top" secondItem="GaA-Sw-jfT" secondAttribute="bottom" constant="13" id="gh7-Ok-uxt"/>
+                            <constraint firstItem="GaA-Sw-jfT" firstAttribute="centerY" secondItem="c3h-a3-1KP" secondAttribute="centerY" id="kTZ-Tl-iSn"/>
+                            <constraint firstItem="qFd-vq-g0l" firstAttribute="top" secondItem="PXL-Yz-ggG" secondAttribute="bottom" constant="16" id="m3R-W8-1VU"/>
+                            <constraint firstItem="GaA-Sw-jfT" firstAttribute="centerX" secondItem="c3h-a3-1KP" secondAttribute="centerX" id="mP3-VL-htX"/>
+                            <constraint firstItem="tmD-vd-KMe" firstAttribute="centerX" secondItem="c3h-a3-1KP" secondAttribute="centerX" id="sBt-8c-Ll6"/>
+                            <constraint firstItem="WpN-BB-f2k" firstAttribute="centerX" secondItem="c3h-a3-1KP" secondAttribute="centerX" id="vAV-YU-uBL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="sessionIdTextField" destination="tmD-vd-KMe" id="V8A-Lb-Hlf"/>
+                        <outlet property="songIdTextField" destination="WpN-BB-f2k" id="D6F-xt-G6e"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RQa-sd-q2a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="266" y="1171"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="7O6-76-dXY">

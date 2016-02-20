@@ -39,3 +39,8 @@ let navigationBarColor = blue1;
 // MARK: Segues
 
 // MARK: Reuse Identifiers
+
+// MARK: Error Stuff
+
+let networkErrorDomain = "com.splitstreamr.network";
+

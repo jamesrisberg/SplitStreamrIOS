@@ -14,11 +14,13 @@
 		150FFDEB1C78375C0090B436 /* NetworkingAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDE71C78375C0090B436 /* NetworkingAccessor.swift */; };
 		150FFDEC1C78375C0090B436 /* NetworkObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDE81C78375C0090B436 /* NetworkObjects.swift */; };
 		150FFDED1C78375C0090B436 /* RestNetworkAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDE91C78375C0090B436 /* RestNetworkAccessor.swift */; };
-		150FFDF71C784EE20090B436 /* NetworkDataReceiverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDF61C784EE20090B436 /* NetworkDataReceiverDelegate.swift */; };
 		150FFDF91C7850F30090B436 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDF81C7850F30090B436 /* ViewController.swift */; };
 		150FFDFB1C78604F0090B436 /* String+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDFA1C78604F0090B436 /* String+JSON.swift */; };
 		150FFDFE1C7867760090B436 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */; };
 		150FFDFF1C7867760090B436 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		150FFE011C78C3300090B436 /* SocketTesterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFE001C78C3300090B436 /* SocketTesterViewController.swift */; };
+		150FFE031C78C4D30090B436 /* SocketMessageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFE021C78C4D30090B436 /* SocketMessageParser.swift */; };
+		150FFE051C78CEBA0090B436 /* NSError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFE041C78CEBA0090B436 /* NSError+LocalizedDescription.swift */; };
 		158D7F111C7827B900FDEA56 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158D7F101C7827B900FDEA56 /* Constants.swift */; };
 		6E4645431C781FC70036BAA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645421C781FC70036BAA2 /* AppDelegate.swift */; };
 		6E4645481C781FC70036BAA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645461C781FC70036BAA2 /* Main.storyboard */; };
@@ -56,10 +58,12 @@
 		150FFDE71C78375C0090B436 /* NetworkingAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingAccessor.swift; sourceTree = "<group>"; };
 		150FFDE81C78375C0090B436 /* NetworkObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObjects.swift; sourceTree = "<group>"; };
 		150FFDE91C78375C0090B436 /* RestNetworkAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestNetworkAccessor.swift; sourceTree = "<group>"; };
-		150FFDF61C784EE20090B436 /* NetworkDataReceiverDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkDataReceiverDelegate.swift; sourceTree = "<group>"; };
 		150FFDF81C7850F30090B436 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		150FFDFA1C78604F0090B436 /* String+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+JSON.swift"; sourceTree = "<group>"; };
 		150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		150FFE001C78C3300090B436 /* SocketTesterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketTesterViewController.swift; sourceTree = "<group>"; };
+		150FFE021C78C4D30090B436 /* SocketMessageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketMessageParser.swift; sourceTree = "<group>"; };
+		150FFE041C78CEBA0090B436 /* NSError+LocalizedDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		158D7F091C78244E00FDEA56 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		158D7F0E1C7826E900FDEA56 /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
 		158D7F101C7827B900FDEA56 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -94,6 +98,7 @@
 				158D7F101C7827B900FDEA56 /* Constants.swift */,
 				150FFDD31C78288F0090B436 /* UIColor+Hex.swift */,
 				150FFDFA1C78604F0090B436 /* String+JSON.swift */,
+				150FFE041C78CEBA0090B436 /* NSError+LocalizedDescription.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -111,10 +116,10 @@
 			isa = PBXGroup;
 			children = (
 				150FFDE61C78375C0090B436 /* NetworkFacade.swift */,
-				150FFDE71C78375C0090B436 /* NetworkingAccessor.swift */,
-				150FFDE81C78375C0090B436 /* NetworkObjects.swift */,
 				150FFDE91C78375C0090B436 /* RestNetworkAccessor.swift */,
-				150FFDF61C784EE20090B436 /* NetworkDataReceiverDelegate.swift */,
+				150FFE021C78C4D30090B436 /* SocketMessageParser.swift */,
+				150FFDE81C78375C0090B436 /* NetworkObjects.swift */,
+				150FFDE71C78375C0090B436 /* NetworkingAccessor.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
 				150FFDF81C7850F30090B436 /* ViewController.swift */,
 				6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */,
+				150FFE001C78C3300090B436 /* SocketTesterViewController.swift */,
 				6E4645541C7823230036BAA2 /* SessionManager.swift */,
 				6E46454E1C781FC70036BAA2 /* Info.plist */,
 				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
@@ -237,6 +243,7 @@
 			files = (
 				150FFDEC1C78375C0090B436 /* NetworkObjects.swift in Sources */,
 				150FFDD41C78288F0090B436 /* UIColor+Hex.swift in Sources */,
+				150FFE011C78C3300090B436 /* SocketTesterViewController.swift in Sources */,
 				6E4645651C7833970036BAA2 /* StartNewSessionViewController.swift in Sources */,
 				150FFDED1C78375C0090B436 /* RestNetworkAccessor.swift in Sources */,
 				150FFDEA1C78375C0090B436 /* NetworkFacade.swift in Sources */,
@@ -244,10 +251,11 @@
 				150FFDDA1C7829DA0090B436 /* SongCellBackground.swift in Sources */,
 				6E4645431C781FC70036BAA2 /* AppDelegate.swift in Sources */,
 				150FFDF91C7850F30090B436 /* ViewController.swift in Sources */,
-				150FFDF71C784EE20090B436 /* NetworkDataReceiverDelegate.swift in Sources */,
 				150FFDEB1C78375C0090B436 /* NetworkingAccessor.swift in Sources */,
+				150FFE051C78CEBA0090B436 /* NSError+LocalizedDescription.swift in Sources */,
 				6E4645551C7823230036BAA2 /* SessionManager.swift in Sources */,
 				150FFDFB1C78604F0090B436 /* String+JSON.swift in Sources */,
+				150FFE031C78C4D30090B436 /* SocketMessageParser.swift in Sources */,
 				158D7F111C7827B900FDEA56 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

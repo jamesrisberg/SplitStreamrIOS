@@ -9,12 +9,15 @@
 import Foundation
 
 extension String {
-    init?(jsonObject: AnyObject) {
+    static func stringFromJson(jsonObject: AnyObject) -> String? {
         if NSJSONSerialization.isValidJSONObject(jsonObject) {
             do{
                 let data = try NSJSONSerialization.dataWithJSONObject(jsonObject, options: [])
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                    self.init(string);
+                    return string as String;
+                }
+                else {
+                    print("Error stringifying json data: \(data)");
                 }
             } catch {
                 // TODO: Handle Error

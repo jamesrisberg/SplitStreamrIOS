@@ -8,48 +8,67 @@
 
 import Foundation
 import Starscream
-import SwiftyJSON
+
+protocol NetworkFacadeDelegate {
+    func musicPieceReceived(chunkNumber: Int, musicData: NSData);
+    func sessionIdReceived(sessionId: String);
+    func errorRecieved(error: NSError);
+}
 
 class NetworkFacade : NSObject {
 
     let restDataAccessor : NetworkingAccessor;
+    let socketMessageParser : SocketMessageParser;
     
-    let socketURL = "ws://echo.websocket.org";
+    var delegate : NetworkFacadeDelegate?;
+    
+    let socketURL = "ws://104.236.219.58:8080";
     let socket : WebSocket;
     
     override init() {
         // TODO: pass data accessor and socket to use in the init method
         restDataAccessor = RestNetworkAccessor();
+        socketMessageParser = SocketMessageParser();
         socket = WebSocket(url: NSURL(string: socketURL)!);
         
         super.init();
         socketInit();
     }
     
+    convenience init(delegate: NetworkFacadeDelegate) {
+        self.init();
+        
+        self.delegate = delegate;
+    }
+    
     func getSongs(completionBlock: SongArrayClosure) {
         restDataAccessor.getSongs(completionBlock);
+    }
+    
+    func createNewSession() {
+        let sessionCreate = ["message" : "new session"];
+        
+        if let string = String.stringFromJson(sessionCreate) {
+            socket.writeString(string);
+        }
     }
     
     func connectToSession(sessionId: String) {
         let sessionConnect = ["message" : "join session", "session" : sessionId];
         
-        if let string = String(jsonObject: sessionConnect) {
+        if let string = String.stringFromJson(sessionConnect) {
             socket.writeString(string);
         }
     }
     
-    func createNewSession() {
-        let sessionCreate = ["message" : "create session"];
-        
-        if let string = String(jsonObject: sessionCreate) {
-            socket.writeString(string);
-        }
+    func disconnectFromCurrentSession() {
+        socket.disconnect();
     }
     
     func startStreamingSong(songId: String) {
         let songStream = ["message" : "stream song", "song" : songId];
         
-        if let string = String(jsonObject: songStream) {
+        if let string = String.stringFromJson(songStream) {
             socket.writeString(string);
         }
     }
@@ -57,8 +76,25 @@ class NetworkFacade : NSObject {
     // MARK:
     
     private func socketInit() {
+        socketMessageParser.delegate = self;
         socket.delegate = self;
         socket.connect();
+    }
+}
+
+// MARK: Message Parser Delegate
+
+extension NetworkFacade : SocketMessageParserDelegate {
+    func didCreateSession(sessionId: String) {
+        delegate?.sessionIdReceived(sessionId);
+    }
+    
+    func didJoinSession(sessionId: String) {
+        delegate?.sessionIdReceived(sessionId);
+    }
+    
+    func didFailWithError(error: NSError) {
+        delegate?.errorRecieved(error);
     }
 }
 
@@ -74,16 +110,8 @@ extension NetworkFacade : WebSocketDelegate {
     }
     
     func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        print("socket recieved message: \(text)");
-        
-        if let dataFromString = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
-            let json = JSON(data: dataFromString);
-            
-            if let sessionId = json["session"].string {
-                print(sessionId);
-                // TODO: Something with the session id
-            }
-        }
+        print("socket message recieved: \(text)");
+        socketMessageParser.parseJsonString(text);
     }
     
     func websocketDidReceiveData(socket: WebSocket, data: NSData) {
