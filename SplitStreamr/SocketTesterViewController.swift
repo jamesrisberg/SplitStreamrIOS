@@ -30,8 +30,9 @@ class SocketTesterViewController: UIViewController {
     }
     
     @IBAction func requestSong(sender: AnyObject) {
-        print("\(songIdTextField.text!)");
-        networkFacade?.startStreamingSong(songIdTextField.text!);
+        networkFacade?.getSongs{ (error, songs) in
+            self.networkFacade?.startStreamingSong(songs![0].id);
+        };
     }
 }
 
