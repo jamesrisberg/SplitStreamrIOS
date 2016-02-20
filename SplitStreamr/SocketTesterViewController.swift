@@ -46,4 +46,8 @@ extension SocketTesterViewController : NetworkFacadeDelegate {
     func errorRecieved(error: NSError) {
         print("\(error)");
     }
+    
+    func didEstablishConnection() {
+        
+    }
 }

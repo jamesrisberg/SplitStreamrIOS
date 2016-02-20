@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Mev-pw-nKl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Mev-pw-nKl">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -33,14 +33,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLV-op-Xu7">
-                                <rect key="frame" x="279" y="227" width="42" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLV-op-Xu7">
+                                <rect key="frame" x="279.5" y="227.5" width="41.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S53-Cd-8Sq">
-                                <rect key="frame" x="281.5" y="256" width="36" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S53-Cd-8Sq">
+                                <rect key="frame" x="281" y="256" width="36" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -53,27 +53,38 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W9i-UV-4Tt">
-                                <rect key="frame" x="261.5" y="199.5" width="77.5" height="20.5"/>
+                                <rect key="frame" x="261" y="199.5" width="77.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CdU-HK-AfY" customClass="SongTableView" customModule="SplitStreamr" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="400" width="600" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="55i-8Z-gHs"/>
+                                </constraints>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="f0K-2E-WN3" firstAttribute="top" secondItem="S53-Cd-8Sq" secondAttribute="bottom" constant="8" id="CER-k7-gR4"/>
                             <constraint firstItem="S53-Cd-8Sq" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="EVl-yY-Aas"/>
                             <constraint firstItem="uLV-op-Xu7" firstAttribute="top" secondItem="W9i-UV-4Tt" secondAttribute="bottom" constant="8" id="Ewf-QM-sVS"/>
+                            <constraint firstAttribute="trailing" secondItem="CdU-HK-AfY" secondAttribute="trailing" id="JN6-ed-sB1"/>
+                            <constraint firstItem="9cL-Th-Gjq" firstAttribute="top" secondItem="CdU-HK-AfY" secondAttribute="bottom" id="Wxp-Ez-ktg"/>
                             <constraint firstItem="S53-Cd-8Sq" firstAttribute="top" secondItem="uLV-op-Xu7" secondAttribute="bottom" constant="8" id="gRC-nc-U94"/>
                             <constraint firstItem="W9i-UV-4Tt" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="i9c-NZ-faS"/>
                             <constraint firstItem="uLV-op-Xu7" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="mgx-T4-Ush"/>
                             <constraint firstItem="f0K-2E-WN3" firstAttribute="centerY" secondItem="kEM-Bz-E4Y" secondAttribute="centerY" id="tVP-RO-EVx"/>
+                            <constraint firstItem="CdU-HK-AfY" firstAttribute="leading" secondItem="kEM-Bz-E4Y" secondAttribute="leading" id="tfa-iV-Cjd"/>
                             <constraint firstItem="f0K-2E-WN3" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="vfM-gz-EJ1"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="artistLabel" destination="uLV-op-Xu7" id="Vfs-r2-24e"/>
                         <outlet property="playPauseButton" destination="f0K-2E-WN3" id="bqZ-2t-66x"/>
+                        <outlet property="songTable" destination="CdU-HK-AfY" id="GVm-KI-9Xh"/>
                         <outlet property="timeLabel" destination="S53-Cd-8Sq" id="drv-Nd-B7z"/>
                         <outlet property="titleLabel" destination="W9i-UV-4Tt" id="VEd-xp-inJ"/>
                     </connections>
@@ -122,7 +133,7 @@
                                 </constraints>
                                 <state key="normal" title="Test Sockets"/>
                                 <connections>
-                                    <segue destination="c8i-Gz-dd3" kind="show" id="PY1-TV-JhB"/>
+                                    <segue destination="iP8-Aa-Igt" kind="show" id="kke-Le-n8v"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -180,7 +191,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UUh-88-2c2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="334" y="1119"/>
+            <point key="canvasLocation" x="334" y="1201"/>
         </scene>
         <!--Socket Tester View Controller-->
         <scene sceneID="c6X-95-aXD">
@@ -262,7 +273,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RQa-sd-q2a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-488" y="1237"/>
+            <point key="canvasLocation" x="-386" y="1201"/>
         </scene>
         <!--Join Session-->
         <scene sceneID="7O6-76-dXY">
@@ -305,7 +316,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uim-CG-Du0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="998" y="657"/>
+            <point key="canvasLocation" x="2214" y="-223"/>
         </scene>
         <!--Start Session-->
         <scene sceneID="4dJ-19-l2Y">
@@ -343,7 +354,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d11-RO-VFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1014" y="-44"/>
+            <point key="canvasLocation" x="990" y="-389"/>
         </scene>
     </scenes>
     <resources>
