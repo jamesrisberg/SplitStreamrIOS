@@ -18,6 +18,8 @@ protocol SocketMessageParserDelegate {
     
     // func didFailToStartSongStream(error: NSError);
     func didFailWithError(error: NSError);
+    
+    func willRecieveChunk(songId: String, chunkNumber: Int);
 }
 
 class SocketMessageParser: NSObject {
@@ -38,6 +40,7 @@ class SocketMessageParser: NSObject {
             }
             else {
                 // TODO: Handle Error
+                print("unable to parse json string");
             }
         }
     }
@@ -58,6 +61,13 @@ class SocketMessageParser: NSObject {
         
         tempDictionary["error"] = { (jsonObject: JSON) -> Void in
             self.delegate?.didFailWithError(NSError(localizedDescription: jsonObject["error"].stringValue));
+        };
+        
+        tempDictionary["chunk number"] = { (jsonObject: JSON) -> Void in
+            let chunkNum = jsonObject["chunk"].intValue;
+            let songId = jsonObject["song"].stringValue;
+            
+            self.delegate?.willRecieveChunk(songId, chunkNumber: chunkNum);
         };
         
         return tempDictionary;

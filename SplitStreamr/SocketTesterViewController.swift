@@ -30,13 +30,17 @@ class SocketTesterViewController: UIViewController {
     }
     
     @IBAction func requestSong(sender: AnyObject) {
+        print("\(songIdTextField.text!)");
         networkFacade?.startStreamingSong(songIdTextField.text!);
     }
 }
 
 extension SocketTesterViewController : NetworkFacadeDelegate {
-    func musicPieceReceived(chunkNumber: Int, musicData: NSData) {
-        
+    @nonobjc static var chunksReceived = 0;
+    
+    func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
+        SocketTesterViewController.chunksReceived += 1;
+        print("total chunks received: \(SocketTesterViewController.chunksReceived)");
     }
     
     func sessionIdReceived(sessionId: String) {
@@ -45,5 +49,9 @@ extension SocketTesterViewController : NetworkFacadeDelegate {
     
     func errorRecieved(error: NSError) {
         print("\(error)");
+    }
+    
+    func didEstablishConnection() {
+        
     }
 }

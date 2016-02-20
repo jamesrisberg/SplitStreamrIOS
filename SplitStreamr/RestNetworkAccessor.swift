@@ -11,7 +11,7 @@ import Alamofire
 
 class RestNetworkAccessor: NSObject, NetworkingAccessor {
     
-    let baseURL = "https://104.236.219.58:8080";
+    let baseURL = "http://104.236.219.58:8080";
     
     // GET
     
