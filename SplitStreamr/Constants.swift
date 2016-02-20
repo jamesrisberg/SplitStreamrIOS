@@ -27,6 +27,7 @@ let blueLight2 = UIColor(hexString: "3e94d1");
 let blue1 = UIColor(hexString: "0a64a4");
 let blueDark1 = UIColor(hexString: "24577b");
 let blueDark2 = UIColor(hexString: "03406a");
+let orange = UIColor(hexString: "ec6b0e");
 
 let offWhiteColor = UIColor(hexString: "fefefe");
 
@@ -44,3 +45,6 @@ let navigationBarColor = blue1;
 
 let networkErrorDomain = "com.splitstreamr.network";
 
+// MARK: URLs
+
+let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0];

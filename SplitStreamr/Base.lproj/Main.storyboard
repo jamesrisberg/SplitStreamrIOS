@@ -21,6 +21,67 @@
             </objects>
             <point key="canvasLocation" x="-500" y="355"/>
         </scene>
+        <!--Music Player View Controller-->
+        <scene sceneID="UwE-hg-j0a">
+            <objects>
+                <viewController id="iP8-Aa-Igt" customClass="MusicPlayerViewController" customModule="SplitStreamr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="V13-lG-jmW"/>
+                        <viewControllerLayoutGuide type="bottom" id="9cL-Th-Gjq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kEM-Bz-E4Y">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLV-op-Xu7">
+                                <rect key="frame" x="279" y="227" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S53-Cd-8Sq">
+                                <rect key="frame" x="281.5" y="256" width="36" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0K-2E-WN3">
+                                <rect key="frame" x="287" y="285" width="26" height="30"/>
+                                <state key="normal" image="Play"/>
+                                <connections>
+                                    <action selector="playOrPause" destination="iP8-Aa-Igt" eventType="touchUpInside" id="X6A-2k-cLY"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W9i-UV-4Tt">
+                                <rect key="frame" x="261.5" y="199.5" width="77.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="f0K-2E-WN3" firstAttribute="top" secondItem="S53-Cd-8Sq" secondAttribute="bottom" constant="8" id="CER-k7-gR4"/>
+                            <constraint firstItem="S53-Cd-8Sq" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="EVl-yY-Aas"/>
+                            <constraint firstItem="uLV-op-Xu7" firstAttribute="top" secondItem="W9i-UV-4Tt" secondAttribute="bottom" constant="8" id="Ewf-QM-sVS"/>
+                            <constraint firstItem="S53-Cd-8Sq" firstAttribute="top" secondItem="uLV-op-Xu7" secondAttribute="bottom" constant="8" id="gRC-nc-U94"/>
+                            <constraint firstItem="W9i-UV-4Tt" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="i9c-NZ-faS"/>
+                            <constraint firstItem="uLV-op-Xu7" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="mgx-T4-Ush"/>
+                            <constraint firstItem="f0K-2E-WN3" firstAttribute="centerY" secondItem="kEM-Bz-E4Y" secondAttribute="centerY" id="tVP-RO-EVx"/>
+                            <constraint firstItem="f0K-2E-WN3" firstAttribute="centerX" secondItem="kEM-Bz-E4Y" secondAttribute="centerX" id="vfM-gz-EJ1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="artistLabel" destination="uLV-op-Xu7" id="Vfs-r2-24e"/>
+                        <outlet property="playPauseButton" destination="f0K-2E-WN3" id="bqZ-2t-66x"/>
+                        <outlet property="timeLabel" destination="S53-Cd-8Sq" id="drv-Nd-B7z"/>
+                        <outlet property="titleLabel" destination="W9i-UV-4Tt" id="VEd-xp-inJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OmB-C1-lMw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="180" y="-389"/>
+        </scene>
         <!--Menu-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -280,4 +341,7 @@
             <point key="canvasLocation" x="1014" y="-44"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Play" width="26" height="30"/>
+    </resources>
 </document>
