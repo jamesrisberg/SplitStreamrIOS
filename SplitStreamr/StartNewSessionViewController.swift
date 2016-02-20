@@ -12,54 +12,64 @@ class StartNewSessionViewController: UIViewController {
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged);
         
-        return refreshControl
+        return refreshControl;
     }()
     
-    let manager = SessionManager.sharedInstance
+    let manager = SessionManager.sharedInstance;
     
-    @IBOutlet weak var peerTableView: UITableView!
+    @IBOutlet weak var peerTableView: UITableView!;
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad();
         
-        peerTableView.addSubview(refreshControl)
+        peerTableView.addSubview(refreshControl);
         
-        manager.startBrowsing()
+        NSNotificationCenter.defaultCenter().addObserverForName("PeersUpdated", object: nil, queue: nil, usingBlock: peersUpdated);
+        
+        manager.startBrowsing();
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self);
     }
 
     func handleRefresh(refreshControl: UIRefreshControl) {
-        self.peerTableView.reloadData()
-        refreshControl.endRefreshing()
+        self.peerTableView.reloadData();
+        refreshControl.endRefreshing();
+    }
+    
+    func peersUpdated(notification: NSNotification) {
+        self.peerTableView.reloadData();
     }
 }
 
 extension StartNewSessionViewController : UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 1;
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return manager.peerCount()
+        return manager.peerCount();
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = UITableViewCell();
         
-        cell.textLabel?.text = "Peer: " + manager.peerNameAtIndex(indexPath.row).displayName
+        cell.textLabel?.text = "Peer: " + manager.peerNameAtIndex(indexPath.row).displayName;
         
         if manager.session.connectedPeers.contains(manager.peerNameAtIndex(indexPath.row)) {
-            cell.backgroundColor = UIColor.redColor()
-            cell.userInteractionEnabled = false
+            cell.backgroundColor = UIColor.redColor();
+            cell.userInteractionEnabled = false;
         }
         
-        return cell
+        return cell;
     }
 }
 
 extension StartNewSessionViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        manager.invitePeerAtIndex(indexPath.row)
+        manager.invitePeerAtIndex(indexPath.row);
     }
 }

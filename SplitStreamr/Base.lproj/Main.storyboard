@@ -209,13 +209,37 @@
                     <view key="view" contentMode="scaleToFill" id="LTZ-DZ-67z">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="c7y-j0-wZ1">
+                                <rect key="frame" x="281.5" y="281.5" width="37" height="37"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for Session Invitation" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dT3-X3-tZt">
+                                <rect key="frame" x="190" y="231" width="221" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="dHn-yK-5uu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.396078431372549" green="0.6470588235294118" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="c7y-j0-wZ1" firstAttribute="top" secondItem="dT3-X3-tZt" secondAttribute="bottom" constant="30" id="P1Q-vI-H2V"/>
+                            <constraint firstItem="dT3-X3-tZt" firstAttribute="centerX" secondItem="LTZ-DZ-67z" secondAttribute="centerX" id="VxU-sl-1KR"/>
+                            <constraint firstItem="c7y-j0-wZ1" firstAttribute="centerX" secondItem="LTZ-DZ-67z" secondAttribute="centerX" id="drG-ct-DYO"/>
+                            <constraint firstItem="c7y-j0-wZ1" firstAttribute="centerY" secondItem="LTZ-DZ-67z" secondAttribute="centerY" id="q1e-F7-Hyx"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Join Session" id="LnF-Bm-v36"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="c7y-j0-wZ1" id="Loa-KK-PK9"/>
+                        <outlet property="waitingLabel" destination="dT3-X3-tZt" id="TYT-VH-Yg2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uim-CG-Du0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1014" y="629"/>
+            <point key="canvasLocation" x="998" y="657"/>
         </scene>
         <!--Start Session-->
         <scene sceneID="4dJ-19-l2Y">

@@ -11,43 +11,55 @@ import UIKit
 class CurrentSessionViewController: UIViewController {
 
     lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        let refreshControl = UIRefreshControl();
+        refreshControl.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged);
         
-        return refreshControl
+        return refreshControl;
     }()
     
     let manager = SessionManager.sharedInstance
     
-    @IBOutlet weak var sessionTableView: UITableView!
+    @IBOutlet weak var sessionTableView: UITableView!;
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad();
         
-        sessionTableView.addSubview(refreshControl)
+        sessionTableView.addSubview(refreshControl);
+        
+        NSNotificationCenter.defaultCenter().addObserverForName("PeersUpdated", object: nil, queue: nil, usingBlock: peersUpdated);
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated);
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self);
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
-        self.sessionTableView.reloadData()
-        refreshControl.endRefreshing()
+        self.sessionTableView.reloadData();
+        refreshControl.endRefreshing();
+    }
+    
+    func peersUpdated(notification: NSNotification) {
+        self.sessionTableView.reloadData();
     }
 }
 
 extension CurrentSessionViewController : UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 1;
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return manager.connectedPeerCount()
+        return manager.connectedPeerCount();
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = UITableViewCell();
         
-        cell.textLabel?.text = "Peer: \(manager.session.connectedPeers[indexPath.row].displayName)"
+        cell.textLabel?.text = "Peer: \(manager.session.connectedPeers[indexPath.row].displayName)";
         
-        return cell
+        return cell;
     }
 }
 
