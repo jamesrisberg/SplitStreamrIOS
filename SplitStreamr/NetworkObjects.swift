@@ -31,3 +31,13 @@ struct Song: CustomStringConvertible {
         return "name: \(name) artist: \(artist) length: \(length) numberofchunks: \(numberOfChunks) fileType \(fileType)";
     }
 }
+
+struct FileChunk: CustomStringConvertible {
+    var id: String;
+    var fileId: String;
+    var number: Int;
+    
+    var description: String {
+        return "id: \(id) fileId: \(fileId) number: \(number)";
+    }
+}

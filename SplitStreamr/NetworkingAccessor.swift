@@ -9,8 +9,8 @@
 protocol NetworkingAccessor {
     
     // GET
-    func GetSongs(completionBlock: SongArrayClosure);
-    func GetSong(songId: String, completionBlock: SongClosure);
+    func getSongs(completionBlock: SongArrayClosure);
+    func getSong(songId: String, completionBlock: SongClosure);
     
     // POST
     

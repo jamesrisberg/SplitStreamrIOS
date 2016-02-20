@@ -11,11 +11,11 @@ import Alamofire
 
 class RestNetworkAccessor: NSObject, NetworkingAccessor {
     
-    let baseURL = "https:testurl.com";
+    let baseURL = "https://testurl.com";
     
     // GET
     
-    func GetSongs(completionBlock: SongArrayClosure) {
+    func getSongs(completionBlock: SongArrayClosure) {
         Alamofire.request(.GET, URLStringWithExtension("songs"))
             .responseJSON { response in
                 // DEBUG: print(response.request)  // original URL request
@@ -40,7 +40,7 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
         }
     }
     
-    func GetSong(songId: String, completionBlock: SongClosure) {
+    func getSong(songId: String, completionBlock: SongClosure) {
         
     }
     
