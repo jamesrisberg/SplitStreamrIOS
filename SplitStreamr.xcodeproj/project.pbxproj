@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		158D7F0A1C78244E00FDEA56 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; };
-		158D7F0C1C78246000FDEA56 /* OMGHTTPURLRQ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0B1C78246000FDEA56 /* OMGHTTPURLRQ.framework */; };
+		158D7F0F1C7826E900FDEA56 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0E1C7826E900FDEA56 /* Starscream.framework */; };
 		6E4645431C781FC70036BAA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645421C781FC70036BAA2 /* AppDelegate.swift */; };
 		6E4645451C781FC70036BAA2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645441C781FC70036BAA2 /* ViewController.swift */; };
 		6E4645481C781FC70036BAA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645461C781FC70036BAA2 /* Main.storyboard */; };
@@ -18,7 +18,7 @@
 
 /* Begin PBXFileReference section */
 		158D7F091C78244E00FDEA56 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		158D7F0B1C78246000FDEA56 /* OMGHTTPURLRQ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OMGHTTPURLRQ.framework; path = Carthage/Build/iOS/OMGHTTPURLRQ.framework; sourceTree = "<group>"; };
+		158D7F0E1C7826E900FDEA56 /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
 		6E46453F1C781FC70036BAA2 /* SplitStreamr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitStreamr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E4645421C781FC70036BAA2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E4645441C781FC70036BAA2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -33,7 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				158D7F0C1C78246000FDEA56 /* OMGHTTPURLRQ.framework in Frameworks */,
+				158D7F0F1C7826E900FDEA56 /* Starscream.framework in Frameworks */,
 				158D7F0A1C78244E00FDEA56 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -44,7 +44,7 @@
 		158D7F0D1C78246500FDEA56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				158D7F0B1C78246000FDEA56 /* OMGHTTPURLRQ.framework */,
+				158D7F0E1C7826E900FDEA56 /* Starscream.framework */,
 				158D7F091C78244E00FDEA56 /* Alamofire.framework */,
 			);
 			name = Frameworks;
