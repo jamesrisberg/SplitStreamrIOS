@@ -13,6 +13,7 @@ protocol NetworkFacadeDelegate {
     func musicPieceReceived(chunkNumber: Int, musicData: NSData);
     func sessionIdReceived(sessionId: String);
     func errorRecieved(error: NSError);
+    func didEstablishConnection();
 }
 
 class NetworkFacade : NSObject {
@@ -24,6 +25,8 @@ class NetworkFacade : NSObject {
     
     let socketURL = "ws://104.236.219.58:8080";
     let socket : WebSocket;
+    
+    var currentSessionId: String?;
     
     override init() {
         // TODO: pass data accessor and socket to use in the init method
@@ -66,10 +69,15 @@ class NetworkFacade : NSObject {
     }
     
     func startStreamingSong(songId: String) {
-        let songStream = ["message" : "stream song", "song" : songId];
-        
-        if let string = String.stringFromJson(songStream) {
-            socket.writeString(string);
+        if let sessionId = currentSessionId {
+            let songStream = ["message" : "stream song", "session" : sessionId, "song" : songId];
+            
+            if let string = String.stringFromJson(songStream) {
+                socket.writeString(string);
+            }
+        }
+        else {
+            delegate?.errorRecieved(NSError(localizedDescription: "unable to stream song. no valid session active"));
         }
     }
     
@@ -80,6 +88,9 @@ class NetworkFacade : NSObject {
         socket.delegate = self;
         socket.connect();
     }
+    
+    // MARK: Chunk Management
+    
 }
 
 // MARK: Message Parser Delegate
@@ -90,6 +101,7 @@ extension NetworkFacade : SocketMessageParserDelegate {
     }
     
     func didJoinSession(sessionId: String) {
+        currentSessionId = sessionId;
         delegate?.sessionIdReceived(sessionId);
     }
     
@@ -103,6 +115,7 @@ extension NetworkFacade : SocketMessageParserDelegate {
 extension NetworkFacade : WebSocketDelegate {
     func websocketDidConnect(socket: WebSocket) {
         print("socket connected: \(socket)");
+        delegate?.didEstablishConnection();
     }
     
     func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
