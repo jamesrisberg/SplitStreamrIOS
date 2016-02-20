@@ -11,7 +11,7 @@ import MultipeerConnectivity
 
 class SessionManager: NSObject {
     
-    private let serviceType = "splitStreamrService"
+    private let serviceType = "splitStreamr"
     
     private let myPeerId = MCPeerID(displayName: UIDevice.currentDevice().name)
     private let serviceAdvertiser : MCNearbyServiceAdvertiser
@@ -24,6 +24,8 @@ class SessionManager: NSObject {
         session.delegate = self
         return session
     }()
+    
+    static let sharedInstance = SessionManager()
     
     override init() {
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: serviceType)
