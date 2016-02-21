@@ -21,7 +21,7 @@ class MusicPlayerViewController: UIViewController {
     
     let manager = SessionManager.sharedInstance;
     var audioPlayer : AVAudioPlayer?;
-    var timer: NSTimer!;
+    var timer: NSTimer?;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -94,7 +94,6 @@ class MusicPlayerViewController: UIViewController {
             if let image = UIImage(named: "Play") {
                 playPauseButton.setImage(image, forState: .Normal);
             }
-            
         }
     }
     
@@ -118,7 +117,7 @@ class MusicPlayerViewController: UIViewController {
     
     @IBAction func backToMenu() {
         audioPlayer?.stop();
-        timer.invalidate();
+        timer?.invalidate();
         audioPlayer = nil;
         SessionManager.sharedInstance.disconnectFromSession();
         
