@@ -15,12 +15,14 @@ class JoinSessionViewController: UIViewController {
     
     @IBOutlet weak var waitingLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var downloadedLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
         NSNotificationCenter.defaultCenter().addObserverForName("InvitationAccepted", object: nil, queue: nil, usingBlock: invitationAccepted);
         NSNotificationCenter.defaultCenter().addObserverForName("DidDisconnectFromSession", object: nil, queue: nil, usingBlock: didDisconnect);
+        NSNotificationCenter.defaultCenter().addObserverForName("DownloadedSoFar", object: nil, queue: nil, usingBlock: updateData);
         
         manager.startAdvertising();
     }
@@ -46,6 +48,13 @@ class JoinSessionViewController: UIViewController {
             self.manager.startAdvertising();
             self.waitingLabel.text = "You were disconnected! Waiting to be invited to a new session.";
         });
+    }
+
+    func updateData(notification: NSNotification) {
+        if let dataCount = notification.userInfo!["soFar"] {
+            let kilobytes: Int = Int(dataCount as! NSNumber)/1024;
+            self.downloadedLabel.text = "\(kilobytes) Kb";
+        }
     }
     
     func downloadingFile() {

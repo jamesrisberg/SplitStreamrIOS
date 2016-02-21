@@ -20,6 +20,7 @@ class NodeChunkManager: NSObject {
     var hasRecievedSongChunk: Bool = false;
     
     var dataStuff: NSMutableData = NSMutableData();
+    var dataDownloadedSoFar = 0
     
     override init() {
         super.init();
@@ -44,6 +45,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
             let jsonString = ",\(String.stringFromJson(numberAndData)!)";
             let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
             self.dataStuff.appendData(data!);
+            self.dataDownloadedSoFar += data!.length;
         }
         else {
             print("recieved first song chunk");
@@ -54,7 +56,10 @@ extension NodeChunkManager : NetworkFacadeDelegate {
             let jsonString = "[\(String.stringFromJson(numberAndData)!)";
             let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
             dataStuff.appendData(data!);
+            self.dataDownloadedSoFar += data!.length;
         }
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("DownloadedSoFar", object: self, userInfo: ["soFar" : self.dataDownloadedSoFar]);
     }
     
     func didFinishReceivingSong(songId: String) {
@@ -74,8 +79,6 @@ extension NodeChunkManager : NetworkFacadeDelegate {
         } catch let error as NSError {
             print("Error sending data over mesh. \(error.localizedDescription)");
         }
-
-        // outputStream!.close();
     }
     
     func sessionIdReceived(sessionId: String) {

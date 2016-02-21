@@ -21,7 +21,7 @@ class MusicPlayerViewController: UIViewController {
     
     let manager = SessionManager.sharedInstance;
     var audioPlayer : AVAudioPlayer?;
-    var timer: NSTimer!;
+    var timer: NSTimer?;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -45,7 +45,7 @@ class MusicPlayerViewController: UIViewController {
         
         timeLabel.font = UIFont.monospacedDigitSystemFontOfSize(35.0, weight: UIFontWeightThin)
         
-        upperProgressView.progressTintColor = UIColor.init(red: 236/255.0, green: 107/255.0, blue: 14/255.0, alpha: 0.5);
+        upperProgressView.progressTintColor = UIColor.init(red: 236/255.0, green: 107/255.0, blue: 14/255.0, alpha: 0.75);
         upperProgressView.trackTintColor = UIColor(hexString: "65A5D1");
     }
     
@@ -57,7 +57,7 @@ class MusicPlayerViewController: UIViewController {
             artistLabel.text = song.artist;
             try self.audioPlayer = AVAudioPlayer(data: data);
             
-            if let player = self.audioPlayer {
+            if let _ = self.audioPlayer {
                 self.play();
             }
         } catch let error as NSError {
@@ -117,7 +117,7 @@ class MusicPlayerViewController: UIViewController {
     
     @IBAction func backToMenu() {
         audioPlayer?.stop();
-        timer.invalidate();
+        timer?.invalidate();
         audioPlayer = nil;
         SessionManager.sharedInstance.disconnectFromSession();
         

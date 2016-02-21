@@ -25,7 +25,8 @@ class SessionManager: NSObject {
     var playerPeer: MCPeerID!;
     var playerChunkManager: PlayerChunkManager!;
     var nodeChunkManager: NodeChunkManager!;
-    var networkFacade: NetworkFacade!;
+    var networkFacade: NetworkFacade?;
+    var currentStreamingSongId: String!;
     
     var networkSessionId: String!;
     
@@ -70,11 +71,19 @@ class SessionManager: NSObject {
     }
     
     func createNewSession() {
-        networkFacade.createNewSession();
+        if (networkFacade != nil) {
+            networkFacade!.createNewSession();
+        } else {
+            
+        }
     }
     
     func connectToSession() {
-        networkFacade.connectToSession(networkSessionId);
+        if (networkFacade != nil) {
+            networkFacade!.connectToSession(networkSessionId);
+        } else {
+            
+        }
     }
     
     func setSessionId(id: String) {
@@ -82,8 +91,16 @@ class SessionManager: NSObject {
     }
     
     func streamSong(song: Song) {
-        playerChunkManager.prepareForSong(song);
-        networkFacade.startStreamingSong(song.id);
+        if (networkFacade != nil) {
+            do {
+                try session.sendData(song.id.dataUsingEncoding(NSUTF8StringEncoding)!, toPeers: peers, withMode: .Reliable);
+            } catch {
+                print("error sending song ID to nodes");
+            }
+            
+            playerChunkManager.prepareForSong(song);
+            networkFacade!.startStreamingSong(song.id);
+        }
     }
     
     func chunkFinishedStreaming(chunkData: NSMutableData, delegate: MeshStreamDelegate) {
@@ -148,8 +165,10 @@ class SessionManager: NSObject {
     }
     
     func disconnectFromSession() {
-        self.session.disconnect();
-        self.networkFacade.disconnectFromCurrentSession();
+        if (networkFacade != nil) {
+            self.session.disconnect();
+            networkFacade!.disconnectFromCurrentSession();
+        }
     }
 }
 
@@ -208,7 +227,8 @@ extension SessionManager : MCSessionDelegate {
     }
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
-        
+        currentStreamingSongId = String(data: data, encoding: NSUTF8StringEncoding);
+        NSNotificationCenter.defaultCenter().postNotificationName("SongStreaming", object: self, userInfo: ["songId" : currentStreamingSongId]);
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
