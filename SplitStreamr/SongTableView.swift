@@ -9,6 +9,8 @@
 import UIKit
 
 class SongTableView: UITableView {
+    var currentPlayerIndex : Int = 0;
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
         
@@ -21,12 +23,38 @@ class SongTableView: UITableView {
             }
         }
     }
+    
+    func playNextSong() {
+        if (currentPlayerIndex == SongManager.sharedInstance.songs.count - 1) {
+            currentPlayerIndex = 0;
+            playSongAtIndex(0);
+        }
+        else {
+            playSongAtIndex(currentPlayerIndex + 1);
+        }
+    }
+    
+    func playPreviousSong() {
+        if (currentPlayerIndex == 0) {
+            
+        }
+        else {
+            playSongAtIndex(currentPlayerIndex - 1);
+        }
+    }
+    
+    func playSongAtIndex(index: Int) {
+        let song = SongManager.sharedInstance.songs[index];
+        SongManager.sharedInstance.playSongWhenReady(song.id);
+    }
 }
 
 extension SongTableView : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let song = SongManager.sharedInstance.songs[indexPath.row];
         SongManager.sharedInstance.playSongWhenReady(song.id);
+        self.currentPlayerIndex = indexPath.row;
+        self.deselectRowAtIndexPath(indexPath, animated: true);
     }
 }
 

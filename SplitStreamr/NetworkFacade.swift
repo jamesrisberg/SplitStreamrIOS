@@ -24,7 +24,7 @@ class NetworkFacade : NSObject {
     
     var delegate : NetworkFacadeDelegate?;
     
-    let socketURL = "ws://104.236.219.58:8080";
+    let socketURL = "ws://thisismypersonal.website";
     let socket : WebSocket;
     
     var currentSessionId: String?;
@@ -141,6 +141,7 @@ extension NetworkFacade : SocketMessageParserDelegate {
     }
     
     func didFinishStreamingSong(songId: String) {
+        debugLog("Finished Streaming Song \(songId)");
         delegate?.didFinishReceivingSong(songId);
     }
     

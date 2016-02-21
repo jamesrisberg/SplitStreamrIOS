@@ -23,7 +23,9 @@ class PlayerChunkManager: NSObject {
     }
     
     func prepareForSong(song: Song) {
+        chunksRecieved = 0;
         currentSong = song;
+        currentSongData = NSMutableData();
         currentSongChunkCount = song.numberOfChunks;
         recievedChunks = [NSData?](count: currentSongChunkCount, repeatedValue: nil);
     }

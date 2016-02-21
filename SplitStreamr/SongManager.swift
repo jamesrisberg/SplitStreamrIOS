@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SVProgressHUD
 
 class SongManager: NSObject {
     
@@ -88,7 +89,7 @@ class SongManager: NSObject {
     private func getSongForId(songId : String) -> Song? {
         let index = songs.indexOf({$0.id == songId});
         
-        if (index > 0) {
+        if (index >= 0) {
             return songs[index!];
         }
         return nil;

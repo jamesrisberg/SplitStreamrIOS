@@ -20,7 +20,7 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var upperProgressView: UIProgressView!;
     
     let manager = SessionManager.sharedInstance;
-    var audioPlayer = AVAudioPlayer();
+    var audioPlayer : AVAudioPlayer?;
     var timer: NSTimer!;
     
     override func viewDidLoad() {
@@ -28,22 +28,13 @@ class MusicPlayerViewController: UIViewController {
         
         configurePlayView();
         
-        titleLabel.text = "Ultralight Beam";
-        artistLabel.text = "Kanye West";
+        titleLabel.text = "Selected Title";
+        artistLabel.text = "Selected Artist";
         
-        let path = NSBundle.mainBundle().URLForResource(titleLabel.text!, withExtension: "mp3");
-        
-        do {
-            try audioPlayer = AVAudioPlayer(contentsOfURL: path!);
-        } catch {
-            print("error");
-        }
-
-
-        //manager.configureForPlayMode();
-        //manager.startBrowsing();
+        manager.configureForPlayMode();
+        manager.startBrowsing();
                 
-        //SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
+        SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
     }
     
     func configurePlayView() {
@@ -57,68 +48,80 @@ class MusicPlayerViewController: UIViewController {
         upperProgressView.progressTintColor = UIColor.init(red: 236/255.0, green: 107/255.0, blue: 14/255.0, alpha: 0.5);
         upperProgressView.trackTintColor = UIColor(hexString: "65A5D1");
     }
-    override func willMoveToParentViewController(parent: UIViewController?) {
-        if parent == nil {
-            // TODO: tear down audio player
-            audioPlayer.stop();
-
-            // TODO: disconnect from all sessions
-            SessionManager.sharedInstance.disconnectFromSession();
-        }
-    }
     
     func onSongReadyToPlay(song: Song, data: NSData) {
+        self.audioPlayer?.stop();
+        audioPlayer = nil;
         do {
-            try self.audioPlayer = AVAudioPlayer(data: data);
-            
             titleLabel.text = song.name;
             artistLabel.text = song.artist;
+            try self.audioPlayer = AVAudioPlayer(data: data);
             
-            if !self.audioPlayer.playing {
+            if let player = self.audioPlayer {
                 self.play();
             }
-        } catch {
-            print("error instantiating audio player");
+        } catch let error as NSError {
+            print("error instantiating audio player \(error.localizedDescription)");
         }
     }
     
     @IBAction func playOrPause() {
-        if self.audioPlayer.playing {
-            pause();
-        } else {
-            play();
+        if let player = self.audioPlayer {
+            if player.playing {
+                self.pause();
+            }
+            else {
+                self.play();
+            }
         }
     }
     
     func play() {
-        audioPlayer.play();
+        audioPlayer?.play();
         
-        if let image = UIImage(named: "Pause") {
-            playPauseButton.setImage(image, forState: .Normal);
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if let image = UIImage(named: "Pause") {
+                self.playPauseButton.setImage(image, forState: .Normal);
+            }
+        });
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "updateTime", userInfo: nil, repeats: true);
     }
     
     func pause() {
-        audioPlayer.pause()
-        
-        if let image = UIImage(named: "Play") {
-            playPauseButton.setImage(image, forState: .Normal);
+        if let player = audioPlayer {
+            player.pause()
+            if let image = UIImage(named: "Play") {
+                playPauseButton.setImage(image, forState: .Normal);
+            }
+            
         }
     }
     
+    func next() {
+        self.songTable.playNextSong();
+    }
+    
+    func previous() {
+        self.songTable.playNextSong();
+    }
+    
     func updateTime() {
-        let currentTime = Int(audioPlayer.currentTime)
+        let currentTime = Int(audioPlayer!.currentTime)
         let minutes = currentTime/60
         let seconds = currentTime - minutes * 60
         
-        upperProgressView.setProgress(Float(audioPlayer.currentTime/audioPlayer.duration), animated: true);
+        upperProgressView.setProgress(Float(audioPlayer!.currentTime/audioPlayer!.duration), animated: true);
         
         timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
     }
     
     @IBAction func backToMenu() {
+        audioPlayer?.stop();
+        timer.invalidate();
+        audioPlayer = nil;
+        SessionManager.sharedInstance.disconnectFromSession();
+        
         self.dismissViewControllerAnimated(true, completion: nil);
     }
 }
