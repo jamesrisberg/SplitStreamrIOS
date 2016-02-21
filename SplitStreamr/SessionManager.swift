@@ -177,6 +177,8 @@ extension SessionManager : MCSessionDelegate {
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {        
         let json = JSON(data: data)
+        
+        print("JSON: \(json)");
         if let chunkNumber = json["chunkNumber"].string {
             if let musicString = json["musicData"].string {
                 let musicData = NSData(base64EncodedString: musicString, options: NSDataBase64DecodingOptions(rawValue:0));
