@@ -78,7 +78,6 @@ class SessionManager: NSObject {
     }
     
     func streamSong(song: Song) {
-        print("Stream song for current session: \(networkSessionId)");
         playerChunkManager.prepareForChunks(song.numberOfChunks);
         networkFacade.startStreamingSong(song.id);
     }
@@ -103,7 +102,10 @@ class SessionManager: NSObject {
     
     func invitePeerAtIndex(index: Int) {
         self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: networkSessionId.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
-        NSNotificationCenter.defaultCenter().postNotificationName("PeersUpdated", object: nil);
+    }
+    
+    func invitePeer(peer: MCPeerID) {
+        self.serviceBrowser.invitePeer(peer, toSession: self.session, withContext: networkSessionId.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
     }
     
     func connectedPeerCount() -> Int {
@@ -158,13 +160,12 @@ extension SessionManager : MCNearbyServiceBrowserDelegate {
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         NSLog("%@", "foundPeer: \(peerID)");
         self.peers.append(peerID);
-        NSNotificationCenter.defaultCenter().postNotificationName("PeersUpdated", object: nil);
+        self.invitePeer(peerID);
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         NSLog("%@", "lostPeer: \(peerID)");
         self.peers.removeAtIndex(self.peers.indexOf(peerID)!);
-        NSNotificationCenter.defaultCenter().postNotificationName("PeersUpdated", object: nil);
     }
 }
 
@@ -172,7 +173,6 @@ extension SessionManager : MCSessionDelegate {
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
         NSLog("%@", "peer \(peerID) didChangeState: \(state.stringValue())");
-        NSNotificationCenter.defaultCenter().postNotificationName("PeersUpdated", object: nil);
     }
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
@@ -185,11 +185,9 @@ extension SessionManager : MCSessionDelegate {
                 let musicData = musicString.dataUsingEncoding(NSUTF8StringEncoding)!;
                 playerChunkManager.addNodeChunk(chunkNumber, musicData: musicData);
             } else {
-                //Print the error
                 print(json["chunkNumber"].int)
             }
         } else {
-            //Print the error
             print(json["chunkNumber"].int)
         }
     }

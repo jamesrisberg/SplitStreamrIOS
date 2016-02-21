@@ -30,9 +30,9 @@ class NodeChunkManager: NSObject {
 
 extension NodeChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
+        let musicString = String.init(data: musicData, encoding: NSUTF8StringEncoding)!;
         
-        let numberAndData = ["chunkNumber" : chunkNumber,
-                               "musicData" : musicData];
+        let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
         
         do {
             let data = try NSJSONSerialization.dataWithJSONObject(numberAndData, options: [])

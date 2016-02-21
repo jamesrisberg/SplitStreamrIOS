@@ -17,6 +17,7 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var playPauseButton: UIButton!;
     @IBOutlet weak var songTable: SongTableView!;
     
+    let manager = SessionManager.sharedInstance;
     var audioPlayer = AVAudioPlayer();
     var timer: NSTimer!;
     
@@ -25,6 +26,9 @@ class MusicPlayerViewController: UIViewController {
         
         titleLabel.text = "Ultralight Beam";
         artistLabel.text = "Kanye West";
+
+        manager.configureForPlayMode();
+        manager.startBrowsing();
         
         // let path = NSBundle.mainBundle().URLForResource(titleLabel.text!, withExtension: "mp3");
         
