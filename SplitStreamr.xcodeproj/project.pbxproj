@@ -38,6 +38,10 @@
 		6E4645781C78FF150036BAA2 /* NodeChunkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */; };
 		6E46457A1C7901540036BAA2 /* PlayerChunkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */; };
 		6E46457E1C799C9A0036BAA2 /* MeshStreamDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46457D1C799C9A0036BAA2 /* MeshStreamDelegate.swift */; };
+		6E4645801C79E5D40036BAA2 /* ProgressFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */; };
+		6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */; };
+		6E4645861C79FD530036BAA2 /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */; };
+		6E4645871C79FD530036BAA2 /* SVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +53,7 @@
 			files = (
 				6E4645671C7833D30036BAA2 /* Starscream.framework in Embed Frameworks */,
 				6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */,
+				6E4645871C79FD530036BAA2 /* SVProgressHUD.framework in Embed Frameworks */,
 				150FFDFF1C7867760090B436 /* SwiftyJSON.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -87,6 +92,10 @@
 		6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeChunkManager.swift; sourceTree = "<group>"; };
 		6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerChunkManager.swift; sourceTree = "<group>"; };
 		6E46457D1C799C9A0036BAA2 /* MeshStreamDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshStreamDelegate.swift; sourceTree = "<group>"; };
+		6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressFillView.swift; sourceTree = "<group>"; };
+		6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ultralight Beam.mp3"; sourceTree = "<group>"; };
+		6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
+		6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +105,7 @@
 			files = (
 				6E4645661C7833D30036BAA2 /* Starscream.framework in Frameworks */,
 				6E4645681C7833D30036BAA2 /* Alamofire.framework in Frameworks */,
+				6E4645861C79FD530036BAA2 /* SVProgressHUD.framework in Frameworks */,
 				150FFDFE1C7867760090B436 /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,6 +130,7 @@
 			children = (
 				150FFDD61C7829830090B436 /* NavigationController.swift */,
 				150FFDD91C7829DA0090B436 /* SongCellBackground.swift */,
+				6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */,
 			);
 			name = UISubClasses;
 			sourceTree = "<group>";
@@ -139,6 +150,7 @@
 		158D7F0D1C78246500FDEA56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */,
 				150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */,
 				158D7F0E1C7826E900FDEA56 /* Starscream.framework */,
 				158D7F091C78244E00FDEA56 /* Alamofire.framework */,
@@ -149,6 +161,7 @@
 		6E4645361C781FC70036BAA2 = {
 			isa = PBXGroup;
 			children = (
+				6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */,
 				6E4645411C781FC70036BAA2 /* SplitStreamr */,
 				158D7F0D1C78246500FDEA56 /* Frameworks */,
 				6E4645401C781FC70036BAA2 /* Products */,
@@ -166,6 +179,7 @@
 		6E4645411C781FC70036BAA2 /* SplitStreamr */ = {
 			isa = PBXGroup;
 			children = (
+				6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */,
 				6E4645461C781FC70036BAA2 /* Main.storyboard */,
 				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
 				150FFDD51C7828920090B436 /* Utilities */,
@@ -236,7 +250,7 @@
 				TargetAttributes = {
 					6E46453E1C781FC70036BAA2 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = CX87MDXJNH;
+						DevelopmentTeam = M2JNHSR23U;
 					};
 				};
 			};
@@ -264,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E46454D1C781FC70036BAA2 /* LaunchScreen.storyboard in Resources */,
+				6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */,
 				6E46454A1C781FC70036BAA2 /* Assets.xcassets in Resources */,
 				6E4645481C781FC70036BAA2 /* Main.storyboard in Resources */,
 			);
@@ -289,6 +304,7 @@
 				6E4645761C78E2530036BAA2 /* SongTableView.swift in Sources */,
 				6E4645431C781FC70036BAA2 /* AppDelegate.swift in Sources */,
 				150FFDF91C7850F30090B436 /* ViewController.swift in Sources */,
+				6E4645801C79E5D40036BAA2 /* ProgressFillView.swift in Sources */,
 				6E4645781C78FF150036BAA2 /* NodeChunkManager.swift in Sources */,
 				150FFDEB1C78375C0090B436 /* NetworkingAccessor.swift in Sources */,
 				150FFE051C78CEBA0090B436 /* NSError+LocalizedDescription.swift in Sources */,

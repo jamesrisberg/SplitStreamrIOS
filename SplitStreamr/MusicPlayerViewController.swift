@@ -17,6 +17,7 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var playPauseButton: UIButton!;
     @IBOutlet weak var songTable: SongTableView!;
     @IBOutlet weak var playButtonView: UIView!;
+    @IBOutlet weak var upperProgressView: UIProgressView!;
     
     let manager = SessionManager.sharedInstance;
     var audioPlayer = AVAudioPlayer();
@@ -26,11 +27,23 @@ class MusicPlayerViewController: UIViewController {
         super.viewDidLoad();
         
         configurePlayView();
+        
+        titleLabel.text = "Ultralight Beam";
+        artistLabel.text = "Kanye West";
+        
+        let path = NSBundle.mainBundle().URLForResource(titleLabel.text!, withExtension: "mp3");
+        
+        do {
+            try audioPlayer = AVAudioPlayer(contentsOfURL: path!);
+        } catch {
+            print("error");
+        }
 
-        manager.configureForPlayMode();
-        manager.startBrowsing();
+
+        //manager.configureForPlayMode();
+        //manager.startBrowsing();
                 
-        SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
+        //SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
     }
     
     func configurePlayView() {
@@ -38,6 +51,11 @@ class MusicPlayerViewController: UIViewController {
         playButtonView.layer.shadowOffset = CGSizeMake(0.0, 1.0)
         playButtonView.layer.shadowOpacity = 0.6
         playButtonView.layer.shadowRadius = 1.5
+        
+        timeLabel.font = UIFont.monospacedDigitSystemFontOfSize(35.0, weight: UIFontWeightThin)
+        
+        upperProgressView.progressTintColor = UIColor.init(red: 236/255.0, green: 107/255.0, blue: 14/255.0, alpha: 0.5);
+        upperProgressView.trackTintColor = UIColor(hexString: "65A5D1");
     }
     override func willMoveToParentViewController(parent: UIViewController?) {
         if parent == nil {
@@ -94,6 +112,8 @@ class MusicPlayerViewController: UIViewController {
         let currentTime = Int(audioPlayer.currentTime)
         let minutes = currentTime/60
         let seconds = currentTime - minutes * 60
+        
+        upperProgressView.setProgress(Float(audioPlayer.currentTime/audioPlayer.duration), animated: true);
         
         timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
     }

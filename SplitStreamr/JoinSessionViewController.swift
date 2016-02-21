@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class JoinSessionViewController: UIViewController {
     
@@ -36,6 +37,16 @@ class JoinSessionViewController: UIViewController {
         self.activityIndicator.stopAnimating();
         manager.stopAdvertising();
         self.waitingLabel.text = "You are part of the session! Leaving this screen will disconnect your device.";
+    }
+    
+    func downloadingFile() {
+        SVProgressHUD.show()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            // time-consuming task
+            dispatch_async(dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss();
+                });
+            });
     }
     
     @IBAction func backToMenu() {
