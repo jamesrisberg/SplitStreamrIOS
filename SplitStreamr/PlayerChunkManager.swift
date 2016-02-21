@@ -48,13 +48,18 @@ class PlayerChunkManager: NSObject {
         
         SongManager.sharedInstance.songDownloaded(currentSong, data: currentSongData);
     }
+    
+    func configureWithStream(stream: NSInputStream, streamName: String) {
+        stream.delegate = self;
+        stream.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
+        stream.open();
+    }
 }
 
 extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
-        print("Received chunk from server: # \(chunkNumber)");
         if chunksRecieved == currentSongChunkCount {
             songFinished()
         }
