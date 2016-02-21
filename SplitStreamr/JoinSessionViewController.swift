@@ -43,7 +43,8 @@ class JoinSessionViewController: UIViewController {
     
     func updateData(notification: NSNotification) {
         if let dataCount = notification.userInfo!["soFar"] {
-            self.downloadedLabel.text = "\(dataCount) Kb";
+            let kilobytes: Int = Int(dataCount as! NSNumber)/1024;
+            self.downloadedLabel.text = "\(kilobytes) Kb";
         }
     }
     
