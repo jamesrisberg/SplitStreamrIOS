@@ -20,6 +20,7 @@ class JoinSessionViewController: UIViewController {
         super.viewDidLoad();
         
         NSNotificationCenter.defaultCenter().addObserverForName("InvitationAccepted", object: nil, queue: nil, usingBlock: invitationAccepted);
+        NSNotificationCenter.defaultCenter().addObserverForName("DidDisconnectFromSession", object: nil, queue: nil, usingBlock: didDisconnect);
         
         manager.startAdvertising();
     }
@@ -37,6 +38,14 @@ class JoinSessionViewController: UIViewController {
         self.activityIndicator.stopAnimating();
         manager.stopAdvertising();
         self.waitingLabel.text = "You are part of the session! Leaving this screen will disconnect your device.";
+    }
+    
+    func didDisconnect(notification: NSNotification) {
+        dispatch_async(dispatch_get_main_queue(), { ()->Void in
+            self.activityIndicator.startAnimating();
+            self.manager.startAdvertising();
+            self.waitingLabel.text = "You were disconnected! Waiting to be invited to a new session.";
+        });
     }
     
     func downloadingFile() {

@@ -94,7 +94,6 @@ class MusicPlayerViewController: UIViewController {
             if let image = UIImage(named: "Play") {
                 playPauseButton.setImage(image, forState: .Normal);
             }
-            
         }
     }
     

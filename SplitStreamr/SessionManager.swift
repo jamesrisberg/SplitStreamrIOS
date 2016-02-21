@@ -201,6 +201,10 @@ extension SessionManager : MCSessionDelegate {
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
         NSLog("%@", "peer \(peerID) didChangeState: \(state.stringValue())");
+        
+        if (state == .NotConnected) {
+            NSNotificationCenter.defaultCenter().postNotificationName("DidDisconnectFromSession", object: nil);
+        }
     }
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
