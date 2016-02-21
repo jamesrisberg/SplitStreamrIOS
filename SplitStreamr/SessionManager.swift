@@ -27,6 +27,8 @@ class SessionManager: NSObject {
     
     var networkSessionId: String!;
     
+    let serialQueue = dispatch_queue_create("com.SerialQueue", DISPATCH_QUEUE_SERIAL);
+    
     lazy var session : MCSession = {
         let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .None);
         session.delegate = self;
@@ -175,14 +177,14 @@ extension SessionManager : MCSessionDelegate {
         NSLog("%@", "peer \(peerID) didChangeState: \(state.stringValue())");
     }
     
-    func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {        
-        let json = JSON(data: data)
+    func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
+        var error : NSError?
+        let json = JSON(data: data, options: NSJSONReadingOptions(rawValue:0), error: &error);
         
-        print("JSON: \(json)");
         if let chunkNumber = json["chunkNumber"].string {
             if let musicString = json["musicData"].string {
                 let musicData = NSData(base64EncodedString: musicString, options: NSDataBase64DecodingOptions(rawValue:0));
-                playerChunkManager.addNodeChunk(Int(chunkNumber)!, musicData: musicData!);
+                self.playerChunkManager.addNodeChunk(Int(chunkNumber)!, musicData: musicData!);
             } else {
                 print("Error getting chunk data: \(json["musicData"].string)");
             }
@@ -192,7 +194,7 @@ extension SessionManager : MCSessionDelegate {
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        NSLog("%@", "didReceiveStream");
+        self.playerChunkManager.configureWithStream(stream, streamName: streamName);
     }
     
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {

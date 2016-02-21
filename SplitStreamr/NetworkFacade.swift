@@ -119,7 +119,7 @@ class NetworkFacade : NSObject {
     
     func debugLog(message: String) {
         dispatch_async(dispatch_get_main_queue(), {
-           // print(message);
+           //print(message);
         });
     }
 }
