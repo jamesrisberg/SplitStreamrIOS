@@ -34,6 +34,7 @@ class JoinSessionViewController: UIViewController {
 
     func invitationAccepted(notification: NSNotification) {
         self.activityIndicator.stopAnimating();
+        manager.stopAdvertising();
         self.waitingLabel.text = "You are part of the session! Leaving this screen will disconnect your device.";
     }
 }

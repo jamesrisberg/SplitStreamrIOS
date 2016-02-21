@@ -144,9 +144,9 @@ extension SessionManager : MCNearbyServiceAdvertiserDelegate {
     }
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
-        invitationHandler(true, self.session);
         self.setSessionId(String.init(data: context!, encoding: NSUTF8StringEncoding)!);
         self.configureForNodeMode(peerID);
+        invitationHandler(true, self.session);
         NSNotificationCenter.defaultCenter().postNotificationName("InvitationAccepted", object: nil);
     }
 }
