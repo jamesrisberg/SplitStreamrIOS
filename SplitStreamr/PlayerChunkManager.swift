@@ -45,11 +45,7 @@ class PlayerChunkManager: NSObject {
         }
         print("Finished")
         
-        let url = "\(documentsPath)/\(currentSong.name).mp3";
-        currentSongData.writeToFile(url, atomically: true);
-        
-        let userInfoDict = ["songId" : currentSong.id, "songURL" : url];
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: songDownloadedNotificationIdentifier, object: nil, userInfo: userInfoDict));
+        SongManager.sharedInstance.songDownloaded(currentSong, data: currentSongData);
     }
 }
 
