@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Darwin
 
 class MeshStreamDelegate: NSObject {
     
@@ -40,13 +41,15 @@ extension MeshStreamDelegate : NSStreamDelegate {
                 var buffer = [UInt8](count: 4096, repeatedValue: 0)
                 //if (aStream == self.stream) {
                     while (self.stream.hasBytesAvailable) {
+                        usleep(20000);
+                        // sleep(2);
                         let len = self.stream.read(&buffer, maxLength: buffer.count);
                                                 
                         if len > 0 {
                             chunkData.appendBytes(&buffer, length: len);
-                            print(String(data: NSData(bytes: buffer, length: len), encoding: NSUTF8StringEncoding));
+                            // print(String(data: NSData(bytes: buffer, length: len), encoding: NSUTF8StringEncoding));
                         }
-                        print("last byte: \(buffer[len-1])");
+                        // print("last byte: \(buffer[len-1])");
                         print("chunkData size: \(chunkData.length)");
                         if buffer[len-1] == 93 {
                             print("stream closed and chunks finished");
