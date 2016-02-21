@@ -13,6 +13,7 @@ class PlayerChunkManager: NSObject {
     var sessionId: String?;
     
     var recievedChunks: [NSData?] = [];
+    var chunksRecieved = 0;
     var currentSongData: NSMutableData = NSMutableData();
     var currentSongChunkCount: Int = 0;
     
@@ -28,8 +29,9 @@ class PlayerChunkManager: NSObject {
     func addNodeChunk(chunkNumber: Int, musicData: NSData) {
         print("Chunk from node made it to manager: \(chunkNumber)");
         recievedChunks[chunkNumber] = musicData;
+        chunksRecieved += 1;
         
-        if recievedChunks.count == currentSongChunkCount {
+        if chunksRecieved == currentSongChunkCount {
             songFinished()
         }
     }
@@ -40,6 +42,8 @@ class PlayerChunkManager: NSObject {
                 currentSongData.appendData(data);
             }
         }
+        
+        print("Finished Building song");
     }
 }
 
@@ -47,7 +51,8 @@ extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
         print("Chunk to self: \(chunkNumber)");
         recievedChunks[chunkNumber] = musicData;
-        if recievedChunks.count == currentSongChunkCount {
+        chunksRecieved += 1;
+        if chunksRecieved == currentSongChunkCount {
             songFinished()
         }
     }

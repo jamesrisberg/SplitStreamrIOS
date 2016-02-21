@@ -17,6 +17,7 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var playPauseButton: UIButton!;
     @IBOutlet weak var songTable: SongTableView!;
     
+    let manager = SessionManager.sharedInstance;
     var audioPlayer = AVAudioPlayer();
     var timer: NSTimer!;
     var playing = false;
@@ -35,6 +36,8 @@ class MusicPlayerViewController: UIViewController {
             print("error");
         }
         
+        manager.configureForPlayMode();
+        manager.startBrowsing();
         songTable.getSongs();
     }
     

@@ -27,12 +27,10 @@
 		6E46454A1C781FC70036BAA2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645491C781FC70036BAA2 /* Assets.xcassets */; };
 		6E46454D1C781FC70036BAA2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */; };
 		6E4645551C7823230036BAA2 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645541C7823230036BAA2 /* SessionManager.swift */; };
-		6E4645651C7833970036BAA2 /* StartNewSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */; };
 		6E4645661C7833D30036BAA2 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0E1C7826E900FDEA56 /* Starscream.framework */; };
 		6E4645671C7833D30036BAA2 /* Starscream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F0E1C7826E900FDEA56 /* Starscream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E4645681C7833D30036BAA2 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; };
 		6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6E46456E1C783C6C0036BAA2 /* CurrentSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46456D1C783C6C0036BAA2 /* CurrentSessionViewController.swift */; };
 		6E4645701C785D6F0036BAA2 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */; };
 		6E4645721C78D0740036BAA2 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */; };
 		6E4645741C78D5A10036BAA2 /* Ultralight Beam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */; };
@@ -81,8 +79,6 @@
 		6E46454C1C781FC70036BAA2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6E46454E1C781FC70036BAA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E4645541C7823230036BAA2 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
-		6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartNewSessionViewController.swift; sourceTree = "<group>"; };
-		6E46456D1C783C6C0036BAA2 /* CurrentSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentSessionViewController.swift; sourceTree = "<group>"; };
 		6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
 		6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewController.swift; sourceTree = "<group>"; };
 		6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ultralight Beam.mp3"; sourceTree = "<group>"; };
@@ -175,9 +171,7 @@
 				6E4645461C781FC70036BAA2 /* Main.storyboard */,
 				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
 				150FFDF81C7850F30090B436 /* ViewController.swift */,
-				6E4645631C7833970036BAA2 /* StartNewSessionViewController.swift */,
 				6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */,
-				6E46456D1C783C6C0036BAA2 /* CurrentSessionViewController.swift */,
 				6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */,
 				150FFE001C78C3300090B436 /* SocketTesterViewController.swift */,
 				6E4645541C7823230036BAA2 /* SessionManager.swift */,
@@ -266,7 +260,6 @@
 				150FFDEC1C78375C0090B436 /* NetworkObjects.swift in Sources */,
 				150FFDD41C78288F0090B436 /* UIColor+Hex.swift in Sources */,
 				150FFE011C78C3300090B436 /* SocketTesterViewController.swift in Sources */,
-				6E4645651C7833970036BAA2 /* StartNewSessionViewController.swift in Sources */,
 				150FFDED1C78375C0090B436 /* RestNetworkAccessor.swift in Sources */,
 				150FFDEA1C78375C0090B436 /* NetworkFacade.swift in Sources */,
 				150FFDD71C7829830090B436 /* NavigationController.swift in Sources */,
@@ -284,7 +277,6 @@
 				150FFDFB1C78604F0090B436 /* String+JSON.swift in Sources */,
 				150FFE031C78C4D30090B436 /* SocketMessageParser.swift in Sources */,
 				158D7F111C7827B900FDEA56 /* Constants.swift in Sources */,
-				6E46456E1C783C6C0036BAA2 /* CurrentSessionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
