@@ -44,7 +44,11 @@ extension MeshStreamDelegate : NSStreamDelegate {
                         if len > 0 {
                             chunkData.appendBytes(&buffer, length: len);
                         }
+                        if buffer[len-1] ==  93 {
+                            stream.close()
+                        }
                     }
+                    
                 }
             case NSStreamEvent():
                 print("allZeros")

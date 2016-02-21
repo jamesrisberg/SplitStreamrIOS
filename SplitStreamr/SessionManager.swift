@@ -88,8 +88,7 @@ class SessionManager: NSObject {
     
     func chunkFinishedStreaming(chunkData: NSMutableData, delegate: MeshStreamDelegate) {
         print("Stream Finished");
-        
-        delegate.stream.close();
+    
         streamDelegates.removeAtIndex(streamDelegates.indexOf(delegate)!);
         
         var error : NSError?
