@@ -12,6 +12,9 @@ class SongTableView: UITableView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
         
+        delegate = self;
+        dataSource = self;
+        
         if !SongManager.sharedInstance.didDownloadSongs {
             SongManager.sharedInstance.onSongsFinishedDownloading = {
                 self.reloadData();

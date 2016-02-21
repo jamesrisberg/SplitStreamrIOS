@@ -30,7 +30,7 @@ class NodeChunkManager: NSObject {
 
 extension NodeChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
-        let musicString = String.init(data: musicData, encoding: NSUTF8StringEncoding)!;
+        let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
         
         let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
         

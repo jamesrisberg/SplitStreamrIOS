@@ -78,7 +78,7 @@ class SessionManager: NSObject {
     }
     
     func streamSong(song: Song) {
-        playerChunkManager.prepareForChunks(song.numberOfChunks);
+        playerChunkManager.prepareForSong(song);
         networkFacade.startStreamingSong(song.id);
     }
     
@@ -179,16 +179,15 @@ extension SessionManager : MCSessionDelegate {
         NSLog("%@", "didReceiveData: \(data)");
         
         let json = JSON(data: data)
-        if let chunkNumber = json["chunkNumber"].int {
+        if let chunkNumber = json["chunkNumber"].string {
             if let musicString = json["musicData"].string {
-                print("Chunk from node: \(chunkNumber)");
-                let musicData = musicString.dataUsingEncoding(NSUTF8StringEncoding)!;
-                playerChunkManager.addNodeChunk(chunkNumber, musicData: musicData);
+                let musicData = NSData(base64EncodedString: musicString, options: NSDataBase64DecodingOptions(rawValue:0));
+                playerChunkManager.addNodeChunk(Int(chunkNumber)!, musicData: musicData!);
             } else {
-                print(json["chunkNumber"].int)
+                print("Error getting chunk data: \(json["musicData"].string)");
             }
         } else {
-            print(json["chunkNumber"].int)
+            print("Error getting chunk numba: \(json["chunkNumber"].string)");
         }
     }
     

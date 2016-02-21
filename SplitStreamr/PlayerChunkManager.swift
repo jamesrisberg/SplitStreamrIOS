@@ -16,18 +16,19 @@ class PlayerChunkManager: NSObject {
     var chunksRecieved = 0;
     var currentSongData: NSMutableData = NSMutableData();
     var currentSongChunkCount: Int = 0;
+    var currentSong: Song!;
     
     override init() {
         super.init();
     }
     
-    func prepareForChunks(numberOfChunks: Int) {
-        currentSongChunkCount = numberOfChunks;
+    func prepareForSong(song: Song) {
+        currentSong = song;
+        currentSongChunkCount = song.numberOfChunks;
         recievedChunks = [NSData?](count: currentSongChunkCount, repeatedValue: nil);
     }
     
     func addNodeChunk(chunkNumber: Int, musicData: NSData) {
-        print("Chunk from node made it to manager: \(chunkNumber)");
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
@@ -42,14 +43,18 @@ class PlayerChunkManager: NSObject {
                 currentSongData.appendData(data);
             }
         }
+        print("Finished")
         
-        print("Finished Building song");
+        let url = "\(documentsPath)/\(currentSong.name).mp3";
+        currentSongData.writeToFile(url, atomically: true);
+        
+        let userInfoDict = ["songId" : currentSong.id, "songURL" : url];
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: songDownloadedNotificationIdentifier, object: nil, userInfo: userInfoDict));
     }
 }
 
 extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
-        print("Chunk to self: \(chunkNumber)");
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         if chunksRecieved == currentSongChunkCount {
