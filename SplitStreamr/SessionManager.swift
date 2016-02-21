@@ -14,7 +14,7 @@ class SessionManager: NSObject {
     
     private let serviceType = "splitStreamr";
     
-    private let myPeerId = MCPeerID(displayName: UIDevice.currentDevice().name);
+    let myPeerId = MCPeerID(displayName: UIDevice.currentDevice().name);
     private let serviceAdvertiser : MCNearbyServiceAdvertiser;
     private let serviceBrowser : MCNearbyServiceBrowser;
     
