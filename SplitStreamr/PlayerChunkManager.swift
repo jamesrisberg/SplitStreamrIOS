@@ -32,6 +32,7 @@ class PlayerChunkManager: NSObject {
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
+        print("Received chunk from node: # \(chunkNumber)");
         if chunksRecieved == currentSongChunkCount {
             songFinished()
         }
@@ -53,6 +54,7 @@ extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
+        print("Received chunk from server: # \(chunkNumber)");
         if chunksRecieved == currentSongChunkCount {
             songFinished()
         }
