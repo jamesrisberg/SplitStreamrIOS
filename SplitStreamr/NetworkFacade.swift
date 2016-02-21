@@ -120,7 +120,7 @@ class NetworkFacade : NSObject {
     
     func debugLog(message: String) {
         dispatch_async(dispatch_get_main_queue(), {
-           // print(message);
+           print(message);
         });
     }
 }
@@ -141,7 +141,7 @@ extension NetworkFacade : SocketMessageParserDelegate {
     }
     
     func didFinishStreamingSong(songId: String) {
-        
+        delegate?.didFinishReceivingSong(songId);
     }
     
     func willRecieveChunk(songId: String, chunkNumber: Int) {
