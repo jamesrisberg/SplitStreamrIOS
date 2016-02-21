@@ -15,11 +15,13 @@ class JoinSessionViewController: UIViewController {
     
     @IBOutlet weak var waitingLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var downloadedLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
         NSNotificationCenter.defaultCenter().addObserverForName("InvitationAccepted", object: nil, queue: nil, usingBlock: invitationAccepted);
+        NSNotificationCenter.defaultCenter().addObserverForName("DownloadedSoFar", object: nil, queue: nil, usingBlock: updateData);
         
         manager.startAdvertising();
     }
@@ -37,6 +39,12 @@ class JoinSessionViewController: UIViewController {
         self.activityIndicator.stopAnimating();
         manager.stopAdvertising();
         self.waitingLabel.text = "You are part of the session! Leaving this screen will disconnect your device.";
+    }
+    
+    func updateData(notification: NSNotification) {
+        if let dataCount = notification.userInfo!["soFar"] {
+            self.downloadedLabel.text = "\(dataCount) Kb";
+        }
     }
     
     func downloadingFile() {
