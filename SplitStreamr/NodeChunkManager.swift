@@ -8,6 +8,7 @@
 
 import Foundation
 import MultipeerConnectivity
+import SwiftyJSON
 
 class NodeChunkManager: NSObject {
     
@@ -36,13 +37,17 @@ extension NodeChunkManager : NetworkFacadeDelegate {
         
         print("chunk #\(chunkNumber)");
         
-        do {
-            let data = try NSJSONSerialization.dataWithJSONObject(numberAndData, options: [])
-            try SessionManager.sharedInstance.session.sendData(data, toPeers: [playerPeer], withMode: .Reliable);
-        } catch {
-            // TODO: Handle Error
-            print("Error jsoning object: \(numberAndData)");
+
+        if let json = JSON(rawValue: numberAndData) {
+            do {
+                try SessionManager.sharedInstance.session.sendData(json.rawData(), toPeers: [playerPeer], withMode: .Reliable);
+            } catch {
+                print("Error sending data over mesh.")
+            }
+        } else {
+            print("Error jsoning data")
         }
+        
     }
     
     func sessionIdReceived(sessionId: String) {
