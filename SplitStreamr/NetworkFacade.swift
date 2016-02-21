@@ -75,6 +75,7 @@ class NetworkFacade : NSObject {
             let songStream = ["message" : "stream song", "session" : sessionId, "song" : songId];
             
             if let string = String.stringFromJson(songStream) {
+                debugLog("Start streaming song: \(songId)");
                 socket.writeString(string);
             }
         }
@@ -94,6 +95,7 @@ class NetworkFacade : NSObject {
     // MARK: Chunk Management
     
     private func didReceiveChunk(chunkData: NSData) {
+        debugLog("received chunk");
         if let (songId, chunkNumber) = expectedChunk {
             delegate?.musicPieceReceived(songId, chunkNumber: chunkNumber, musicData: chunkData);
             
@@ -103,6 +105,7 @@ class NetworkFacade : NSObject {
     }
     
     private func respondWithChunkRecieved(songId: String, chunkNumber: Int) {
+        debugLog("Responding with chunk #\(chunkNumber) received");
         if let sessionId = currentSessionId {
             let chunkReceived = ["message" : "chunk received", "session" : sessionId, "song" : songId, "chunk" : chunkNumber];
             
@@ -111,6 +114,14 @@ class NetworkFacade : NSObject {
             }
         }
     }
+    
+    // MARK: Debug
+    
+    func debugLog(message: String) {
+        dispatch_async(dispatch_get_main_queue(), {
+           print(message);
+        });
+    }
 }
 
 // MARK: Message Parser Delegate
@@ -118,15 +129,18 @@ class NetworkFacade : NSObject {
 extension NetworkFacade : SocketMessageParserDelegate {
     func didCreateSession(sessionId: String) {
         currentSessionId = sessionId;
+        debugLog("Created session with id: \(sessionId)");
         delegate?.sessionIdReceived(sessionId);
     }
     
     func didJoinSession(sessionId: String) {
         currentSessionId = sessionId;
+        debugLog("Joined session with id: \(sessionId)");
         delegate?.sessionIdReceived(sessionId);
     }
     
     func willRecieveChunk(songId: String, chunkNumber: Int) {
+        debugLog("Expecting chunk #\(chunkNumber)");
         self.expectedChunk = (songId, chunkNumber);
     };
     
