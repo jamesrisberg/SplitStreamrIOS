@@ -122,6 +122,7 @@ class SessionManager: NSObject {
     
     func disconnectFromSession() {
         self.session.disconnect();
+        self.networkFacade.disconnectFromCurrentSession();
     }
 }
 

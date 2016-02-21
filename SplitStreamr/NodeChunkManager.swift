@@ -43,14 +43,19 @@ extension NodeChunkManager : NetworkFacadeDelegate {
                     outputStream.delegate = self;
                     outputStream.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
                     outputStream.open();
-                    
+                    print("write to output stream");
                     outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length);
+                    print("finished writing chunk#\(chunkNumber) to output stream");
                 } catch {
                     print("Error sending data over mesh.")
                 }
             } else {
                 print("Error jsoning data")
             }
+    }
+    
+    func didFinishReceivingSong(songId: String) {
+        
     }
     
     func sessionIdReceived(sessionId: String) {
@@ -72,7 +77,7 @@ extension NodeChunkManager : NSStreamDelegate {
             case NSStreamEvent.HasSpaceAvailable:
                 print("Stream Has Space Available");
             case NSStreamEvent.EndEncountered:
-                print("Stream End Encountered");
+                print("Stream Has Space Available");
             default:
                 break;
         }

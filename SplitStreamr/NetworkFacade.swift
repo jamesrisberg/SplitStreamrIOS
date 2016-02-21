@@ -11,6 +11,7 @@ import Starscream
 
 protocol NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData);
+    func didFinishReceivingSong(songId: String);
     func sessionIdReceived(sessionId: String);
     func errorRecieved(error: NSError);
     func didEstablishConnection();
@@ -137,6 +138,10 @@ extension NetworkFacade : SocketMessageParserDelegate {
         currentSessionId = sessionId;
         debugLog("Joined session with id: \(sessionId)");
         delegate?.sessionIdReceived(sessionId);
+    }
+    
+    func didFinishStreamingSong(songId: String) {
+        
     }
     
     func willRecieveChunk(songId: String, chunkNumber: Int) {

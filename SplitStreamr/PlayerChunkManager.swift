@@ -60,6 +60,10 @@ extension PlayerChunkManager : NetworkFacadeDelegate {
         }
     }
     
+    func didFinishReceivingSong(songId: String) {
+        
+    }
+    
     func sessionIdReceived(sessionId: String) {
         self.sessionId = sessionId;
         print(sessionId);

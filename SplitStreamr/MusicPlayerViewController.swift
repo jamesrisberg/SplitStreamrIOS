@@ -30,6 +30,16 @@ class MusicPlayerViewController: UIViewController {
         SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
     }
     
+    override func willMoveToParentViewController(parent: UIViewController?) {
+        if parent == nil {
+            // TODO: tear down audio player
+            audioPlayer.stop();
+
+            // TODO: disconnect from all sessions
+            SessionManager.sharedInstance.disconnectFromSession();
+        }
+    }
+    
     func onSongReadyToPlay(song: Song, data: NSData) {
         do {
             try self.audioPlayer = AVAudioPlayer(data: data);
