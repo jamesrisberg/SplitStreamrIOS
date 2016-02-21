@@ -87,7 +87,6 @@ class SessionManager: NSObject {
     }
     
     func chunkFinishedStreaming(chunkData: NSMutableData, delegate: MeshStreamDelegate) {
-        print("Stream Finished");
     
         streamDelegates.removeAtIndex(streamDelegates.indexOf(delegate)!);
         
@@ -209,7 +208,6 @@ extension SessionManager : MCSessionDelegate {
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        print("Stream recieved");
         self.streamDelegates.append(MeshStreamDelegate(stream: stream));
     }
     

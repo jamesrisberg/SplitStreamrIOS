@@ -175,7 +175,6 @@
 				6E46457B1C794EAD0036BAA2 /* ChunkManagement */,
 				6E46454E1C781FC70036BAA2 /* Info.plist */,
 				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
-				6E46457D1C799C9A0036BAA2 /* MeshStreamDelegate.swift */,
 			);
 			path = SplitStreamr;
 			sourceTree = "<group>";
@@ -187,6 +186,7 @@
 				6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */,
 				6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */,
 				1581CAEA1C7950D400A6DD48 /* SongManager.swift */,
+				6E46457D1C799C9A0036BAA2 /* MeshStreamDelegate.swift */,
 			);
 			name = ChunkManagement;
 			sourceTree = "<group>";

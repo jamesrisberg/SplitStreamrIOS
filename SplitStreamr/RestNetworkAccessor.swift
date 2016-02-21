@@ -26,7 +26,6 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
                 var songs : Array<Song> = Array<Song>();
                 
                 if let json = response.result.value {
-                    print(json);
                     
                     for jsonSong in json as! Array<Dictionary<String, AnyObject>> {
                         songs.append(Song(fromJson: jsonSong));

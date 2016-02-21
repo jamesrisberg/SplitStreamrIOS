@@ -32,7 +32,6 @@ class PlayerChunkManager: NSObject {
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
-        print("Received chunk from node: # \(chunkNumber)");
         if chunksRecieved == currentSongChunkCount {
             songFinished()
         }
@@ -44,7 +43,6 @@ class PlayerChunkManager: NSObject {
                 currentSongData.appendData(data);
             }
         }
-        print("Finished")
         
         SongManager.sharedInstance.songDownloaded(currentSong, data: currentSongData);
     }
@@ -65,7 +63,6 @@ extension PlayerChunkManager : NetworkFacadeDelegate {
     
     func sessionIdReceived(sessionId: String) {
         self.sessionId = sessionId;
-        print(sessionId);
         SessionManager.sharedInstance.setSessionId(sessionId);
     }
     
