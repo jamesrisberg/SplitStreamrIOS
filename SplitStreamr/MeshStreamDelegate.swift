@@ -33,23 +33,29 @@ extension MeshStreamDelegate : NSStreamDelegate {
                 print("ErrorOccurred")
             case NSStreamEvent.EndEncountered:
                 print("EndEncountered")
-                SessionManager.sharedInstance.chunkFinishedStreaming(chunkData, delegate: self);
             case NSStreamEvent.None:
                 print("None")
             case NSStreamEvent.HasBytesAvailable:
+                //print("HasBytesAvail");
                 var buffer = [UInt8](count: 4096, repeatedValue: 0)
-                if (aStream == self.stream) {
-                    while (stream.hasBytesAvailable) {
-                        let len = stream.read(&buffer, maxLength: buffer.count);
+                //if (aStream == self.stream) {
+                    while (self.stream.hasBytesAvailable) {
+                        let len = self.stream.read(&buffer, maxLength: buffer.count);
+                                                
                         if len > 0 {
                             chunkData.appendBytes(&buffer, length: len);
+                            print(String(data: NSData(bytes: buffer, length: len), encoding: NSUTF8StringEncoding));
                         }
-                        if buffer[len-1] ==  93 {
-                            stream.close()
+                        print("last byte: \(buffer[len-1])");
+                        print("chunkData size: \(chunkData.length)");
+                        if buffer[len-1] == 93 {
+                            print("stream closed and chunks finished");
+                            self.stream.close();
+                            SessionManager.sharedInstance.chunkFinishedStreaming(chunkData, delegate: self);
                         }
                     }
-                    
-                }
+                //}
+
             case NSStreamEvent():
                 print("allZeros")
             case NSStreamEvent.OpenCompleted:

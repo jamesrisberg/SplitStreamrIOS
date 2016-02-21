@@ -37,4 +37,8 @@ class JoinSessionViewController: UIViewController {
         manager.stopAdvertising();
         self.waitingLabel.text = "You are part of the session! Leaving this screen will disconnect your device.";
     }
+    
+    @IBAction func backToMenu() {
+        self.dismissViewControllerAnimated(true, completion: nil);
+    }
 }

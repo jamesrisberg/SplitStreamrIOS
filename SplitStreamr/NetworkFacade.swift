@@ -120,7 +120,7 @@ class NetworkFacade : NSObject {
     
     func debugLog(message: String) {
         dispatch_async(dispatch_get_main_queue(), {
-           print(message);
+           //print(message);
         });
     }
 }
@@ -158,12 +158,12 @@ extension NetworkFacade : SocketMessageParserDelegate {
 
 extension NetworkFacade : WebSocketDelegate {
     func websocketDidConnect(socket: WebSocket) {
-        print("socket connected: \(socket)");
+        debugLog("socket connected: \(socket)");
         delegate?.didEstablishConnection();
     }
     
     func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        print("socket disconnected \(socket), with error: \(error)");
+        debugLog("socket disconnected \(socket), with error: \(error)");
     }
     
     func websocketDidReceiveMessage(socket: WebSocket, text: String) {

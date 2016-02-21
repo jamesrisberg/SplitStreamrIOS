@@ -16,6 +16,7 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!;
     @IBOutlet weak var playPauseButton: UIButton!;
     @IBOutlet weak var songTable: SongTableView!;
+    @IBOutlet weak var playButtonView: UIView!;
     
     let manager = SessionManager.sharedInstance;
     var audioPlayer = AVAudioPlayer();
@@ -23,6 +24,8 @@ class MusicPlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        
+        configurePlayView();
 
         manager.configureForPlayMode();
         manager.startBrowsing();
@@ -30,6 +33,12 @@ class MusicPlayerViewController: UIViewController {
         SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
     }
     
+    func configurePlayView() {
+        playButtonView.layer.cornerRadius = playButtonView.frame.size.width/2;
+        playButtonView.layer.shadowOffset = CGSizeMake(0.0, 1.0)
+        playButtonView.layer.shadowOpacity = 0.6
+        playButtonView.layer.shadowRadius = 1.5
+    }
     override func willMoveToParentViewController(parent: UIViewController?) {
         if parent == nil {
             // TODO: tear down audio player
@@ -87,5 +96,9 @@ class MusicPlayerViewController: UIViewController {
         let seconds = currentTime - minutes * 60
         
         timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
+    }
+    
+    @IBAction func backToMenu() {
+        self.dismissViewControllerAnimated(true, completion: nil);
     }
 }

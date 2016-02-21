@@ -47,7 +47,6 @@ extension NodeChunkManager : NetworkFacadeDelegate {
                 outputStream!.delegate = self;
                 outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
                 outputStream!.open();
-                print("open output stream for song \(songId)");
                 
                 let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
                 
@@ -62,7 +61,6 @@ extension NodeChunkManager : NetworkFacadeDelegate {
     }
     
     func didFinishReceivingSong(songId: String) {
-        print("Finished receiving song: \(songId)");
         let data = "]".dataUsingEncoding(NSUTF8StringEncoding);
         outputStream!.write(UnsafePointer<UInt8>(data!.bytes), maxLength: data!.length);
         outputStream!.close();
