@@ -34,7 +34,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
         
         let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
         
-        print("chunk#: \(chunkNumber)");
+        print("chunk #\(chunkNumber)");
         
         do {
             let data = try NSJSONSerialization.dataWithJSONObject(numberAndData, options: [])
