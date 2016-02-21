@@ -41,11 +41,13 @@ let navigationBarColor = blue1;
 
 // MARK: Reuse Identifiers
 
-// MARK: Error Stuff
+// MARK:
+
+let savedSongsDictionaryKey = "savedSongsDictionaryKey";
+
+let songDownloadedNotificationIdentifier = "songDownloadedNotificationIdentifier";
 
 let networkErrorDomain = "com.splitstreamr.network";
-
-// MARK: URLs
 
 let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0];
 

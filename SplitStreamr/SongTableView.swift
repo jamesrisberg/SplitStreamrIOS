@@ -9,29 +9,21 @@
 import UIKit
 
 class SongTableView: UITableView {
-    
-    var songs: Array<Song> = [];
-    
-    func getSongs() {
-        delegate = self;
-        dataSource = self;
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder);
         
-        NetworkFacade().getSongs({ (error, list) -> Void in
-            if error != nil {
-                print(error.debugDescription);
-            } else {
-                if let songs = list {
-                    self.songs = songs;
-                    self.reloadData()
-                }
+        if !SongManager.sharedInstance.didDownloadSongs {
+            SongManager.sharedInstance.onSongsFinishedDownloading = {
+                self.reloadData();
             }
-        });
+        }
     }
 }
 
 extension SongTableView : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        SessionManager.sharedInstance.streamSong(songs[indexPath.row]);
+        let song = SongManager.sharedInstance.songs[indexPath.row];
+        SongManager.sharedInstance.playSongWhenReady(song.id);
     }
 }
 
@@ -41,13 +33,13 @@ extension SongTableView : UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.songs.count;
+        return SongManager.sharedInstance.songs.count;
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell();
         
-        cell.textLabel?.text = "\(songs[indexPath.row].name) - \(songs[indexPath.row].artist)";
+        cell.textLabel?.text = "\(SongManager.sharedInstance.songs[indexPath.row].name) - \(SongManager.sharedInstance.songs[indexPath.row].artist)";
         
         return cell;
     }

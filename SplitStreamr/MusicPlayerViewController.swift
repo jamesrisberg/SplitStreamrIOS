@@ -19,7 +19,6 @@ class MusicPlayerViewController: UIViewController {
     
     var audioPlayer = AVAudioPlayer();
     var timer: NSTimer!;
-    var playing = false;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -27,19 +26,24 @@ class MusicPlayerViewController: UIViewController {
         titleLabel.text = "Ultralight Beam";
         artistLabel.text = "Kanye West";
         
-        let path = NSBundle.mainBundle().URLForResource(titleLabel.text!, withExtension: "mp3");
+        // let path = NSBundle.mainBundle().URLForResource(titleLabel.text!, withExtension: "mp3");
         
+        SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
+    }
+    
+    func onSongReadyToPlay(songUrl: String) {
         do {
-            try audioPlayer = AVAudioPlayer(contentsOfURL: path!);
+            try self.audioPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: songUrl));
+            if !self.audioPlayer.playing {
+                self.play();
+            }
         } catch {
-            print("error");
+            print("error instantiating audio player");
         }
-        
-        songTable.getSongs();
     }
     
     @IBAction func playOrPause() {
-        if playing {
+        if self.audioPlayer.playing {
             pause();
         } else {
             play();
@@ -48,7 +52,6 @@ class MusicPlayerViewController: UIViewController {
     
     func play() {
         audioPlayer.play();
-        playing = true;
         
         if let image = UIImage(named: "Pause") {
             playPauseButton.setImage(image, forState: .Normal);
@@ -59,7 +62,6 @@ class MusicPlayerViewController: UIViewController {
     
     func pause() {
         audioPlayer.pause()
-        playing = false;
         
         if let image = UIImage(named: "Play") {
             playPauseButton.setImage(image, forState: .Normal);

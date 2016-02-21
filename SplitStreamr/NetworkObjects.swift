@@ -16,6 +16,7 @@ struct Song: CustomStringConvertible {
     var numberOfChunks: Int;
     var fixedChunkSize: Float; // Size in bytes (should be int?
     var fileType: String; // File extension, eg mp3
+    var url: String?;
     
     init(fromJson: Dictionary<String, AnyObject>) {
         id = fromJson["_id"] as! String;
