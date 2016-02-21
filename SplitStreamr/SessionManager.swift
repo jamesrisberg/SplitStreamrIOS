@@ -175,9 +175,7 @@ extension SessionManager : MCSessionDelegate {
         NSLog("%@", "peer \(peerID) didChangeState: \(state.stringValue())");
     }
     
-    func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
-        NSLog("%@", "didReceiveData: \(data)");
-        
+    func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {        
         let json = JSON(data: data)
         if let chunkNumber = json["chunkNumber"].string {
             if let musicString = json["musicData"].string {

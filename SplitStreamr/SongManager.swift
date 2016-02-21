@@ -13,20 +13,6 @@ class SongManager: NSObject {
     static let sharedInstance : SongManager = SongManager();
     
     var songs: Array<Song> = [];
-    var songURLs: Dictionary<String, String> {
-        get {
-            if let tempSongUrls = NSUserDefaults.standardUserDefaults().dictionaryForKey(savedSongsDictionaryKey) {
-                // TODO: NOT SAFE!!
-                return tempSongUrls as! Dictionary<String, String>;
-            }
-            else {
-                return Dictionary<String, String>();
-            }
-        }
-        set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: savedSongsDictionaryKey);
-        }
-    }
     
     var currentlyDownloadingSongId : String?;
     var shouldPlayWhenDownloaded : Bool = false;
@@ -34,7 +20,7 @@ class SongManager: NSObject {
     var didDownloadSongs : Bool = false;
     var onSongsFinishedDownloading : (() -> Void)?;
     
-    var onSongReadyToPlay : ((songUrl : String) -> Void)?;
+    var onSongReadyToPlay : ((song : Song, data: NSData) -> Void)?;
     
     override init() {
         super.init();
@@ -60,23 +46,12 @@ class SongManager: NSObject {
         });
     }
     
-    func songDownloaded(note: NSNotification) {
-        // TODO: Everything here is very unsafe
-        var songInfo = note.userInfo;
-        let songId = songInfo!["songId"] as! String;
-        let songURL = songInfo!["songURL"] as! String;
-        let index = songs.indexOf({$0.id == songId});
-        
-        var song = songs[index!];
-        song.url = songURL;
-        songs[index!] = song;
-        songURLs[songId] = songURL;
-        
+    func songDownloaded(song: Song, data: NSData) {        
         if (self.shouldPlayWhenDownloaded) {
-            if (self.currentlyDownloadingSongId == songId) {
+            if (self.currentlyDownloadingSongId == song.id) {
                 self.currentlyDownloadingSongId = nil;
                 self.shouldPlayWhenDownloaded = false;
-                playSong(songURL);
+                playSong(song, data: data);
             }
         }
         
@@ -84,13 +59,8 @@ class SongManager: NSObject {
     }
     
     func playSongWhenReady(songId : String) {
-        if let songURL = songURLs[songId] {
-            playSong(songURL);
-        }
-        else {
-            self.shouldPlayWhenDownloaded = true;
-            downloadSong(songId);
-        }
+        self.shouldPlayWhenDownloaded = true;
+        downloadSong(songId);
     }
     
     func preDownloadSong(songId : String) {
@@ -102,8 +72,10 @@ class SongManager: NSObject {
         }
     }
     
-    func playSong(songURL: String) {
-        onSongReadyToPlay?(songUrl: songURL);
+    func playSong(song: Song, data: NSData) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.onSongReadyToPlay?(song: song, data: data);
+        });
     }
 
     private func downloadSong(songId : String) {

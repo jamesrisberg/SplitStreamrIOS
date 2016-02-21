@@ -23,21 +23,20 @@ class MusicPlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        
-        titleLabel.text = "Ultralight Beam";
-        artistLabel.text = "Kanye West";
 
         manager.configureForPlayMode();
         manager.startBrowsing();
-        
-        // let path = NSBundle.mainBundle().URLForResource(titleLabel.text!, withExtension: "mp3");
-        
+                
         SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
     }
     
-    func onSongReadyToPlay(songUrl: String) {
+    func onSongReadyToPlay(song: Song, data: NSData) {
         do {
-            try self.audioPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: songUrl));
+            try self.audioPlayer = AVAudioPlayer(data: data);
+            
+            titleLabel.text = song.name;
+            artistLabel.text = song.artist;
+            
             if !self.audioPlayer.playing {
                 self.play();
             }

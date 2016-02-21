@@ -34,6 +34,8 @@ extension NodeChunkManager : NetworkFacadeDelegate {
         
         let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
         
+        print("chunk#: \(chunkNumber)");
+        
         do {
             let data = try NSJSONSerialization.dataWithJSONObject(numberAndData, options: [])
             try SessionManager.sharedInstance.session.sendData(data, toPeers: [playerPeer], withMode: .Reliable);
