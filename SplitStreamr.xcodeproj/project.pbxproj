@@ -165,23 +165,39 @@
 			isa = PBXGroup;
 			children = (
 				6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */,
+				6E4645461C781FC70036BAA2 /* Main.storyboard */,
+				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
 				150FFDD51C7828920090B436 /* Utilities */,
 				150FFDE51C7837390090B436 /* Networking */,
 				150FFDD81C7829910090B436 /* UISubClasses */,
-				6E4645461C781FC70036BAA2 /* Main.storyboard */,
-				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
+				6E46457C1C794ED80036BAA2 /* ViewControllers */,
+				6E46457B1C794EAD0036BAA2 /* ChunkManagement */,
+				6E46454E1C781FC70036BAA2 /* Info.plist */,
+				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
+			);
+			path = SplitStreamr;
+			sourceTree = "<group>";
+		};
+		6E46457B1C794EAD0036BAA2 /* ChunkManagement */ = {
+			isa = PBXGroup;
+			children = (
+				6E4645541C7823230036BAA2 /* SessionManager.swift */,
+				6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */,
+				6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */,
+			);
+			name = ChunkManagement;
+			sourceTree = "<group>";
+		};
+		6E46457C1C794ED80036BAA2 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6E4645751C78E2530036BAA2 /* SongTableView.swift */,
 				150FFDF81C7850F30090B436 /* ViewController.swift */,
 				6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */,
 				6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */,
 				150FFE001C78C3300090B436 /* SocketTesterViewController.swift */,
-				6E4645541C7823230036BAA2 /* SessionManager.swift */,
-				6E4645751C78E2530036BAA2 /* SongTableView.swift */,
-				6E46454E1C781FC70036BAA2 /* Info.plist */,
-				6E4645491C781FC70036BAA2 /* Assets.xcassets */,
-				6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */,
-				6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */,
 			);
-			path = SplitStreamr;
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
