@@ -64,7 +64,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
         dataStuff.appendData(data!);
         
         do {
-            outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(SessionManager.sharedInstance.myPeerId)", toPeer: self.playerPeer);
+            outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(SessionManager.sharedInstance.myPeerId)\(NSTimeIntervalSince1970)" , toPeer: self.playerPeer);
             outputStream!.delegate = self;
             outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
             outputStream!.open();
