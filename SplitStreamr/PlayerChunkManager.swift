@@ -20,12 +20,13 @@ class PlayerChunkManager: NSObject {
         super.init();
     }
     
-    func prepareForSong(song: Song) {
-        currentSongChunkCount = song.numberOfChunks;
+    func prepareForChunks(numberOfChunks: Int) {
+        currentSongChunkCount = numberOfChunks;
         recievedChunks = [NSData?](count: currentSongChunkCount, repeatedValue: nil);
     }
     
     func addNodeChunk(chunkNumber: Int, musicData: NSData) {
+        print("Chunk from node made it to manager: \(chunkNumber)");
         recievedChunks[chunkNumber] = musicData;
         
         if recievedChunks.count == currentSongChunkCount {
@@ -39,13 +40,12 @@ class PlayerChunkManager: NSObject {
                 currentSongData.appendData(data);
             }
         }
-        
-        
     }
 }
 
 extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
+        print("Chunk to self: \(chunkNumber)");
         recievedChunks[chunkNumber] = musicData;
         if recievedChunks.count == currentSongChunkCount {
             songFinished()

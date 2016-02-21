@@ -30,10 +30,16 @@ class NodeChunkManager: NSObject {
 
 extension NodeChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
+        
+        let numberAndData = ["chunkNumber" : chunkNumber,
+                               "musicData" : musicData];
+        
         do {
-            try SessionManager.sharedInstance.session.sendData(musicData, toPeers: [playerPeer], withMode: .Reliable);
+            let data = try NSJSONSerialization.dataWithJSONObject(numberAndData, options: [])
+            try SessionManager.sharedInstance.session.sendData(data, toPeers: [playerPeer], withMode: .Reliable);
         } catch {
-            print("Error sending chunk");
+            // TODO: Handle Error
+            print("Error jsoning object: \(numberAndData)");
         }
     }
     

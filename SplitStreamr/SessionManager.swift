@@ -8,6 +8,7 @@
 
 import Foundation
 import MultipeerConnectivity
+import SwiftyJSON
 
 class SessionManager: NSObject {
     
@@ -19,6 +20,7 @@ class SessionManager: NSObject {
     
     var peers: [MCPeerID] = [];
     
+    var playerPeer: MCPeerID!;
     var playerChunkManager: PlayerChunkManager!;
     var nodeChunkManager: NodeChunkManager!;
     var networkFacade: NetworkFacade!;
@@ -58,6 +60,7 @@ class SessionManager: NSObject {
     
     func configureForNodeMode(playerPeer: MCPeerID) {
         playerChunkManager = nil;
+        self.playerPeer = playerPeer;
         nodeChunkManager = NodeChunkManager(playerPeer: playerPeer);
         networkFacade = NetworkFacade(delegate: nodeChunkManager);
     }
@@ -75,7 +78,9 @@ class SessionManager: NSObject {
     }
     
     func streamSong(song: Song) {
-        
+        print("Stream song for current session: \(networkSessionId)");
+        playerChunkManager.prepareForChunks(song.numberOfChunks);
+        networkFacade.startStreamingSong(song.id);
     }
     
     // MARK: Multipeer Session Management
@@ -173,6 +178,20 @@ extension SessionManager : MCSessionDelegate {
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
         NSLog("%@", "didReceiveData: \(data)");
         
+        let json = JSON(data: data)
+        if let chunkNumber = json["chunkNumber"].int {
+            if let musicString = json["musicData"].string {
+                print("Chunk from node: \(chunkNumber)");
+                let musicData = musicString.dataUsingEncoding(NSUTF8StringEncoding)!;
+                playerChunkManager.addNodeChunk(chunkNumber, musicData: musicData);
+            } else {
+                //Print the error
+                print(json["chunkNumber"].int)
+            }
+        } else {
+            //Print the error
+            print(json["chunkNumber"].int)
+        }
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

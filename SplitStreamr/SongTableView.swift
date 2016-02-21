@@ -31,7 +31,7 @@ class SongTableView: UITableView {
 
 extension SongTableView : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        SessionManager.sharedInstance.streamSong(songs[indexPath.row]);
     }
 }
 
