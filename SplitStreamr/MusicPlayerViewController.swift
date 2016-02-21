@@ -98,11 +98,11 @@ class MusicPlayerViewController: UIViewController {
         }
     }
     
-    func next() {
+    @IBAction func next() {
         self.songTable.playNextSong();
     }
     
-    func previous() {
+    @IBAction func previous() {
         self.songTable.playNextSong();
     }
     
