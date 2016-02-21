@@ -15,6 +15,8 @@ class NodeChunkManager: NSObject {
     var sessionId: String!;
     var playerPeer: MCPeerID!;
     
+    var outputStream: NSOutputStream?;
+    
     override init() {
         super.init();
     }
@@ -31,26 +33,39 @@ class NodeChunkManager: NSObject {
 
 extension NodeChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
-        let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
-        
-        let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
-    
-        if let json = JSON(rawValue: numberAndData) {
+        if let stream = outputStream {
+            let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
+            
+            let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
+            let jsonString = ",\(String.stringFromJson(numberAndData))";
+            let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
+            stream.write(UnsafePointer<UInt8>(data!.bytes), maxLength: data!.length);
+        }
+        else {
             do {
-                let data = try json.rawData();
+                outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)", toPeer: self.playerPeer);
+                outputStream!.delegate = self;
+                outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
+                outputStream!.open();
+                print("open output stream for song \(songId)");
                 
-                let outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(chunkNumber)", toPeer: self.playerPeer);
-                outputStream.delegate = self;
-                outputStream.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
-                outputStream.open();
+                let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
                 
-                outputStream.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length);
+                let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
+                let jsonString = "[\(String.stringFromJson(numberAndData))";
+                let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
+                outputStream!.write(UnsafePointer<UInt8>(data!.bytes), maxLength: data!.length);
             } catch {
                 print("Error sending data over mesh.")
             }
-        } else {
-            print("Error jsoning data")
         }
+    }
+    
+    func didFinishReceivingSong(songId: String) {
+        print("Finished receiving song: \(songId)");
+        let data = "]".dataUsingEncoding(NSUTF8StringEncoding);
+        outputStream!.write(UnsafePointer<UInt8>(data!.bytes), maxLength: data!.length);
+        outputStream!.close();
     }
     
     func sessionIdReceived(sessionId: String) {

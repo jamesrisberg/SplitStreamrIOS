@@ -44,6 +44,10 @@ extension SocketTesterViewController : NetworkFacadeDelegate {
         print("total chunks received: \(SocketTesterViewController.chunksReceived)");
     }
     
+    func didFinishReceivingSong(songId: String) {
+        
+    }
+    
     func sessionIdReceived(sessionId: String) {
         self.sessionIdTextField.text = sessionId;
     }

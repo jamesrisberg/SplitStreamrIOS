@@ -20,6 +20,8 @@ protocol SocketMessageParserDelegate {
     func didFailWithError(error: NSError);
     
     func willRecieveChunk(songId: String, chunkNumber: Int);
+    
+    func didFinishStreamingSong(songId: String);
 }
 
 class SocketMessageParser: NSObject {
@@ -68,6 +70,12 @@ class SocketMessageParser: NSObject {
             let songId = jsonObject["song"].stringValue;
             
             self.delegate?.willRecieveChunk(songId, chunkNumber: chunkNum);
+        };
+        
+        tempDictionary["song finished"] = { (jsonObject: JSON) -> Void in
+            let songId = jsonObject["song"].stringValue;
+            
+            self.delegate?.didFinishStreamingSong(songId);
         };
         
         return tempDictionary;
