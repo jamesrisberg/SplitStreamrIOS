@@ -14,12 +14,15 @@ class MeshStreamDelegate: NSObject {
     var chunkData: NSMutableData = NSMutableData();
     
     override init() {
-        super.init()
+        super.init();
     }
     
-    convenience init(stream: NSInputStream, chunkData: NSMutableData) {
+    convenience init(stream: NSInputStream) {
         self.init();
         self.stream = stream;
+        stream.delegate = self;
+        stream.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
+        stream.open();
     }
 }
 
@@ -27,13 +30,13 @@ extension MeshStreamDelegate : NSStreamDelegate {
     func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
         switch (eventCode) {
             case NSStreamEvent.ErrorOccurred:
-                NSLog("ErrorOccurred")
+                print("ErrorOccurred")
             case NSStreamEvent.EndEncountered:
-                NSLog("EndEncountered")
+                print("EndEncountered")
+                SessionManager.sharedInstance.chunkFinishedStreaming(chunkData, delegate: self);
             case NSStreamEvent.None:
-                NSLog("None")
+                print("None")
             case NSStreamEvent.HasBytesAvailable:
-                NSLog("HasBytesAvaible")
                 var buffer = [UInt8](count: 4096, repeatedValue: 0)
                 if (aStream == self.stream) {
                     while (stream.hasBytesAvailable) {
@@ -44,11 +47,11 @@ extension MeshStreamDelegate : NSStreamDelegate {
                     }
                 }
             case NSStreamEvent():
-                NSLog("allZeros")
+                print("allZeros")
             case NSStreamEvent.OpenCompleted:
-                NSLog("OpenCompleted")
+                print("OpenCompleted")
             case NSStreamEvent.HasSpaceAvailable:
-                NSLog("HasSpaceAvailable")
+                print("HasSpaceAvailable")
             default:
                 break
         }

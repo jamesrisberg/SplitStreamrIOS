@@ -48,12 +48,6 @@ class PlayerChunkManager: NSObject {
         
         SongManager.sharedInstance.songDownloaded(currentSong, data: currentSongData);
     }
-    
-    func configureWithStream(stream: NSInputStream, streamName: String) {
-        stream.delegate = self;
-        stream.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
-        stream.open();
-    }
 }
 
 extension PlayerChunkManager : NetworkFacadeDelegate {

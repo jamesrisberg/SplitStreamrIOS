@@ -34,7 +34,6 @@
 		6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 158D7F091C78244E00FDEA56 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E4645701C785D6F0036BAA2 /* JoinSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */; };
 		6E4645721C78D0740036BAA2 /* MusicPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */; };
-		6E4645741C78D5A10036BAA2 /* Ultralight Beam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */; };
 		6E4645761C78E2530036BAA2 /* SongTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645751C78E2530036BAA2 /* SongTableView.swift */; };
 		6E4645781C78FF150036BAA2 /* NodeChunkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */; };
 		6E46457A1C7901540036BAA2 /* PlayerChunkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */; };
@@ -84,7 +83,6 @@
 		6E4645541C7823230036BAA2 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinSessionViewController.swift; sourceTree = "<group>"; };
 		6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewController.swift; sourceTree = "<group>"; };
-		6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ultralight Beam.mp3"; sourceTree = "<group>"; };
 		6E4645751C78E2530036BAA2 /* SongTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableView.swift; sourceTree = "<group>"; };
 		6E4645771C78FF150036BAA2 /* NodeChunkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeChunkManager.swift; sourceTree = "<group>"; };
 		6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerChunkManager.swift; sourceTree = "<group>"; };
@@ -168,7 +166,6 @@
 		6E4645411C781FC70036BAA2 /* SplitStreamr */ = {
 			isa = PBXGroup;
 			children = (
-				6E4645731C78D5A10036BAA2 /* Ultralight Beam.mp3 */,
 				6E4645461C781FC70036BAA2 /* Main.storyboard */,
 				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
 				150FFDD51C7828920090B436 /* Utilities */,
@@ -268,7 +265,6 @@
 			files = (
 				6E46454D1C781FC70036BAA2 /* LaunchScreen.storyboard in Resources */,
 				6E46454A1C781FC70036BAA2 /* Assets.xcassets in Resources */,
-				6E4645741C78D5A10036BAA2 /* Ultralight Beam.mp3 in Resources */,
 				6E4645481C781FC70036BAA2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
