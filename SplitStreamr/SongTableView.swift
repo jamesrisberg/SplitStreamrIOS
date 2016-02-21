@@ -68,9 +68,11 @@ extension SongTableView : UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell();
+        let cell = tableView.dequeueReusableCellWithIdentifier("songCell") as! SongCell;
         
-        cell.textLabel?.text = "\(SongManager.sharedInstance.songs[indexPath.row].name) - \(SongManager.sharedInstance.songs[indexPath.row].artist)";
+        cell.titleArtistLabel?.text = "\(SongManager.sharedInstance.songs[indexPath.row].name) - \(SongManager.sharedInstance.songs[indexPath.row].artist)";
+        
+        cell.timeLabel.text = "\(SongManager.sharedInstance.songs[indexPath.row].length)";
         
         return cell;
     }
