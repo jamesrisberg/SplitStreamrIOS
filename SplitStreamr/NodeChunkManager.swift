@@ -19,7 +19,8 @@ class NodeChunkManager: NSObject {
     
     var hasRecievedSongChunk: Bool = false;
     
-    var dataStuff: NSMutableData = NSMutableData();
+    var chunkBacklog : [String : NSData] = [:];
+    
     var dataDownloadedSoFar = 0
     
     override init() {
@@ -34,51 +35,67 @@ class NodeChunkManager: NSObject {
     func joinSession(sessionId: String) {
         self.sessionId = sessionId;
     }
+    
+    func preparePlayerForChunk(chunkNumber: String, songId: String) {
+        let chunkData = ["type" : "readyToSendChunk", "chunkNumber" : "\(chunkNumber)", "songId" : "\(songId)"];
+        let jsonString = "\(String.stringFromJson(chunkData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try SessionManager.sharedInstance.session.sendData(data, toPeers: [self.playerPeer], withMode: .Reliable);
+            } catch {
+                print("error sending chunkData to player");
+            }
+        }
+    }
+    
+    func sendChunk(chunkNumber: String, songId: String) {
+        if let musicData = chunkBacklog["\(chunkNumber)\(songId)"] {
+            chunkBacklog.removeValueForKey("\(chunkNumber)\(songId)");
+            let chunkData : NSMutableData = musicData.mutableCopy() as! NSMutableData;
+            chunkData.appendData("]".dataUsingEncoding(NSUTF8StringEncoding)!);
+            do {
+                outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(SessionManager.sharedInstance.myPeerId)\(NSTimeIntervalSince1970)" , toPeer: self.playerPeer);
+                outputStream!.delegate = self;
+                outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
+                outputStream!.open();
+                print("open output stream for song \(songId)");
+                print("write data of bytes: \(chunkData.length)");
+                outputStream!.write(UnsafePointer<UInt8>(chunkData.bytes), maxLength: chunkData.length);
+            } catch let error as NSError {
+                print("Error sending data over mesh. \(error.localizedDescription)");
+            }
+        }
+    }
+    
+    func sendNextChunk() {
+        if let musicData : NSData? = chunkBacklog.first!.1 {
+            chunkBacklog.removeAtIndex(chunkBacklog.indexForKey(chunkBacklog.first!.0)!)
+            let chunkData : NSMutableData = musicData!.mutableCopy() as! NSMutableData;
+            chunkData.appendData("]".dataUsingEncoding(NSUTF8StringEncoding)!);
+            print("write data of bytes: \(chunkData.length)");
+            outputStream!.write(UnsafePointer<UInt8>(chunkData.bytes), maxLength: chunkData.length);
+        }
+    }
+    
+    func allChunksDone() {
+//        let data = "[".dataUsingEncoding(NSUTF8StringEncoding)!;
+//        print("write data of bytes: \(data.length)");
+//        outputStream!.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length);
+        outputStream!.close()
+    }
 }
 
 extension NodeChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
-        if hasRecievedSongChunk {
-            let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
-            
-            let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
-            let jsonString = ",\(String.stringFromJson(numberAndData)!)";
-            let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
-            self.dataStuff.appendData(data!);
-            self.dataDownloadedSoFar += data!.length;
-        }
-        else {
-            print("recieved first song chunk");
-            hasRecievedSongChunk = true;
-            let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
-            
-            let numberAndData = ["chunkNumber" : "\(chunkNumber)", "musicData" : musicString];
-            let jsonString = "[\(String.stringFromJson(numberAndData)!)";
-            let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
-            dataStuff.appendData(data!);
-            self.dataDownloadedSoFar += data!.length;
+        if !hasRecievedSongChunk {
+            preparePlayerForChunk("\(chunkNumber)", songId: songId);
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName("DownloadedSoFar", object: self, userInfo: ["soFar" : self.dataDownloadedSoFar]);
+        chunkBacklog["\(chunkNumber)\(songId)"] = musicData;
     }
     
     func didFinishReceivingSong(songId: String) {
         print("Finished receiving song: \(songId)");
-        hasRecievedSongChunk = false;
-        let data = "]".dataUsingEncoding(NSUTF8StringEncoding);
-        dataStuff.appendData(data!);
-        
-        do {
-            outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(SessionManager.sharedInstance.myPeerId)\(NSTimeIntervalSince1970)" , toPeer: self.playerPeer);
-            outputStream!.delegate = self;
-            outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
-            outputStream!.open();
-            print("open output stream for song \(songId)");
-            print("write data of bytes: \(dataStuff.length)");
-            outputStream!.write(UnsafePointer<UInt8>(dataStuff.bytes), maxLength: dataStuff.length);
-        } catch let error as NSError {
-            print("Error sending data over mesh. \(error.localizedDescription)");
-        }
     }
     
     func sessionIdReceived(sessionId: String) {

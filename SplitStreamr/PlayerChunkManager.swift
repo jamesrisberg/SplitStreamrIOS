@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MultipeerConnectivity
 
 class PlayerChunkManager: NSObject {
     
@@ -30,12 +31,51 @@ class PlayerChunkManager: NSObject {
         recievedChunks = [NSData?](count: currentSongChunkCount, repeatedValue: nil);
     }
     
-    func addNodeChunk(chunkNumber: Int, musicData: NSData) {
+    func prepareForChunk(chunkNumber: String, songId: String, fromPeer peer: MCPeerID) {
+        let chunkData = ["type" : "readyToRecieveChunk", "chunkNumber" : "\(chunkNumber)", "songId" : "\(songId)"];
+        let jsonString = "\(String.stringFromJson(chunkData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
+            } catch {
+                print("error sending chunkData to player");
+            }
+        }
+    }
+    
+    func sendNextChunkFromPeer(peer: MCPeerID) {
+        let chunkData = ["type" : "didRecieveChunk"];
+        let jsonString = "\(String.stringFromJson(chunkData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
+            } catch {
+                print("error sending chunkData to player");
+            }
+        }
+    }
+    
+    func sendAllChunksDoneToPeer(peer: MCPeerID) {
+        let chunkData = ["type" : "allChunksDone"];
+        let jsonString = "\(String.stringFromJson(chunkData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
+            } catch {
+                print("error sending chunkData to player");
+            }
+        }
+    }
+    
+    func addNodeChunk(chunkNumber: Int, musicData: NSData, peer: MCPeerID) {
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
         if chunksRecieved == currentSongChunkCount {
             songFinished()
+            //sendAllChunksDoneToPeer(peer);
+        } else {
+            sendNextChunkFromPeer(peer);
         }
     }
     

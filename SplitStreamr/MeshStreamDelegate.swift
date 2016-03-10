@@ -8,19 +8,22 @@
 
 import Foundation
 import Darwin
+import MultipeerConnectivity
 
 class MeshStreamDelegate: NSObject {
     
     var stream: NSInputStream!;
     var chunkData: NSMutableData = NSMutableData();
+    var nodePeerID: MCPeerID?;
     
     override init() {
         super.init();
     }
     
-    convenience init(stream: NSInputStream) {
+    convenience init(stream: NSInputStream, nodePeerID: MCPeerID) {
         self.init();
         self.stream = stream;
+        self.nodePeerID = nodePeerID;
         stream.delegate = self;
         stream.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
         stream.open();
@@ -50,9 +53,9 @@ extension MeshStreamDelegate : NSStreamDelegate {
                         }
                         print("chunkData size: \(chunkData.length)");
                         if buffer[len-1] == 93 {
-                            print("stream closed and chunks finished");
-                            self.stream.close();
+                            print("chunk finished");
                             SessionManager.sharedInstance.chunkFinishedStreaming(chunkData, delegate: self);
+                            chunkData = NSMutableData();
                         }
                     }
                 //}

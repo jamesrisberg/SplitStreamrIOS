@@ -22,6 +22,7 @@ class SongManager: NSObject {
     var onSongsFinishedDownloading : (() -> Void)?;
     
     var onSongReadyToPlay : ((song : Song, data: NSData) -> Void)?;
+    var queueChunkToPlay : ((song : Song, data: NSData) -> Void)?;
     
     override init() {
         super.init();
@@ -57,6 +58,12 @@ class SongManager: NSObject {
         }
         
         self.currentlyDownloadingSongId = nil;
+    }
+    
+    func queueSong(song: Song, data: NSData) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.queueChunkToPlay?(song: song, data: data);
+        });
     }
     
     func playSongWhenReady(songId : String) {

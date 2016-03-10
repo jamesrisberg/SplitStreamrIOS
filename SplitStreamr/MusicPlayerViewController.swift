@@ -21,7 +21,9 @@ class MusicPlayerViewController: UIViewController {
     
     let manager = SessionManager.sharedInstance;
     var audioPlayer : AVAudioPlayer?;
+    let queuePlayer : AVQueuePlayer = AVQueuePlayer();
     var timer: NSTimer?;
+    var playing = false;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -62,6 +64,22 @@ class MusicPlayerViewController: UIViewController {
             }
         } catch let error as NSError {
             print("error instantiating audio player \(error.localizedDescription)");
+        }
+    }
+    
+    func queueChunkToPlay(song: Song, data: NSData) {
+        let path = NSTemporaryDirectory().stringByAppendingString("tmp.mp3");
+        data.writeToFile(path, atomically: true);
+        //NSURL *filepath = [NSURL fileURLWithPath:/*save file path*/];
+        let filePath = NSURL(fileURLWithPath: path);
+        
+        let item = AVPlayerItem(URL: filePath);
+            
+        queuePlayer.insertItem(item, afterItem: nil);
+        
+        if !playing {
+            playing = true;
+            queuePlayer.play()
         }
     }
     
