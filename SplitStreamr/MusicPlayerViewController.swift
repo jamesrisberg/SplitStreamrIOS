@@ -26,10 +26,7 @@ class MusicPlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        configurePlayView();
-        
-        titleLabel.text = "Selected Title";
-        artistLabel.text = "Selected Artist";
+        configureSubviews();
         
         manager.configureForPlayMode();
         manager.startBrowsing();
@@ -37,7 +34,10 @@ class MusicPlayerViewController: UIViewController {
         SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
     }
     
-    func configurePlayView() {
+    func configureSubviews() {
+        titleLabel.text = "Selected Title";
+        artistLabel.text = "Selected Artist";
+        
         playButtonView.layer.cornerRadius = playButtonView.frame.size.width/2;
         playButtonView.layer.shadowOffset = CGSizeMake(0.0, 1.0)
         playButtonView.layer.shadowOpacity = 0.6
@@ -45,8 +45,8 @@ class MusicPlayerViewController: UIViewController {
         
         timeLabel.font = UIFont.monospacedDigitSystemFontOfSize(35.0, weight: UIFontWeightThin)
         
-        upperProgressView.progressTintColor = UIColor.init(red: 236/255.0, green: 107/255.0, blue: 14/255.0, alpha: 0.75);
-        upperProgressView.trackTintColor = UIColor(hexString: "65A5D1");
+        upperProgressView.progressTintColor = transparentOrange;
+        upperProgressView.trackTintColor = blueLight1;
     }
     
     func onSongReadyToPlay(song: Song, data: NSData) {
@@ -85,7 +85,8 @@ class MusicPlayerViewController: UIViewController {
             }
         });
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "updateTime", userInfo: nil, repeats: true);
+        timer = NSTimer(timeInterval: 1.0, target: self, selector: "updateTime", userInfo: nil, repeats: true);
+        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes);
     }
     
     func pause() {
@@ -102,7 +103,7 @@ class MusicPlayerViewController: UIViewController {
     }
     
     @IBAction func previous() {
-        self.songTable.playNextSong();
+        self.songTable.playPreviousSong();
     }
     
     func updateTime() {

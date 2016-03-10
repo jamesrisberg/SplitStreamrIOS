@@ -47,9 +47,7 @@ extension MeshStreamDelegate : NSStreamDelegate {
                                                 
                         if len > 0 {
                             chunkData.appendBytes(&buffer, length: len);
-                            // print(String(data: NSData(bytes: buffer, length: len), encoding: NSUTF8StringEncoding));
                         }
-                        // print("last byte: \(buffer[len-1])");
                         print("chunkData size: \(chunkData.length)");
                         if buffer[len-1] == 93 {
                             print("stream closed and chunks finished");

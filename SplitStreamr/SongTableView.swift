@@ -27,20 +27,23 @@ class SongTableView: UITableView {
     func playNextSong() {
         if (currentPlayerIndex == SongManager.sharedInstance.songs.count - 1) {
             currentPlayerIndex = 0;
-            playSongAtIndex(0);
         }
         else {
-            playSongAtIndex(currentPlayerIndex + 1);
+            currentPlayerIndex += 1;
         }
+        
+        playSongAtIndex(currentPlayerIndex);
     }
     
     func playPreviousSong() {
         if (currentPlayerIndex == 0) {
-            
+            currentPlayerIndex = SongManager.sharedInstance.songs.count - 1;
         }
         else {
-            playSongAtIndex(currentPlayerIndex - 1);
+            currentPlayerIndex -= 1;
         }
+        
+        playSongAtIndex(currentPlayerIndex);
     }
     
     func playSongAtIndex(index: Int) {
@@ -70,9 +73,9 @@ extension SongTableView : UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("songCell") as! SongCell;
         
-        cell.titleArtistLabel?.text = "\(SongManager.sharedInstance.songs[indexPath.row].name) - \(SongManager.sharedInstance.songs[indexPath.row].artist)";
+        let song = SongManager.sharedInstance.songs[indexPath.row];
         
-        cell.timeLabel.text = "\(SongManager.sharedInstance.songs[indexPath.row].length)";
+        cell.titleArtistLabel?.text = "\(song.name) - \(song.artist)";
         
         return cell;
     }

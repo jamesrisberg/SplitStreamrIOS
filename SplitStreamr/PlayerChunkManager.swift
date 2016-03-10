@@ -16,7 +16,7 @@ class PlayerChunkManager: NSObject {
     var chunksRecieved = 0;
     var currentSongData: NSMutableData = NSMutableData();
     var currentSongChunkCount: Int = 0;
-    var currentSong: Song!;
+    var currentSong: Song?;
     
     override init() {
         super.init();
@@ -46,7 +46,9 @@ class PlayerChunkManager: NSObject {
             }
         }
         
-        SongManager.sharedInstance.songDownloaded(currentSong, data: currentSongData);
+        if let _ = currentSong {
+            SongManager.sharedInstance.songDownloaded(currentSong!, data: currentSongData);
+        }
     }
 }
 

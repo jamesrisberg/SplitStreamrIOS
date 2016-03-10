@@ -115,14 +115,6 @@ class NetworkFacade : NSObject {
             }
         }
     }
-    
-    // MARK: Debug
-    
-    func debugLog(message: String) {
-        dispatch_async(dispatch_get_main_queue(), {
-            print(message);
-        });
-    }
 }
 
 // MARK: Message Parser Delegate
