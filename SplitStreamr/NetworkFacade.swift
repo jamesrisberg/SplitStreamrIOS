@@ -96,7 +96,7 @@ class NetworkFacade : NSObject {
     // MARK: Chunk Management
     
     private func didReceiveChunk(chunkData: NSData) {
-        debugLog("received chunk");
+        //debugLog("received chunk");
         if let (songId, chunkNumber) = expectedChunk {
             delegate?.musicPieceReceived(songId, chunkNumber: chunkNumber, musicData: chunkData);
             
@@ -106,7 +106,7 @@ class NetworkFacade : NSObject {
     }
     
     private func respondWithChunkRecieved(songId: String, chunkNumber: Int) {
-        debugLog("Responding with chunk #\(chunkNumber) received");
+        //debugLog("Responding with chunk #\(chunkNumber) received");
         if let sessionId = currentSessionId {
             let chunkReceived = ["message" : "chunk received", "session" : sessionId, "song" : songId, "chunk" : chunkNumber];
             
@@ -138,7 +138,7 @@ extension NetworkFacade : SocketMessageParserDelegate {
     }
     
     func willRecieveChunk(songId: String, chunkNumber: Int) {
-        debugLog("Expecting chunk #\(chunkNumber)");
+        //debugLog("Expecting chunk #\(chunkNumber)");
         self.expectedChunk = (songId, chunkNumber);
     };
     

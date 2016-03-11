@@ -8,11 +8,13 @@
 
 import Foundation
 import MultipeerConnectivity
+import SwiftyJSON
 
 class PlayerChunkManager: NSObject {
     
     var sessionId: String?;
     
+    var streamDelegates: [MCPeerID : NodeStreamManager] = [:];
     var recievedChunks: [NSData?] = [];
     var chunksRecieved = 0;
     var currentSongData: NSMutableData = NSMutableData();
@@ -31,14 +33,48 @@ class PlayerChunkManager: NSObject {
         recievedChunks = [NSData?](count: currentSongChunkCount, repeatedValue: nil);
     }
     
-    func prepareForChunk(chunkNumber: String, songId: String, fromPeer peer: MCPeerID) {
-        let chunkData = ["type" : "readyToRecieveChunk", "chunkNumber" : "\(chunkNumber)", "songId" : "\(songId)"];
+    func prepareForStream(peer: MCPeerID) {
+        streamDelegates[peer] = NodeStreamManager(nodePeerID: peer, delegate: self);
+        
+        debugLog("player sending readyToRecieveStream");
+        let chunkData = ["type" : "readyToRecieveStream"];
+        let jsonString = "\(String.stringFromJson(chunkData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            debugLog("jsonString encoded");
+            do {
+                try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
+            } catch {
+                print("error sending readyToRecieveStream to node");
+            }
+        }
+    }
+    
+    func attachStream(peer: MCPeerID, stream: NSInputStream) {
+        streamDelegates[peer]?.configureWithStream(stream);
+        
+        debugLog("player sending didRecieveStream");
+        let chunkData = ["type" : "didRecieveStream"];
         let jsonString = "\(String.stringFromJson(chunkData)!)";
         if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
                 try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
             } catch {
-                print("error sending chunkData to player");
+                print("error sending didRecieveStream to node");
+            }
+        }
+    }
+    
+    func prepareForChunk(chunkNumber: String, chunkSize : String, songId: String, fromPeer peer: MCPeerID) {
+        streamDelegates[peer]?.prepareForChunkWithSize(Int(chunkSize)!);
+        
+        debugLog("player sending readyToRecieveChunk");
+        let chunkData = ["type" : "readyToRecieveChunk", "chunkNumber" : chunkNumber, "songId" : songId];
+        let jsonString = "\(String.stringFromJson(chunkData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
+            } catch {
+                print("error sending readyToRecieveChunk to node");
             }
         }
     }
@@ -48,9 +84,10 @@ class PlayerChunkManager: NSObject {
         let jsonString = "\(String.stringFromJson(chunkData)!)";
         if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
+                debugLog("sending didrecieveChunk to node");
                 try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
             } catch {
-                print("error sending chunkData to player");
+                print("error sending didRecieveChunk to player");
             }
         }
     }
@@ -62,24 +99,28 @@ class PlayerChunkManager: NSObject {
             do {
                 try SessionManager.sharedInstance.session.sendData(data, toPeers: [peer], withMode: .Reliable);
             } catch {
-                print("error sending chunkData to player");
+                print("error sending allChunksDone to player");
             }
         }
     }
     
     func addNodeChunk(chunkNumber: Int, musicData: NSData, peer: MCPeerID) {
+        debugLog("addNodeChunk called on PCM");
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
         if chunksRecieved == currentSongChunkCount {
+            debugLog("songFinished called form addNodeChunk");
             songFinished()
             //sendAllChunksDoneToPeer(peer);
         } else {
+            debugLog("sendNextChunk called from addNodeChunk");
             sendNextChunkFromPeer(peer);
         }
     }
     
     func songFinished() {
+        debugLog("songFinished");
         for index in 0..<recievedChunks.count {
             if let data = recievedChunks[index] {
                 currentSongData.appendData(data);
@@ -87,16 +128,44 @@ class PlayerChunkManager: NSObject {
         }
         
         if let _ = currentSong {
+            debugLog("PCM calls songDownloaded on SongManager");
             SongManager.sharedInstance.songDownloaded(currentSong!, data: currentSongData);
         }
     }
 }
 
+extension PlayerChunkManager : NodeStreamDelegate {
+    func chunkFinishedStreaming(chunkData: NSMutableData, manager: NodeStreamManager) {
+        debugLog("chunkFinishedStreaming called by mesh delegate");
+        var error : NSError?
+        let json = JSON(data: chunkData, options: NSJSONReadingOptions(rawValue:0), error: &error);
+        print("JSON Error: \(error)");
+        // TODO: There is an invalid JSON error in here occasionally
+        
+        if let chunkNumber = json["chunkNumber"].string {
+            if let musicString = json["musicData"].string {
+                let musicData = NSData(base64EncodedString: musicString, options: NSDataBase64DecodingOptions(rawValue:0));
+                addNodeChunk(Int(chunkNumber)!, musicData: musicData!, peer: manager.nodePeerID!);
+            } else {
+                print("Error getting chunk data: \(json["musicData"].string)");
+            }
+        } else {
+            print("Error getting chunk numba: \(json["chunkNumber"].string)");
+        }
+    }
+    
+    func allChunksFinishedStreaming(delegate: NodeStreamManager) {
+        
+    }
+}
+
 extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
+        debugLog("Player received music piece");
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         if chunksRecieved == currentSongChunkCount {
+            debugLog("Player calls songFinished");
             songFinished()
         }
     }

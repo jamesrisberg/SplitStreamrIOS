@@ -21,8 +21,6 @@ class SessionManager: NSObject {
     
     var peers: [MCPeerID] = [];
     
-    var streamDelegates: [MeshStreamDelegate] = [];
-    
     var playerPeer: MCPeerID?;
     var playerChunkManager: PlayerChunkManager?;
     var nodeChunkManager: NodeChunkManager?;
@@ -117,30 +115,6 @@ class SessionManager: NSObject {
             
             networkFacade!.startStreamingSong(song.id);
         }
-    }
-    
-    func chunkFinishedStreaming(chunkData: NSMutableData, delegate: MeshStreamDelegate) {
-        var error : NSError?
-        let json = JSON(data: chunkData, options: NSJSONReadingOptions(rawValue:0), error: &error);
-        print("JSON Error: \(error)");
-        // TODO: There is an invalid JSON error in here occasionally
-
-        if let chunkNumber = json["chunkNumber"].string {
-            if let musicString = json["musicData"].string {
-                let musicData = NSData(base64EncodedString: musicString, options: NSDataBase64DecodingOptions(rawValue:0));
-                if let _ = playerChunkManager {
-                    playerChunkManager!.addNodeChunk(Int(chunkNumber)!, musicData: musicData!, peer: delegate.nodePeerID!);
-                }
-            } else {
-                print("Error getting chunk data: \(json["musicData"].string)");
-            }
-        } else {
-            print("Error getting chunk numba: \(json["chunkNumber"].string)");
-        }
-    }
-    
-    func allChunksFinishedStreaming(delegate: MeshStreamDelegate) {
-        streamDelegates.removeAtIndex(streamDelegates.indexOf(delegate)!);
     }
     
     // MARK: Multipeer Session Management
@@ -258,20 +232,34 @@ extension SessionManager : MCSessionDelegate {
             let chunkNumber = json["chunkNumber"].stringValue;
             let songID = json["songId"].stringValue;
             
-            if json["type"].stringValue == "readyToSendChunk" {
-                playerChunkManager!.prepareForChunk(chunkNumber, songId: songID, fromPeer: peerID);
+            if json["type"].stringValue == "readyToSendStream" {
+                debugLog("readyToSendStream");
+                playerChunkManager!.prepareForStream(peerID);
+            } else if json["type"].stringValue == "readyToRecieveStream" {
+                debugLog("readyToRecieveStream");
+                nodeChunkManager!.setupStreamWithPlayer(songID);
+            } else if json["type"].stringValue == "didRecieveStream" {
+                debugLog("didRecieveStream");
+                nodeChunkManager!.preparePlayerForChunk();
+            } else if json["type"].stringValue == "readyToSendChunk" {
+                debugLog("readyToSendChunk");
+                playerChunkManager!.prepareForChunk(chunkNumber, chunkSize: json["chunkSize"].stringValue, songId: songID, fromPeer: peerID);
             } else if json["type"].stringValue == "readyToRecieveChunk" {
+                debugLog("readyToRecieveChunk");
                 nodeChunkManager!.sendChunk(chunkNumber, songId: songID);
             } else if json["type"].stringValue == "didRecieveChunk" {
-                nodeChunkManager!.sendNextChunk();
+                debugLog("didRecieveChunk");
+                nodeChunkManager!.preparePlayerForChunk();
             } else if json["type"].stringValue == "allChunksDone" {
+                debugLog("allChunksDone");
                 nodeChunkManager!.allChunksDone();
             }
         }
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        self.streamDelegates.append(MeshStreamDelegate(stream: stream, nodePeerID: peerID));
+        debugLog("Player received stream");
+        playerChunkManager?.attachStream(peerID, stream: stream);
     }
     
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {

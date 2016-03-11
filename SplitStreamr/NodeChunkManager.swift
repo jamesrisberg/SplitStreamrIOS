@@ -36,62 +36,88 @@ class NodeChunkManager: NSObject {
         self.sessionId = sessionId;
     }
     
-    func preparePlayerForChunk(chunkNumber: String, songId: String) {
-        let chunkData = ["type" : "readyToSendChunk", "chunkNumber" : "\(chunkNumber)", "songId" : "\(songId)"];
+    func preparePlayerForStream() {
+        debugLog("Node sending readyToSendStream data to player");
+        let chunkData = ["type" : "readyToSendStream"];
         let jsonString = "\(String.stringFromJson(chunkData)!)";
         if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
                 try SessionManager.sharedInstance.session.sendData(data, toPeers: [self.playerPeer], withMode: .Reliable);
             } catch {
-                print("error sending chunkData to player");
+                print("error sending readyToSendStream to player");
+            }
+        }
+    }
+    
+    func setupStreamWithPlayer(songId: String) {
+        do {
+            outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(SessionManager.sharedInstance.myPeerId)\(NSTimeIntervalSince1970)" , toPeer: self.playerPeer);
+            outputStream!.delegate = self;
+            outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
+            outputStream!.open();
+            print("open output stream for song \(songId)");
+        } catch let error as NSError {
+            print("Error sending data over mesh. \(error.localizedDescription)");
+        }
+    }
+    
+    func preparePlayerForChunk() {
+        debugLog("Node sending readyToSendChunk to player");
+        let (chunkNumber, musicData) = chunkBacklog.first!;
+        let jsonStr = buildSingleChunkJSONString(chunkNumber, musicData: musicData);
+        var length = 0;
+        if let data = jsonStr.dataUsingEncoding(NSUTF8StringEncoding) {
+            length = data.length;
+        }
+        debugLog("musicData.length = \(musicData.length)");
+        let chunkData = ["type" : "readyToSendChunk", "chunkNumber" : chunkNumber, "chunkSize" : "\(length)"];
+        let jsonString = "\(String.stringFromJson(chunkData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try SessionManager.sharedInstance.session.sendData(data, toPeers: [self.playerPeer], withMode: .Reliable);
+            } catch {
+                print("error sending readyToSendChunk to player");
             }
         }
     }
     
     func sendChunk(chunkNumber: String, songId: String) {
-        if let musicData = chunkBacklog["\(chunkNumber)\(songId)"] {
-            chunkBacklog.removeValueForKey("\(chunkNumber)\(songId)");
-            let chunkData : NSMutableData = musicData.mutableCopy() as! NSMutableData;
-            chunkData.appendData("]".dataUsingEncoding(NSUTF8StringEncoding)!);
-            do {
-                outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(SessionManager.sharedInstance.myPeerId)\(NSTimeIntervalSince1970)" , toPeer: self.playerPeer);
-                outputStream!.delegate = self;
-                outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
-                outputStream!.open();
-                print("open output stream for song \(songId)");
-                print("write data of bytes: \(chunkData.length)");
-                outputStream!.write(UnsafePointer<UInt8>(chunkData.bytes), maxLength: chunkData.length);
-            } catch let error as NSError {
-                print("Error sending data over mesh. \(error.localizedDescription)");
+        debugLog("sendChunk called on NCM");
+        if let musicData = chunkBacklog[chunkNumber] {
+            chunkBacklog.removeValueForKey(chunkNumber);
+            
+            let jsonString = buildSingleChunkJSONString(chunkNumber, musicData: musicData);
+            if let dataToStream = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+                var buffer = [UInt8](count: dataToStream.length, repeatedValue: 0);
+                dataToStream.getBytes(&buffer, length: dataToStream.length);
+                print("write data of bytes: \(dataToStream.length)");
+                outputStream!.write(&buffer, maxLength: dataToStream.length);
             }
         }
     }
     
-    func sendNextChunk() {
-        if let musicData : NSData? = chunkBacklog.first!.1 {
-            chunkBacklog.removeAtIndex(chunkBacklog.indexForKey(chunkBacklog.first!.0)!)
-            let chunkData : NSMutableData = musicData!.mutableCopy() as! NSMutableData;
-            chunkData.appendData("]".dataUsingEncoding(NSUTF8StringEncoding)!);
-            print("write data of bytes: \(chunkData.length)");
-            outputStream!.write(UnsafePointer<UInt8>(chunkData.bytes), maxLength: chunkData.length);
-        }
+    func allChunksDone() {
+        outputStream!.close()
     }
     
-    func allChunksDone() {
-//        let data = "[".dataUsingEncoding(NSUTF8StringEncoding)!;
-//        print("write data of bytes: \(data.length)");
-//        outputStream!.write(UnsafePointer<UInt8>(data.bytes), maxLength: data.length);
-        outputStream!.close()
+    func buildSingleChunkJSONString(chunkNumber: String, musicData: NSData) -> String {
+        let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
+        let numberAndData = ["chunkNumber" : chunkNumber, "musicData" : musicString];
+        let jsonString = "\(String.stringFromJson(numberAndData)!)";
+        
+        return jsonString;
     }
 }
 
 extension NodeChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
+        debugLog("Node recieved music piece");
         if !hasRecievedSongChunk {
-            preparePlayerForChunk("\(chunkNumber)", songId: songId);
+            hasRecievedSongChunk = true;
+            preparePlayerForStream();
         }
         
-        chunkBacklog["\(chunkNumber)\(songId)"] = musicData;
+        chunkBacklog["\(chunkNumber)"] = musicData;
     }
     
     func didFinishReceivingSong(songId: String) {

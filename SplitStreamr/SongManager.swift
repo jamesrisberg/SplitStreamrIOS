@@ -48,7 +48,8 @@ class SongManager: NSObject {
         });
     }
     
-    func songDownloaded(song: Song, data: NSData) {        
+    func songDownloaded(song: Song, data: NSData) {
+        debugLog("songDownloaded on SongManager");
         if (self.shouldPlayWhenDownloaded) {
             if (self.currentlyDownloadingSongId == song.id) {
                 self.currentlyDownloadingSongId = nil;
