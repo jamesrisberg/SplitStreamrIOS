@@ -27,6 +27,7 @@ let blueLight2 = UIColor(hexString: "3e94d1");
 let blue1 = UIColor(hexString: "0a64a4");
 let blueDark1 = UIColor(hexString: "24577b");
 let blueDark2 = UIColor(hexString: "03406a");
+let transparentOrange = UIColor(hexString: "bfec6b0e");
 let orange = UIColor(hexString: "ec6b0e");
 
 let offWhiteColor = UIColor(hexString: "fefefe");
@@ -43,6 +44,8 @@ let navigationBarColor = blue1;
 
 // MARK:
 
+let baseURL = "http://thisismypersonal.website";
+
 let savedSongsDictionaryKey = "savedSongsDictionaryKey";
 
 let songDownloadedNotificationIdentifier = "songDownloadedNotificationIdentifier";
@@ -50,5 +53,13 @@ let songDownloadedNotificationIdentifier = "songDownloadedNotificationIdentifier
 let networkErrorDomain = "com.splitstreamr.network";
 
 let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0];
+
+// MARK: Debug
+
+func debugLog(message: String) {
+    dispatch_async(dispatch_get_main_queue(), {
+        print(message);
+    });
+}
 
 

@@ -11,8 +11,6 @@ import Alamofire
 
 class RestNetworkAccessor: NSObject, NetworkingAccessor {
     
-    let baseURL = "http://thisismypersonal.website";
-    
     // GET
     
     func getSongs(completionBlock: SongArrayClosure) {

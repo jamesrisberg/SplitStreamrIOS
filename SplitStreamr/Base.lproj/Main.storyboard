@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -17,19 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CdU-HK-AfY" customClass="SongTableView" customModule="SplitStreamr" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="400" width="600" height="200"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="55i-8Z-gHs"/>
-                                    <constraint firstAttribute="height" constant="200" id="Tvm-Ur-dUn"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="55i-8Z-gHs"/>
-                                    </mask>
-                                </variation>
-                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fdm-7g-9G0" customClass="UIProgressView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
                                 <color key="backgroundColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -138,6 +125,54 @@
                                     <constraint firstItem="ZSj-Vu-DIK" firstAttribute="centerY" secondItem="DKp-L9-xiB" secondAttribute="centerY" constant="96" id="sdy-d8-rug"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CdU-HK-AfY" customClass="SongTableView" customModule="SplitStreamr" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="400" width="600" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="55i-8Z-gHs"/>
+                                    <constraint firstAttribute="height" constant="200" id="Tvm-Ur-dUn"/>
+                                </constraints>
+                                <color key="separatorColor" red="0.92549019610000005" green="0.41960784309999999" blue="0.054901960780000002" alpha="0.70254434119999998" colorSpace="calibratedRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" id="ZzB-b4-aoo" customClass="SongCell" customModule="SplitStreamr" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZzB-b4-aoo" id="hmL-QR-pOz">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title - Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YH4-rc-e0h">
+                                                    <rect key="frame" x="20" y="0.0" width="145.5" height="43.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
+                                                    <color key="textColor" red="0.039215686270000001" green="0.3921568627" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="6Xe-zv-6CZ">
+                                                    <rect key="frame" x="543" y="3" width="37" height="37"/>
+                                                    <color key="color" red="0.039215686270000001" green="0.3921568627" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="6Xe-zv-6CZ" secondAttribute="trailing" constant="20" id="K8P-wx-Kb3"/>
+                                                <constraint firstItem="6Xe-zv-6CZ" firstAttribute="centerY" secondItem="hmL-QR-pOz" secondAttribute="centerY" id="VEU-qz-QDK"/>
+                                                <constraint firstItem="YH4-rc-e0h" firstAttribute="leading" secondItem="hmL-QR-pOz" secondAttribute="leading" constant="20" id="Zql-7z-PPw"/>
+                                                <constraint firstItem="YH4-rc-e0h" firstAttribute="top" secondItem="hmL-QR-pOz" secondAttribute="top" id="w1b-dr-JoN"/>
+                                                <constraint firstAttribute="bottom" secondItem="YH4-rc-e0h" secondAttribute="bottom" id="z8J-6O-R8o"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="VEU-qz-QDK" id="wFr-Ob-U9h"/>
+                                            <outlet property="titleArtistLabel" destination="YH4-rc-e0h" id="MzN-SB-H65"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="55i-8Z-gHs"/>
+                                    </mask>
+                                </variation>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>

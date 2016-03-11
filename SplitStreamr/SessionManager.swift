@@ -12,23 +12,24 @@ import SwiftyJSON
 
 class SessionManager: NSObject {
     
-    private let serviceType = "splitStreamr";
+    let serviceType = "splitStreamr";
     
     let myPeerId = MCPeerID(displayName: UIDevice.currentDevice().name);
-    private let serviceAdvertiser : MCNearbyServiceAdvertiser;
-    private let serviceBrowser : MCNearbyServiceBrowser;
+    
+    let serviceAdvertiser : MCNearbyServiceAdvertiser;
+    let serviceBrowser : MCNearbyServiceBrowser;
     
     var peers: [MCPeerID] = [];
     
     var streamDelegates: [MeshStreamDelegate] = [];
     
-    var playerPeer: MCPeerID!;
-    var playerChunkManager: PlayerChunkManager!;
-    var nodeChunkManager: NodeChunkManager!;
+    var playerPeer: MCPeerID?;
+    var playerChunkManager: PlayerChunkManager?;
+    var nodeChunkManager: NodeChunkManager?;
     var networkFacade: NetworkFacade?;
-    var currentStreamingSongId: String!;
+    var currentStreamingSongId: String?;
     
-    var networkSessionId: String!;
+    var networkSessionId: String?;
     
     let serialQueue = dispatch_queue_create("com.SerialQueue", DISPATCH_QUEUE_SERIAL);
     
@@ -38,7 +39,7 @@ class SessionManager: NSObject {
         return session;
     }()
     
-    static let sharedInstance = SessionManager();
+    static let sharedInstance : SessionManager = SessionManager();
     
     override init() {
         self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: serviceType);
@@ -60,18 +61,24 @@ class SessionManager: NSObject {
     func configureForPlayMode() {
         nodeChunkManager = nil;
         playerChunkManager = PlayerChunkManager();
-        networkFacade = NetworkFacade(delegate: playerChunkManager);
+        
+        if let _ = playerChunkManager {
+            networkFacade = NetworkFacade(delegate: playerChunkManager!);
+        }
     }
     
     func configureForNodeMode(playerPeer: MCPeerID) {
         playerChunkManager = nil;
         self.playerPeer = playerPeer;
         nodeChunkManager = NodeChunkManager(playerPeer: playerPeer);
-        networkFacade = NetworkFacade(delegate: nodeChunkManager);
+        
+        if let _ = nodeChunkManager {
+            networkFacade = NetworkFacade(delegate: nodeChunkManager!);
+        }
     }
     
     func createNewSession() {
-        if (networkFacade != nil) {
+        if let _ = networkFacade {
             networkFacade!.createNewSession();
         } else {
             
@@ -79,8 +86,10 @@ class SessionManager: NSObject {
     }
     
     func connectToSession() {
-        if (networkFacade != nil) {
-            networkFacade!.connectToSession(networkSessionId);
+        if let _ = networkFacade {
+            if let _ = networkSessionId {
+                networkFacade!.connectToSession(networkSessionId!);
+            }
         } else {
             
         }
@@ -91,14 +100,17 @@ class SessionManager: NSObject {
     }
     
     func streamSong(song: Song) {
-        if (networkFacade != nil) {
+        if let _ = networkFacade {
             do {
                 try session.sendData(song.id.dataUsingEncoding(NSUTF8StringEncoding)!, toPeers: peers, withMode: .Reliable);
             } catch {
                 print("error sending song ID to nodes");
             }
             
-            playerChunkManager.prepareForSong(song);
+            if let _ = playerChunkManager {
+                playerChunkManager!.prepareForSong(song);
+            }
+            
             networkFacade!.startStreamingSong(song.id);
         }
     }
@@ -109,13 +121,17 @@ class SessionManager: NSObject {
         
         var error : NSError?
         let json = JSON(data: chunkData, options: NSJSONReadingOptions(rawValue:0), error: &error);
+        print("JSON Error: \(error)");
+        // TODO: There is an invalid JSON error in here occasionally
         
         if let items = json.array {
             for item in items {
                 if let chunkNumber = item["chunkNumber"].string {
                     if let musicString = item["musicData"].string {
                         let musicData = NSData(base64EncodedString: musicString, options: NSDataBase64DecodingOptions(rawValue:0));
-                        self.playerChunkManager.addNodeChunk(Int(chunkNumber)!, musicData: musicData!);
+                        if let _ = playerChunkManager {
+                            playerChunkManager!.addNodeChunk(Int(chunkNumber)!, musicData: musicData!);
+                        }
                     } else {
                         print("Error getting chunk data: \(json["musicData"].string)");
                     }
@@ -145,11 +161,15 @@ class SessionManager: NSObject {
     }
     
     func invitePeerAtIndex(index: Int) {
-        self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: networkSessionId.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
+        if let _ = networkSessionId {
+            self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: networkSessionId!.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
+        }
     }
     
     func invitePeer(peer: MCPeerID) {
-        self.serviceBrowser.invitePeer(peer, toSession: self.session, withContext: networkSessionId.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
+        if let _ = networkSessionId {
+            self.serviceBrowser.invitePeer(peer, toSession: self.session, withContext: networkSessionId!.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
+        }
     }
     
     func connectedPeerCount() -> Int {
@@ -165,7 +185,7 @@ class SessionManager: NSObject {
     }
     
     func disconnectFromSession() {
-        if (networkFacade != nil) {
+        if let _ = networkFacade {
             self.session.disconnect();
             networkFacade!.disconnectFromCurrentSession();
         }
@@ -191,10 +211,12 @@ extension SessionManager : MCNearbyServiceAdvertiserDelegate {
     }
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
-        self.setSessionId(String.init(data: context!, encoding: NSUTF8StringEncoding)!);
-        self.configureForNodeMode(peerID);
-        invitationHandler(true, self.session);
-        NSNotificationCenter.defaultCenter().postNotificationName("InvitationAccepted", object: nil);
+        if let _ = context {
+            self.setSessionId(String.init(data: context!, encoding: NSUTF8StringEncoding)!);
+            self.configureForNodeMode(peerID);
+            invitationHandler(true, self.session);
+            NSNotificationCenter.defaultCenter().postNotificationName("InvitationAccepted", object: nil);
+        }
     }
 }
 
@@ -206,7 +228,7 @@ extension SessionManager : MCNearbyServiceBrowserDelegate {
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         NSLog("%@", "foundPeer: \(peerID)");
-        self.peers.append(peerID);
+        self.peers.append(peerID); // TODO: Wati until peer accepts invite to add to list
         self.invitePeer(peerID);
     }
     
@@ -221,14 +243,16 @@ extension SessionManager : MCSessionDelegate {
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
         NSLog("%@", "peer \(peerID) didChangeState: \(state.stringValue())");
         
-        if (state == .NotConnected) {
+        if (state == .NotConnected && peerID == myPeerId) {
             NSNotificationCenter.defaultCenter().postNotificationName("DidDisconnectFromSession", object: nil);
         }
     }
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
         currentStreamingSongId = String(data: data, encoding: NSUTF8StringEncoding);
-        NSNotificationCenter.defaultCenter().postNotificationName("SongStreaming", object: self, userInfo: ["songId" : currentStreamingSongId]);
+        if let _ = currentStreamingSongId {
+            NSNotificationCenter.defaultCenter().postNotificationName("SongStreaming", object: self, userInfo: ["songId" : currentStreamingSongId!]);
+        }
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
