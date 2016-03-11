@@ -12,7 +12,7 @@ import SwiftyJSON
 
 class NodeChunkManager: NSObject {
     
-    var sessionId: String!;
+    var sessionId: String?;
     var playerPeer: MCPeerID!;
     
     var outputStream: NSOutputStream?;
@@ -21,7 +21,7 @@ class NodeChunkManager: NSObject {
     
     var chunkBacklog : [String : NSData] = [:];
     
-    var dataDownloadedSoFar = 0
+    var dataDownloadedSoFar = 0;
     
     override init() {
         super.init();
@@ -63,20 +63,22 @@ class NodeChunkManager: NSObject {
     
     func preparePlayerForChunk() {
         debugLog("Node sending readyToSendChunk to player");
-        let (chunkNumber, musicData) = chunkBacklog.first!;
-        let jsonStr = buildSingleChunkJSONString(chunkNumber, musicData: musicData);
-        var length = 0;
-        if let data = jsonStr.dataUsingEncoding(NSUTF8StringEncoding) {
-            length = data.length;
-        }
-        debugLog("musicData.length = \(musicData.length)");
-        let chunkData = ["type" : "readyToSendChunk", "chunkNumber" : chunkNumber, "chunkSize" : "\(length)"];
-        let jsonString = "\(String.stringFromJson(chunkData)!)";
-        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
-            do {
-                try SessionManager.sharedInstance.session.sendData(data, toPeers: [self.playerPeer], withMode: .Reliable);
-            } catch {
-                print("error sending readyToSendChunk to player");
+        if let chunkNumber = Array(chunkBacklog.keys).minElement() {
+            let musicData = chunkBacklog[chunkNumber];
+            let jsonStr = buildSingleChunkJSONString(chunkNumber, musicData: musicData!);
+            var length = 0;
+            if let data = jsonStr.dataUsingEncoding(NSUTF8StringEncoding) {
+                length = data.length;
+            }
+            debugLog("musicData.length = \(musicData!.length)");
+            let chunkData = ["type" : "readyToSendChunk", "chunkNumber" : chunkNumber, "chunkSize" : "\(length)"];
+            let jsonString = "\(String.stringFromJson(chunkData)!)";
+            if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+                do {
+                    try SessionManager.sharedInstance.session.sendData(data, toPeers: [self.playerPeer], withMode: .Reliable);
+                } catch {
+                    print("error sending readyToSendChunk to player");
+                }
             }
         }
     }
@@ -121,7 +123,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
     }
     
     func didFinishReceivingSong(songId: String) {
-        print("Finished receiving song: \(songId)");
+        debugLog("Finished receiving song: \(songId)");
     }
     
     func sessionIdReceived(sessionId: String) {
@@ -129,7 +131,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
     }
     
     func errorRecieved(error: NSError) {
-        print(error.debugDescription);
+        debugLog(error.debugDescription);
     }
     
     func didEstablishConnection() {
