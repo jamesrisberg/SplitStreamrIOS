@@ -38,7 +38,12 @@ class SocketMessageParser: NSObject {
             let json = JSON(data: dataFromString);
             
             if let message = json["message"].string {
-                messageClosureMap?[message]?(jsonObject: json);
+                if let mappedFunction = messageClosureMap?[message] {
+                    mappedFunction(jsonObject: json);
+                }
+                else {
+                    print("no function defined for message: \(message)");
+                }
             }
             else {
                 // TODO: Handle Error
@@ -53,6 +58,7 @@ class SocketMessageParser: NSObject {
     
     func getMessageClosureMap() -> Dictionary<String, (jsonObject: JSON) -> Void> {
         var tempDictionary = Dictionary<String, (jsonObject: JSON) -> Void>();
+        
         tempDictionary["new session"] = { (jsonObject: JSON) -> Void in
             self.delegate?.didCreateSession(jsonObject["session"].stringValue);
         };
