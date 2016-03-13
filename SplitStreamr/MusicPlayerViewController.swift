@@ -70,7 +70,6 @@ class MusicPlayerViewController: UIViewController {
     func queueChunkToPlay(song: Song, data: NSData) {
         let path = NSTemporaryDirectory().stringByAppendingString("tmp.mp3");
         data.writeToFile(path, atomically: true);
-        //NSURL *filepath = [NSURL fileURLWithPath:/*save file path*/];
         let filePath = NSURL(fileURLWithPath: path);
         
         let item = AVPlayerItem(URL: filePath);
@@ -104,7 +103,10 @@ class MusicPlayerViewController: UIViewController {
         });
         
         timer = NSTimer(timeInterval: 1.0, target: self, selector: "updateTime", userInfo: nil, repeats: true);
-        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes);
+        
+        if let _ = timer {
+            NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes);
+        }
     }
     
     func pause() {

@@ -43,7 +43,7 @@ class JoinSessionViewController: UIViewController {
     }
     
     func didDisconnect(notification: NSNotification) {
-        dispatch_async(dispatch_get_main_queue(), { ()->Void in
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.activityIndicator.startAnimating();
             self.manager.startAdvertising();
             self.waitingLabel.text = "You were disconnected! Waiting to be invited to a new session.";
@@ -51,9 +51,11 @@ class JoinSessionViewController: UIViewController {
     }
 
     func updateData(notification: NSNotification) {
-        if let dataCount = notification.userInfo!["soFar"] {
-            let kilobytes: Int = Int(dataCount as! NSNumber)/1024;
-            self.downloadedLabel.text = "\(kilobytes) Kb";
+        if let userInfo = notification.userInfo {
+            if let dataCount = userInfo["soFar"] {
+                let kilobytes: Int = Int(dataCount as! NSNumber)/1024;
+                self.downloadedLabel.text = "\(kilobytes) Kb";
+            }
         }
     }
     
