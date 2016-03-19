@@ -33,8 +33,6 @@ class SessionManager: NSObject {
     
     var networkSessionId: String?;
     
-    let serialQueue = dispatch_queue_create("com.SerialQueue", DISPATCH_QUEUE_SERIAL);
-    
     lazy var session : MCSession = {
         let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .None);
         session.delegate = self;

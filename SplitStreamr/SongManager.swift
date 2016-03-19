@@ -30,6 +30,10 @@ class SongManager: NSObject {
         self.registerToReceiveNewSongDownloadNotification();
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self);
+    }
+    
     func registerToReceiveNewSongDownloadNotification() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "songDownloaded:", name: songDownloadedNotificationIdentifier, object: nil);
     }

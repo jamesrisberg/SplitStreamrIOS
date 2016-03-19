@@ -18,10 +18,7 @@ class NodeChunkManager: NSObject {
     var outputStream: NSOutputStream?;
     
     var hasRecievedSongChunk: Bool = false;
-    
     var chunkBacklog : [String : NSData] = [:];
-    
-    var dataDownloadedSoFar = 0;
     
     var messageClosureMap : Dictionary<String, (jsonObject: JSON, peer: MCPeerID) -> Void>?;
     
@@ -87,8 +84,10 @@ class NodeChunkManager: NSObject {
     }
     
     func allChunksDone() {
-        // TODO: Should the stream be closed here?
-        //outputStream!.close()
+        hasRecievedSongChunk = false;
+        chunkBacklog = [:];
+        outputStream?.close();
+        outputStream = nil;
     }
     
     func getSizeOfChunkForNumber(chunkNumber: String) -> Int? {

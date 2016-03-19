@@ -82,6 +82,8 @@ class PlayerChunkManager: NSObject {
             debugLog("songFinished called from addNodeChunk");
             songFinished()
             sendAllChunksDoneToPeer(peer);
+            streamDelegates[peer]?.closeStream();
+            streamDelegates.removeValueForKey(peer);
         } else {
             didReceiveChunkFromPeer(peer);
         }
@@ -150,8 +152,9 @@ extension PlayerChunkManager : NodeStreamDelegate {
         debugLog("chunkFinishedStreaming called by mesh delegate");
         var error : NSError?
         let json = JSON(data: chunkData, options: NSJSONReadingOptions(rawValue:0), error: &error);
-        debugLog("JSON Error: \(error)");
-        // TODO: There is an invalid JSON error in here occasionally
+        if let _ = error {
+            debugLog("JSON Error: \(error)");
+        }
         
         if let chunkNumber = json["chunkNumber"].string {
             if let musicString = json["musicData"].string {
