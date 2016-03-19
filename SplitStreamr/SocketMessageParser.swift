@@ -47,7 +47,7 @@ class SocketMessageParser: NSObject {
             }
             else {
                 // TODO: Handle Error
-                print("unable to parse json string");
+                debugLog("Unable to parse json string");
             }
         }
     }

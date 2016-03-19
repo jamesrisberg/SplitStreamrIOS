@@ -22,6 +22,7 @@ class SongManager: NSObject {
     var onSongsFinishedDownloading : (() -> Void)?;
     
     var onSongReadyToPlay : ((song : Song, data: NSData) -> Void)?;
+    var queueChunkToPlay : ((song : Song, data: NSData) -> Void)?;
     
     override init() {
         super.init();
@@ -36,7 +37,7 @@ class SongManager: NSObject {
     func downloadSongs() {
         NetworkFacade().getSongs({ (error, list) -> Void in
             if error != nil {
-                print(error.debugDescription);
+                debugLog(error.debugDescription);
             } else {
                 if let songs = list {
                     self.songs = songs;
@@ -47,7 +48,8 @@ class SongManager: NSObject {
         });
     }
     
-    func songDownloaded(song: Song, data: NSData) {        
+    func songDownloaded(song: Song, data: NSData) {
+        debugLog("songDownloaded on SongManager");
         if (self.shouldPlayWhenDownloaded) {
             if (self.currentlyDownloadingSongId == song.id) {
                 self.currentlyDownloadingSongId = nil;
@@ -57,6 +59,12 @@ class SongManager: NSObject {
         }
         
         self.currentlyDownloadingSongId = nil;
+    }
+    
+    func queueSong(song: Song, data: NSData) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.queueChunkToPlay?(song: song, data: data);
+        });
     }
     
     func playSongWhenReady(songId : String) {
@@ -86,7 +94,7 @@ class SongManager: NSObject {
         }
     }
     
-    private func getSongForId(songId : String) -> Song? {
+    func getSongForId(songId : String) -> Song? {
         let index = songs.indexOf({$0.id == songId});
         
         if (index >= 0) {
