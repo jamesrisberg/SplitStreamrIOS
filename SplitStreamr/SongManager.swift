@@ -37,7 +37,7 @@ class SongManager: NSObject {
     func downloadSongs() {
         NetworkFacade().getSongs({ (error, list) -> Void in
             if error != nil {
-                print(error.debugDescription);
+                debugLog(error.debugDescription);
             } else {
                 if let songs = list {
                     self.songs = songs;
@@ -94,7 +94,7 @@ class SongManager: NSObject {
         }
     }
     
-    private func getSongForId(songId : String) -> Song? {
+    func getSongForId(songId : String) -> Song? {
         let index = songs.indexOf({$0.id == songId});
         
         if (index >= 0) {

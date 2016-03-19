@@ -16,10 +16,10 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
     func getSongs(completionBlock: SongArrayClosure) {
         Alamofire.request(.GET, URLStringWithExtension("songs"))
             .responseJSON { response in
-                // DEBUG: print(response.request)  // original URL request
-                // DEBUG: print(response.response) // URL response
-                // DEBUG: print(response.data)     // server data
-                // DEBUG: print(response.result)   // result of response serialization
+                // DEBUG: debugLog(response.request)  // original URL request
+                // DEBUG: debugLog(response.response) // URL response
+                // DEBUG: debugLog(response.data)     // server data
+                // DEBUG: debugLog(response.result)   // result of response serialization
                 
                 var songs : Array<Song> = Array<Song>();
                 

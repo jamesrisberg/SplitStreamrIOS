@@ -23,8 +23,12 @@ class NodeChunkManager: NSObject {
     
     var dataDownloadedSoFar = 0;
     
+    var messageClosureMap : Dictionary<String, (jsonObject: JSON, peer: MCPeerID) -> Void>?;
+    
     override init() {
         super.init();
+        
+        messageClosureMap = getMessageClosureMap();
     }
     
     convenience init(playerPeer: MCPeerID) {
@@ -37,54 +41,37 @@ class NodeChunkManager: NSObject {
     }
     
     func preparePlayerForStream() {
-        debugLog("Node sending readyToSendStream data to player");
-        let chunkData = ["type" : "readyToSendStream"];
-        let jsonString = "\(String.stringFromJson(chunkData)!)";
-        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
-            do {
-                try SessionManager.sharedInstance.session.sendData(data, toPeers: [self.playerPeer], withMode: .Reliable);
-            } catch {
-                print("error sending readyToSendStream to player");
-            }
-        }
+        SessionManager.sharedInstance.sendSimpleJSONMessage("readyToSendStream", toPeer: playerPeer);
     }
     
-    func setupStreamWithPlayer(songId: String) {
+    func setupStreamWithPlayer() {
+        debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) starting stream with \(playerPeer.displayName)");
         do {
-            outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(songId)\(SessionManager.sharedInstance.myPeerId)\(NSTimeIntervalSince1970)" , toPeer: self.playerPeer);
+            outputStream = try SessionManager.sharedInstance.session.startStreamWithName("\(SessionManager.sharedInstance.myPeerId)\(NSTimeIntervalSince1970)" , toPeer: self.playerPeer);
             outputStream!.delegate = self;
             outputStream!.scheduleInRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode);
             outputStream!.open();
-            print("open output stream for song \(songId)");
         } catch let error as NSError {
-            print("Error sending data over mesh. \(error.localizedDescription)");
+            debugLog("Error establishing stream. \(error.localizedDescription)");
         }
     }
     
     func preparePlayerForChunk() {
-        debugLog("Node sending readyToSendChunk to player");
         if let chunkNumber = Array(chunkBacklog.keys).minElement() {
-            let musicData = chunkBacklog[chunkNumber];
-            let jsonStr = buildSingleChunkJSONString(chunkNumber, musicData: musicData!);
-            var length = 0;
-            if let data = jsonStr.dataUsingEncoding(NSUTF8StringEncoding) {
-                length = data.length;
+            if let length = getSizeOfChunkForNumber(chunkNumber) {
+                debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) sending readyToSendChunk to \(playerPeer.displayName)");
+                let chunkData = ["message" : "readyToSendChunk", "chunkNumber" : chunkNumber, "chunkSize" : "\(length)"];
+                let jsonString = "\(String.stringFromJson(chunkData)!)";
+                SessionManager.sharedInstance.sendJSONString(jsonString, toPeer: playerPeer);
             }
-            debugLog("musicData.length = \(musicData!.length)");
-            let chunkData = ["type" : "readyToSendChunk", "chunkNumber" : chunkNumber, "chunkSize" : "\(length)"];
-            let jsonString = "\(String.stringFromJson(chunkData)!)";
-            if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
-                do {
-                    try SessionManager.sharedInstance.session.sendData(data, toPeers: [self.playerPeer], withMode: .Reliable);
-                } catch {
-                    print("error sending readyToSendChunk to player");
-                }
-            }
+        } else {
+            debugLog("Error finding next chunk number");
+            // TODO: Is this always when the backlog is emtpy?
+            // Should check for chunks in backlog before trying
         }
     }
     
-    func sendChunk(chunkNumber: String, songId: String) {
-        debugLog("sendChunk called on NCM");
+    func sendChunk(chunkNumber: String) {
         if let musicData = chunkBacklog[chunkNumber] {
             chunkBacklog.removeValueForKey(chunkNumber);
             
@@ -92,14 +79,27 @@ class NodeChunkManager: NSObject {
             if let dataToStream = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
                 var buffer = [UInt8](count: dataToStream.length, repeatedValue: 0);
                 dataToStream.getBytes(&buffer, length: dataToStream.length);
-                print("write data of bytes: \(dataToStream.length)");
                 outputStream!.write(&buffer, maxLength: dataToStream.length);
             }
+        } else {
+            debugLog("Error getting chunk number \(chunkNumber)");
         }
     }
     
     func allChunksDone() {
-        outputStream!.close()
+        // TODO: Should the stream be closed here?
+        //outputStream!.close()
+    }
+    
+    func getSizeOfChunkForNumber(chunkNumber: String) -> Int? {
+        let musicData = chunkBacklog[chunkNumber];
+        let jsonString = buildSingleChunkJSONString(chunkNumber, musicData: musicData!);
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            return data.length
+        } else {
+            debugLog("Error getting chunk size");
+            return nil;
+        }
     }
     
     func buildSingleChunkJSONString(chunkNumber: String, musicData: NSData) -> String {
@@ -109,11 +109,48 @@ class NodeChunkManager: NSObject {
         
         return jsonString;
     }
+    
+    func getMessageClosureMap() -> Dictionary<String, (jsonObject: JSON, peer: MCPeerID) -> Void> {
+        var tempDictionary = Dictionary<String, (jsonObject: JSON, peer: MCPeerID) -> Void>();
+        tempDictionary["readyToRecieveStream"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
+            self.setupStreamWithPlayer();
+        };
+        
+        tempDictionary["didRecieveStream"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
+            self.preparePlayerForChunk();
+        };
+        
+        tempDictionary["readyToRecieveChunk"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
+            self.sendChunk(jsonObject["chunkNumber"].stringValue);
+        };
+        
+        tempDictionary["didRecieveChunk"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
+            self.preparePlayerForChunk();
+        };
+        
+        tempDictionary["allChunksDone"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
+            self.allChunksDone();
+        };
+        
+        return tempDictionary;
+    }
+}
+
+extension NodeChunkManager : ChunkManager {
+    func handleHandshakingMessage(json: JSON, peer: MCPeerID) {
+        if let message = json["message"].string {
+            messageClosureMap?[message]?(jsonObject: json, peer: peer);
+        }
+        else {
+            // TODO: Handle Error
+            debugLog("Unable to parse JSON");
+        }
+    }
 }
 
 extension NodeChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
-        debugLog("Node recieved music piece");
+        debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) recieved chunk \(chunkNumber) from server");
         if !hasRecievedSongChunk {
             hasRecievedSongChunk = true;
             preparePlayerForStream();
@@ -143,9 +180,9 @@ extension NodeChunkManager : NSStreamDelegate {
     func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
         switch(eventCode) {
             case NSStreamEvent.HasSpaceAvailable:
-                print("Stream Has Space Available");
+                debugLog("Stream Has Space Available");
             case NSStreamEvent.EndEncountered:
-                print("Stream End Encountered");
+                debugLog("Stream End Encountered");
             default:
                 break;
         }

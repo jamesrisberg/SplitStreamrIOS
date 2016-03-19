@@ -44,7 +44,7 @@ class NodeStreamManager: NSObject {
     }
     
     func prepareForChunkWithSize(chunkSize: Int) {
-        debugLog("incomginChunkSize = \(chunkSize)");
+        debugLog("incomingChunkSize = \(chunkSize)");
         incomingChunkSize = chunkSize;
     }
     
@@ -57,13 +57,13 @@ extension NodeStreamManager : NSStreamDelegate {
     func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
         switch (eventCode) {
             case NSStreamEvent.ErrorOccurred:
-                print("ErrorOccurred")
+                debugLog("ErrorOccurred")
             case NSStreamEvent.EndEncountered:
-                print("EndEncountered")
+                debugLog("EndEncountered")
             case NSStreamEvent.None:
-                print("None")
+                debugLog("None")
             case NSStreamEvent.HasBytesAvailable:
-                print("HasBytesAvail");
+                debugLog("HasBytesAvail");
                 var buffer = [UInt8](count: incomingChunkSize!, repeatedValue: 0)
                 //if (aStream == self.stream) {
                     while (self.stream.hasBytesAvailable) {
@@ -74,9 +74,9 @@ extension NodeStreamManager : NSStreamDelegate {
                         if len > 0 {
                             chunkData.appendBytes(&buffer, length: len);
                         }
-                        print("chunkData size: \(chunkData.length)");
+                        debugLog("chunkData size: \(chunkData.length)");
                         if chunkData.length == incomingChunkSize {
-                            print("chunk finished");
+                            debugLog("chunk finished");
                             delegate!.chunkFinishedStreaming(chunkData, manager: self);
                             incomingChunkSize = nil;
                             chunkData = NSMutableData();
@@ -85,11 +85,11 @@ extension NodeStreamManager : NSStreamDelegate {
                 //}
 
             case NSStreamEvent():
-                print("allZeros")
+                debugLog("allZeros")
             case NSStreamEvent.OpenCompleted:
-                print("OpenCompleted")
+                debugLog("OpenCompleted")
             case NSStreamEvent.HasSpaceAvailable:
-                print("HasSpaceAvailable")
+                debugLog("HasSpaceAvailable")
             default:
                 break
         }

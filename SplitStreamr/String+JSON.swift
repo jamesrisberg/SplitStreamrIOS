@@ -17,11 +17,11 @@ extension String {
                     return string as String;
                 }
                 else {
-                    print("Error stringifying json data: \(data)");
+                    debugLog("Error stringifying json data: \(data)");
                 }
             } catch {
                 // TODO: Handle Error
-                print("Error stringifying json object: \(jsonObject)");
+                debugLog("Error stringifying json object: \(jsonObject)");
             }
         }
         return nil;

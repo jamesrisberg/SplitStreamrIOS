@@ -160,12 +160,12 @@ extension NetworkFacade : WebSocketDelegate {
     }
     
     func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        // DEBUG: print("socket message recieved: \(text)");
+        // DEBUG: debugLog("socket message recieved: \(text)");
         socketMessageParser.parseJsonString(text);
     }
     
     func websocketDidReceiveData(socket: WebSocket, data: NSData) {
-        // DEBUG: print("socket recieved data");
+        // DEBUG: debugLog("socket recieved data");
         didReceiveChunk(data);
     }
 }

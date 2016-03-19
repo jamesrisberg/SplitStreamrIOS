@@ -63,7 +63,7 @@ class MusicPlayerViewController: UIViewController {
                 self.play();
             }
         } catch let error as NSError {
-            print("error instantiating audio player \(error.localizedDescription)");
+            debugLog("error instantiating audio player \(error.localizedDescription)");
         }
     }
     

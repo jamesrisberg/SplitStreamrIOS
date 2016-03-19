@@ -41,7 +41,7 @@ extension SocketTesterViewController : NetworkFacadeDelegate {
     
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
         SocketTesterViewController.chunksReceived += 1;
-        print("total chunks received: \(SocketTesterViewController.chunksReceived)");
+        debugLog("total chunks received: \(SocketTesterViewController.chunksReceived)");
     }
     
     func didFinishReceivingSong(songId: String) {
@@ -53,7 +53,7 @@ extension SocketTesterViewController : NetworkFacadeDelegate {
     }
     
     func errorRecieved(error: NSError) {
-        print("\(error)");
+        debugLog("\(error)");
     }
     
     func didEstablishConnection() {

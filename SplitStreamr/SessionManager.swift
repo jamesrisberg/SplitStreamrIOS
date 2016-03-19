@@ -10,6 +10,10 @@ import Foundation
 import MultipeerConnectivity
 import SwiftyJSON
 
+protocol ChunkManager {
+    func handleHandshakingMessage(json: JSON, peer: MCPeerID);
+}
+
 class SessionManager: NSObject {
     
     let serviceType = "splitStreamr";
@@ -22,8 +26,8 @@ class SessionManager: NSObject {
     var peers: [MCPeerID] = [];
     
     var playerPeer: MCPeerID?;
-    var playerChunkManager: PlayerChunkManager?;
-    var nodeChunkManager: NodeChunkManager?;
+    
+    var chunkManager: ChunkManager?;
     var networkFacade: NetworkFacade?;
     var currentStreamingSongId: String?;
     
@@ -57,21 +61,25 @@ class SessionManager: NSObject {
     // MARK: Network Session Management
     
     func configureForPlayMode() {
-        nodeChunkManager = nil;
-        playerChunkManager = PlayerChunkManager();
-        
-        if let _ = playerChunkManager {
-            networkFacade = NetworkFacade(delegate: playerChunkManager!);
-        }
+        chunkManager = PlayerChunkManager();
+        initNetworkFacade();
     }
     
     func configureForNodeMode(playerPeer: MCPeerID) {
-        playerChunkManager = nil;
         self.playerPeer = playerPeer;
-        nodeChunkManager = NodeChunkManager(playerPeer: playerPeer);
-        
-        if let _ = nodeChunkManager {
-            networkFacade = NetworkFacade(delegate: nodeChunkManager!);
+        chunkManager = NodeChunkManager(playerPeer: playerPeer);
+        initNetworkFacade()
+    }
+    
+    func initNetworkFacade() {
+        if let _ = chunkManager {
+            if chunkManager is NetworkFacadeDelegate {
+                networkFacade = NetworkFacade(delegate: chunkManager as! NetworkFacadeDelegate);
+            } else {
+                debugLog("ChunkManager isn't a NetworkFacadeDelegate");
+            }
+        } else {
+            debugLog("ChunkManager doesn't exist");
         }
     }
     
@@ -79,7 +87,7 @@ class SessionManager: NSObject {
         if let _ = networkFacade {
             networkFacade!.createNewSession();
         } else {
-            
+            debugLog("NetworkFacade doesn't exist");
         }
     }
     
@@ -87,9 +95,11 @@ class SessionManager: NSObject {
         if let _ = networkFacade {
             if let _ = networkSessionId {
                 networkFacade!.connectToSession(networkSessionId!);
+            } else {
+                debugLog("NetworkSessionId doesn't exist");
             }
         } else {
-            
+            debugLog("NetworkFacade doesn't exist");
         }
     }
     
@@ -99,21 +109,25 @@ class SessionManager: NSObject {
     
     func streamSong(song: Song) {
         if let _ = networkFacade {
+            let json = ["message": "songID", "songID": song.id];
+            let jsonString = "\(String.stringFromJson(json)!)";
+            
+            let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
             do {
-                let json = [ "type" : "songID", "songID" : song.id];
-
-                if let jsonString = String.stringFromJson(json) {
-                    try session.sendData(jsonString.dataUsingEncoding(NSUTF8StringEncoding)!, toPeers: peers, withMode: .Reliable);
-                }
+                try session.sendData(jsonString.dataUsingEncoding(NSUTF8StringEncoding)!, toPeers: peers, withMode: .Reliable);
             } catch {
-                print("error sending song ID to nodes");
+                debugLog("Error sending song ID to nodes");
             }
             
-            if let _ = playerChunkManager {
-                playerChunkManager!.prepareForSong(song);
+            if let _ = chunkManager {
+                chunkManager?.handleHandshakingMessage(JSON(data: data!), peer: myPeerId);
+            } else {
+                debugLog("ChunkManager doesn't exist");
             }
             
             networkFacade!.startStreamingSong(song.id);
+        } else {
+            debugLog("NetworkFacade doesn't exist");
         }
     }
     
@@ -138,12 +152,16 @@ class SessionManager: NSObject {
     func invitePeerAtIndex(index: Int) {
         if let _ = networkSessionId {
             self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: networkSessionId!.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
+        } else {
+            debugLog("networkSessionId doesn't exist");
         }
     }
     
     func invitePeer(peer: MCPeerID) {
         if let _ = networkSessionId {
             self.serviceBrowser.invitePeer(peer, toSession: self.session, withContext: networkSessionId!.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
+        } else {
+            debugLog("networkSessionId doesn't exist");
         }
     }
     
@@ -165,6 +183,27 @@ class SessionManager: NSObject {
             networkFacade!.disconnectFromCurrentSession();
         }
     }
+    
+    // MARK: Data Helper Methods
+    
+    func sendSimpleJSONMessage(message: String, toPeer peer: MCPeerID) {
+        debugLog("\(myPeerId.displayName) sending \(message) to \(peer.displayName)");
+        let messageData = ["message" : message];
+        let jsonString = "\(String.stringFromJson(messageData)!)";
+        sendJSONString(jsonString, toPeer: peer);
+    }
+    
+    func sendJSONString(jsonString: String, toPeer peer: MCPeerID) {
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try session.sendData(data, toPeers: [peer], withMode: .Reliable);
+            } catch {
+                debugLog("Error sending \(jsonString) from \(myPeerId.displayName) to \(peer.displayName)");
+            }
+        } else {
+            debugLog("Error building \(jsonString) from \(myPeerId.displayName) to \(peer.displayName)");
+        }
+    }
 }
 
 extension MCSessionState {
@@ -174,7 +213,6 @@ extension MCSessionState {
             case .NotConnected: return "NotConnected"
             case .Connecting: return "Connecting"
             case .Connected: return "Connected"
-            default: return "Unknown"
         }
     }
 }
@@ -198,75 +236,61 @@ extension SessionManager : MCNearbyServiceAdvertiserDelegate {
 extension SessionManager : MCNearbyServiceBrowserDelegate {
     
     func browser(browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: NSError) {
-        NSLog("%@", "didNotStartBrowsingForPeers: \(error)");
+        debugLog("didNotStartBrowsingForPeers: \(error)");
     }
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        NSLog("%@", "foundPeer: \(peerID)");
-        self.peers.append(peerID); // TODO: Wati until peer accepts invite to add to list
+        debugLog("foundPeer: \(peerID)");
+        self.peers.append(peerID); // TODO: Wait until peer accepts invite to add to list
+        
         self.invitePeer(peerID);
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        NSLog("%@", "lostPeer: \(peerID)");
-        self.peers.removeAtIndex(self.peers.indexOf(peerID)!);
+        debugLog("lostPeer: \(peerID)");
+        //self.peers.removeAtIndex(self.peers.indexOf(peerID)!);
     }
 }
 
 extension SessionManager : MCSessionDelegate {
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
-        NSLog("%@", "peer \(peerID) didChangeState: \(state.stringValue())");
+        debugLog("peer \(peerID) didChangeState: \(state.stringValue())");
         
         if (state == .NotConnected && peerID == myPeerId) {
             NSNotificationCenter.defaultCenter().postNotificationName("DidDisconnectFromSession", object: nil);
         }
     }
     
-    func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
-        let json = JSON.parse(String(data: data, encoding: NSUTF8StringEncoding)!);
+    func session(session: MCSession, didReceiveData data: NSData, fromPeer peer: MCPeerID) {
+        let json = JSON(data: data);
         
-        if json["type"].stringValue == "songID" {
+        if json["message"].stringValue == "songID" {
             NSNotificationCenter.defaultCenter().postNotificationName("SongStreaming", object: self, userInfo: ["songId" : json["songID"].stringValue]);
         } else {
-            let chunkNumber = json["chunkNumber"].stringValue;
-            let songID = json["songId"].stringValue;
-            
-            if json["type"].stringValue == "readyToSendStream" {
-                debugLog("readyToSendStream");
-                playerChunkManager!.prepareForStream(peerID);
-            } else if json["type"].stringValue == "readyToRecieveStream" {
-                debugLog("readyToRecieveStream");
-                nodeChunkManager!.setupStreamWithPlayer(songID);
-            } else if json["type"].stringValue == "didRecieveStream" {
-                debugLog("didRecieveStream");
-                nodeChunkManager!.preparePlayerForChunk();
-            } else if json["type"].stringValue == "readyToSendChunk" {
-                debugLog("readyToSendChunk");
-                playerChunkManager!.prepareForChunk(chunkNumber, chunkSize: json["chunkSize"].stringValue, songId: songID, fromPeer: peerID);
-            } else if json["type"].stringValue == "readyToRecieveChunk" {
-                debugLog("readyToRecieveChunk");
-                nodeChunkManager!.sendChunk(chunkNumber, songId: songID);
-            } else if json["type"].stringValue == "didRecieveChunk" {
-                debugLog("didRecieveChunk");
-                nodeChunkManager!.preparePlayerForChunk();
-            } else if json["type"].stringValue == "allChunksDone" {
-                debugLog("allChunksDone");
-                nodeChunkManager!.allChunksDone();
+            if let manager = chunkManager {
+                debugLog("\(myPeerId.displayName) received \(json["message"].stringValue) from \(peer.displayName)");
+                manager.handleHandshakingMessage(json, peer: peer);
+            } else {
+                debugLog("ChunkManager doesn't exist");
             }
         }
     }
     
-    func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        debugLog("Player received stream");
-        playerChunkManager?.attachStream(peerID, stream: stream);
+    func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peer: MCPeerID) {
+        if let manager = chunkManager as? PlayerChunkManager {
+            debugLog("\(myPeerId.displayName) received stream from \(peer.displayName)");
+            manager.attachStream(stream, fromPeer: peer);
+        } else {
+            debugLog("NodeChunkManager on peer \(myPeerId.displayName) received a stream from peer \(peer.displayName)");
+        }
     }
     
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
-        NSLog("%@", "didFinishReceivingResourceWithName");
+        debugLog("didFinishReceivingResourceWithName");
     }
     
     func session(session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, withProgress progress: NSProgress) {
-        NSLog("%@", "didStartReceivingResourceWithName");
+        debugLog("didStartReceivingResourceWithName");
     }
 }
