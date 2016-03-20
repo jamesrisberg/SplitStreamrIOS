@@ -56,9 +56,16 @@ let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .Use
 
 // MARK: Debug
 
+let dateFormatter: NSDateFormatter = {
+    let formatter = NSDateFormatter()
+    formatter.locale = NSLocale.currentLocale()
+    formatter.dateFormat = "HH:mm:ss.SSS"
+    return formatter
+}()
+
 func debugLog(message: String) {
     dispatch_async(dispatch_get_main_queue(), {
-        print(message);
+        print("\(dateFormatter.stringFromDate(NSDate())) | \(message)");
     });
 }
 
