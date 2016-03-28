@@ -11,4 +11,4 @@ As the Player recieves data chunks it queues them to play. As Nodes receive data
 
 Data chunks are queued by an associated chunk number sent along with the data, and are played back by the music player.
 
-Details on the server can be found here: https://github.com/jamesrisberg/SplitStreamrBackend
+Details on the server can be found [here](https://github.com/jamesrisberg/SplitStreamrBackend).
