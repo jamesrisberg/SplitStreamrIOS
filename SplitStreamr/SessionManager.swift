@@ -23,8 +23,6 @@ class SessionManager: NSObject {
     let serviceAdvertiser : MCNearbyServiceAdvertiser;
     let serviceBrowser : MCNearbyServiceBrowser;
     
-    var peers: [MCPeerID] = [];
-    
     var playerPeer: MCPeerID?;
     
     var chunkManager: ChunkManager?;
@@ -112,7 +110,7 @@ class SessionManager: NSObject {
             
             let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
             do {
-                try session.sendData(jsonString.dataUsingEncoding(NSUTF8StringEncoding)!, toPeers: peers, withMode: .Reliable);
+                try session.sendData(jsonString.dataUsingEncoding(NSUTF8StringEncoding)!, toPeers: session.connectedPeers, withMode: .Reliable);
             } catch {
                 debugLog("Error sending song ID to nodes");
             }
@@ -149,7 +147,7 @@ class SessionManager: NSObject {
     
     func invitePeerAtIndex(index: Int) {
         if let _ = networkSessionId {
-            self.serviceBrowser.invitePeer(peers[index], toSession: self.session, withContext: networkSessionId!.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
+            self.serviceBrowser.invitePeer(session.connectedPeers[index], toSession: self.session, withContext: networkSessionId!.dataUsingEncoding(NSUTF8StringEncoding), timeout: 10);
         } else {
             debugLog("networkSessionId doesn't exist");
         }
@@ -168,11 +166,11 @@ class SessionManager: NSObject {
     }
     
     func peerCount() -> Int {
-        return peers.count;
+        return session.connectedPeers.count;
     }
     
     func peerNameAtIndex(index: Int) -> MCPeerID {
-        return peers[index];
+        return session.connectedPeers[index];
     }
     
     func disconnectFromSession() {
@@ -239,14 +237,11 @@ extension SessionManager : MCNearbyServiceBrowserDelegate {
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         debugLog("foundPeer: \(peerID)");
-        self.peers.append(peerID); // TODO: Wait until peer accepts invite to add to list
-        
         self.invitePeer(peerID);
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         debugLog("lostPeer: \(peerID)");
-        //self.peers.removeAtIndex(self.peers.indexOf(peerID)!);
     }
 }
 
@@ -254,10 +249,6 @@ extension SessionManager : MCSessionDelegate {
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
         debugLog("peer \(peerID) didChangeState: \(state.stringValue())");
-        
-        if (state == .NotConnected && peerID == myPeerId) {
-            NSNotificationCenter.defaultCenter().postNotificationName("DidDisconnectFromSession", object: nil);
-        }
     }
     
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peer: MCPeerID) {

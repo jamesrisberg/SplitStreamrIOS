@@ -20,10 +20,13 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var upperProgressView: UIProgressView!;
     
     let manager = SessionManager.sharedInstance;
-    var audioPlayer : AVAudioPlayer?;
-    let queuePlayer : AVQueuePlayer = AVQueuePlayer();
+    var queuePlayer : AVQueuePlayer? = AVQueuePlayer();
+    var queuePlayerTimeObserver: AnyObject?;
     var timer: NSTimer?;
     var playing = false;
+    
+    var currentSongTime = 0;
+    var currentSongDuration = 180;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -33,7 +36,13 @@ class MusicPlayerViewController: UIViewController {
         manager.configureForPlayMode();
         manager.startBrowsing();
                 
-        SongManager.sharedInstance.onSongReadyToPlay = onSongReadyToPlay;
+        SongManager.sharedInstance.queueChunkToPlay = queueChunkToPlay;
+        
+        queuePlayerTimeObserver = queuePlayer?.addPeriodicTimeObserverForInterval(CMTimeMake(1,1), queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), usingBlock: { (time) -> Void in
+            self.updateTime();
+        });
+        
+        queuePlayer?.actionAtItemEnd = .Advance;
     }
     
     func configureSubviews() {
@@ -51,71 +60,54 @@ class MusicPlayerViewController: UIViewController {
         upperProgressView.trackTintColor = blueLight1;
     }
     
-    func onSongReadyToPlay(song: Song, data: NSData) {
-        self.audioPlayer?.stop();
-        audioPlayer = nil;
-        do {
-            titleLabel.text = song.name;
-            artistLabel.text = song.artist;
-            try self.audioPlayer = AVAudioPlayer(data: data);
-            
-            if let _ = self.audioPlayer {
-                self.play();
-            }
-        } catch let error as NSError {
-            debugLog("error instantiating audio player \(error.localizedDescription)");
-        }
-    }
-    
-    func queueChunkToPlay(song: Song, data: NSData) {
-        let path = NSTemporaryDirectory().stringByAppendingString("tmp.mp3");
+    func queueChunkToPlay(chunkNumber: Int, data: NSData) {
+        let path = NSTemporaryDirectory().stringByAppendingString("\(chunkNumber).mp3");
         data.writeToFile(path, atomically: true);
         let filePath = NSURL(fileURLWithPath: path);
         
         let item = AVPlayerItem(URL: filePath);
-            
-        queuePlayer.insertItem(item, afterItem: nil);
+        
+        if queuePlayer?.canInsertItem(item, afterItem: nil) == true {
+            queuePlayer?.insertItem(item, afterItem: nil);
+        }
+        
+        print(queuePlayer?.items());
         
         if !playing {
             playing = true;
-            queuePlayer.play()
+            self.play();
         }
     }
     
     @IBAction func playOrPause() {
-        if let player = self.audioPlayer {
-            if player.playing {
-                self.pause();
-            }
-            else {
-                self.play();
-            }
+        if playing {
+            playing = false;
+            self.pause();
+        } else {
+            playing = true;
+            self.play();
         }
     }
     
     func play() {
-        audioPlayer?.play();
+        queuePlayer?.play();
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Pause") {
                 self.playPauseButton.setImage(image, forState: .Normal);
             }
         });
-        
-        timer = NSTimer(timeInterval: 1.0, target: self, selector: "updateTime", userInfo: nil, repeats: true);
-        
-        if let _ = timer {
-            NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes);
-        }
     }
     
     func pause() {
-        if let player = audioPlayer {
-            player.pause()
+        queuePlayer?.pause();
+        timer?.invalidate();
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Play") {
-                playPauseButton.setImage(image, forState: .Normal);
+                self.playPauseButton.setImage(image, forState: .Normal);
             }
-        }
+        });
     }
     
     @IBAction func next() {
@@ -127,19 +119,24 @@ class MusicPlayerViewController: UIViewController {
     }
     
     func updateTime() {
-        let currentTime = Int(audioPlayer!.currentTime)
-        let minutes = currentTime/60
-        let seconds = currentTime - minutes * 60
-        
-        upperProgressView.setProgress(Float(audioPlayer!.currentTime/audioPlayer!.duration), animated: true);
-        
-        timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
+//        self.currentSongTime += 1;
+//
+//        self.upperProgressView.setProgress(Float(self.currentSongTime/self.currentSongDuration), animated: true);
+//        
+//        let minutes = self.currentSongTime / 60
+//        let seconds = self.currentSongTime % 60;
+//
+//        self.timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
     }
     
     @IBAction func backToMenu() {
-        audioPlayer?.stop();
+        queuePlayer?.pause();
+        queuePlayer?.removeAllItems();
+        if let observer = queuePlayerTimeObserver {
+            queuePlayer?.removeTimeObserver(observer);
+        }
         timer?.invalidate();
-        audioPlayer = nil;
+        queuePlayer = nil;
         SessionManager.sharedInstance.disconnectFromSession();
         
         self.dismissViewControllerAnimated(true, completion: nil);

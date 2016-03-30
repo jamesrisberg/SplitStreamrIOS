@@ -22,7 +22,7 @@ class SongManager: NSObject {
     var onSongsFinishedDownloading : (() -> Void)?;
     
     var onSongReadyToPlay : ((song : Song, data: NSData) -> Void)?;
-    var queueChunkToPlay : ((song : Song, data: NSData) -> Void)?;
+    var queueChunkToPlay : ((chunkNumber: Int, data: NSData) -> Void)?;
     
     override init() {
         super.init();
@@ -52,22 +52,13 @@ class SongManager: NSObject {
         });
     }
     
-    func songDownloaded(song: Song, data: NSData) {
-        debugLog("songDownloaded on SongManager");
-        if (self.shouldPlayWhenDownloaded) {
-            if (self.currentlyDownloadingSongId == song.id) {
-                self.currentlyDownloadingSongId = nil;
-                self.shouldPlayWhenDownloaded = false;
-                playSong(song, data: data);
-            }
-        }
-        
+    func songDownloaded() {
         self.currentlyDownloadingSongId = nil;
     }
     
-    func queueSong(song: Song, data: NSData) {
+    func queueChunk(chunkNumber: Int, data: NSData) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.queueChunkToPlay?(song: song, data: data);
+            self.queueChunkToPlay?(chunkNumber: chunkNumber, data: data);
         });
     }
     
@@ -83,12 +74,6 @@ class SongManager: NSObject {
         else {
             downloadSong(songId);
         }
-    }
-    
-    func playSong(song: Song, data: NSData) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.onSongReadyToPlay?(song: song, data: data);
-        });
     }
 
     private func downloadSong(songId : String) {

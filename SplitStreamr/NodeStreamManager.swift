@@ -12,7 +12,6 @@ import MultipeerConnectivity
 
 protocol NodeStreamDelegate {
     func chunkFinishedStreaming(chunkData: NSMutableData, manager: NodeStreamManager);
-    func allChunksFinishedStreaming(delegate: NodeStreamManager);
 }
 
 class NodeStreamManager: NSObject {

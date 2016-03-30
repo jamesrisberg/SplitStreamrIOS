@@ -16,10 +16,12 @@ class PlayerChunkManager: NSObject {
     
     var streamDelegates: [MCPeerID : NodeStreamManager] = [:];
     var recievedChunks: [NSData?] = [];
+    
     var chunksRecieved = 0;
     var currentSongData: NSMutableData = NSMutableData();
     var currentSongChunkCount: Int = 0;
     var currentSong: Song?;
+    var nextChunkToQueue = 0;
     
     var messageClosureMap : Dictionary<String, (jsonObject: JSON, peer: MCPeerID) -> Void>?;
     
@@ -31,6 +33,7 @@ class PlayerChunkManager: NSObject {
     
     func prepareForSong(songID: String) {
         chunksRecieved = 0;
+        nextChunkToQueue = 0;
         currentSong = SongManager.sharedInstance.getSongForId(songID);
         currentSongData = NSMutableData();
         currentSongChunkCount = currentSong!.numberOfChunks;
@@ -74,34 +77,23 @@ class PlayerChunkManager: NSObject {
     }
     
     func addNodeChunk(chunkNumber: Int, musicData: NSData, peer: MCPeerID) {
-        debugLog("addNodeChunk called on PCM");
+        debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) received chunk \(chunkNumber) from \(peer.displayName)");
+        
+        queueChunk(chunkNumber, musicData: musicData);
+    }
+    
+    func queueChunk(chunkNumber: Int, musicData: NSData) {
+        debugLog("Queueing chunk \(chunkNumber) for playback");
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
-        if chunksRecieved == currentSongChunkCount {
-            debugLog("songFinished called from addNodeChunk");
-            songFinished()
-            sendAllChunksDoneToPeer(peer);
-            streamDelegates[peer]?.closeStream();
-            streamDelegates.removeValueForKey(peer);
-        } else {
-            didReceiveChunkFromPeer(peer);
-        }
-    }
-    
-    func songFinished() {
-        debugLog("songFinished");
-        for index in 0..<recievedChunks.count {
-            if let data = recievedChunks[index] {
-                currentSongData.appendData(data);
-            } else {
-                debugLog("Recieved chunk \(index) not found!");
-            }
+        if chunkNumber == nextChunkToQueue {
+            nextChunkToQueue += 1;
+            SongManager.sharedInstance.queueChunk(chunkNumber, data: musicData);
         }
         
-        if let _ = currentSong {
-            debugLog("PCM calls songDownloaded on SongManager");
-            SongManager.sharedInstance.songDownloaded(currentSong!, data: currentSongData);
+        if chunkNumber == currentSongChunkCount {
+            SongManager.sharedInstance.songDownloaded();
         }
     }
     
@@ -122,25 +114,13 @@ class PlayerChunkManager: NSObject {
         
         return tempDictionary;
     }
-    
-    func getJSONMessage(message: String) -> NSData? {
-        let messageData = ["message" : message];
-        let jsonString = "\(String.stringFromJson(messageData)!)";
-        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
-            return data;
-        } else {
-            debugLog("Error building JSON message");
-            return nil;
-        }
-    }
 }
 
 extension PlayerChunkManager : ChunkManager {
     func handleHandshakingMessage(json: JSON, peer: MCPeerID) {
         if let message = json["message"].string {
             messageClosureMap?[message]?(jsonObject: json, peer: peer);
-        }
-        else {
+        } else {
             // TODO: Handle Error
             debugLog("Unable to parse JSON");
         }
@@ -167,22 +147,13 @@ extension PlayerChunkManager : NodeStreamDelegate {
             debugLog("Error getting chunk numba: \(json["chunkNumber"].string)");
         }
     }
-    
-    func allChunksFinishedStreaming(delegate: NodeStreamManager) {
-        
-    }
 }
 
 extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
         debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) received chunk \(chunkNumber) from server");
         
-        recievedChunks[chunkNumber] = musicData;
-        chunksRecieved += 1;
-        
-        if chunksRecieved == currentSongChunkCount {
-            songFinished()
-        }
+        queueChunk(chunkNumber, musicData: musicData);
     }
     
     func didFinishReceivingSong(songId: String) {
