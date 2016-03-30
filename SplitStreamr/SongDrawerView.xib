@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SongDrawerView" customModule="SplitStreamr" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NIc-be-BSu" customClass="SongTableView" customModule="SplitStreamr" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="60" width="600" height="540"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                    <color key="separatorColor" red="0.92549019610000005" green="0.41960784309999999" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="drawer" destination="iN0-l3-epB" id="q7P-Va-VKp"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="and-gj-gDr">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vww-tc-heZ">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="3"/>
+                            <color key="backgroundColor" red="0.92549019610000005" green="0.41960784309999999" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="3" id="NY4-Lb-j9k"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Up Next :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6hU-Nn-dAl">
+                            <rect key="frame" x="20" y="3" width="81" height="57"/>
+                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
+                            <color key="textColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBP-tN-52a">
+                            <rect key="frame" x="111" y="3" width="0.0" height="57"/>
+                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
+                            <color key="textColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.50234902871621623" colorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstItem="Vww-tc-heZ" firstAttribute="top" secondItem="and-gj-gDr" secondAttribute="top" id="6CE-uj-NPs"/>
+                        <constraint firstAttribute="bottom" secondItem="6hU-Nn-dAl" secondAttribute="bottom" id="814-WT-FRD"/>
+                        <constraint firstAttribute="height" constant="60" id="8AW-Py-xdm"/>
+                        <constraint firstItem="qBP-tN-52a" firstAttribute="leading" secondItem="6hU-Nn-dAl" secondAttribute="trailing" constant="10" id="DRd-Ao-5J5"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qBP-tN-52a" secondAttribute="trailing" constant="20" id="W86-KO-Snp"/>
+                        <constraint firstItem="6hU-Nn-dAl" firstAttribute="leading" secondItem="and-gj-gDr" secondAttribute="leading" constant="20" id="bjB-DL-oEB"/>
+                        <constraint firstItem="Vww-tc-heZ" firstAttribute="leading" secondItem="and-gj-gDr" secondAttribute="leading" id="doX-0J-rVd"/>
+                        <constraint firstAttribute="bottom" secondItem="qBP-tN-52a" secondAttribute="bottom" id="hpq-Ev-yaP"/>
+                        <constraint firstItem="qBP-tN-52a" firstAttribute="top" secondItem="Vww-tc-heZ" secondAttribute="bottom" id="k2C-Nr-u0v"/>
+                        <constraint firstItem="6hU-Nn-dAl" firstAttribute="top" secondItem="Vww-tc-heZ" secondAttribute="bottom" id="pe3-tt-JqG"/>
+                        <constraint firstAttribute="trailing" secondItem="Vww-tc-heZ" secondAttribute="trailing" id="xfd-bM-5Lv"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="NIc-be-BSu" secondAttribute="bottom" id="0yj-P4-86a"/>
+                <constraint firstItem="NIc-be-BSu" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="60" id="1Xy-dh-y1Z"/>
+                <constraint firstAttribute="trailing" secondItem="NIc-be-BSu" secondAttribute="trailing" id="2da-Ci-XO0"/>
+                <constraint firstItem="and-gj-gDr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Gg9-iC-KZa"/>
+                <constraint firstItem="and-gj-gDr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="HE2-HP-ora"/>
+                <constraint firstAttribute="bottom" secondItem="NIc-be-BSu" secondAttribute="bottom" id="c71-p0-vZc"/>
+                <constraint firstAttribute="trailing" secondItem="NIc-be-BSu" secondAttribute="trailing" id="e1h-dP-BSh"/>
+                <constraint firstItem="NIc-be-BSu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fk0-fB-a5F"/>
+                <constraint firstItem="NIc-be-BSu" firstAttribute="top" secondItem="and-gj-gDr" secondAttribute="bottom" id="uBG-Y3-fnD"/>
+                <constraint firstItem="NIc-be-BSu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yio-5v-e7J"/>
+                <constraint firstAttribute="trailing" secondItem="and-gj-gDr" secondAttribute="trailing" id="zwB-0Z-QbG"/>
+            </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="1Xy-dh-y1Z"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="songTable" destination="NIc-be-BSu" id="RFa-7F-7n9"/>
+                <outlet property="upNextLabel" destination="qBP-tN-52a" id="c4v-yo-5eZ"/>
+                <outlet property="upNextView" destination="and-gj-gDr" id="P1f-Sl-sEV"/>
+            </connections>
+        </view>
+    </objects>
+</document>

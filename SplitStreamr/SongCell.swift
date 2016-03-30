@@ -10,7 +10,22 @@ import UIKit
 
 class SongCell: UITableViewCell {
 
-    @IBOutlet weak var activityIndicator: NSLayoutConstraint!
-    @IBOutlet weak var titleArtistLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
+    var activityIndicator: UIActivityIndicatorView!
+    var titleArtistLabel: UILabel!
+    var timeLabel: UILabel!
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
+        
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        titleArtistLabel = UILabel(frame: CGRectMake(10,10, self.frame.size.width, self.frame.size.height))
+        titleArtistLabel.text = "Title"
+        titleArtistLabel.textColor = UIColor(hexString: "F8F8F8")
+        self.addSubview(titleArtistLabel)
+        
+        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+    }
 }

@@ -8,6 +8,32 @@
 
 import Foundation
 
+struct UserData: CustomStringConvertible, Equatable {
+    var id: String
+    var username: String
+    var fullname: String?
+    
+    init(username: String, fullname: String?) {
+        self.username = username
+        self.fullname = fullname
+        self.id = randomStringWithLength(8) as String
+    }
+    
+    init(fromJson: Dictionary<String, AnyObject>) {
+        id = fromJson["_id"] as! String
+        username = fromJson["username"] as! String
+        fullname = fromJson["fullname"] as? String
+    }
+    
+    var description: String {
+        return "username: \(username) id: \(id)"
+    }
+}
+
+func ==(lhs: UserData, rhs: UserData) -> Bool {
+    return lhs.id == rhs.id
+}
+
 struct Song: CustomStringConvertible {
     var id: String;
     var name: String;

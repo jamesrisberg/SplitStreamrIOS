@@ -3,7 +3,8 @@ All notable changes to this project will be documented in this file.
 `Alamofire` adheres to [Semantic Versioning](http://semver.org/).
 
 #### 3.x Releases
-- `3.2.x` Releases - [3.2.0](#320)
+- `3.3.x` Releases - [3.3.0](#330)
+- `3.2.x` Releases - [3.2.0](#320) | [3.2.1](#321)
 - `3.1.x` Releases - [3.1.0](#310) | [3.1.1](#311) | [3.1.2](#312) | [3.1.3](#313) | [3.1.4](#314) | [3.1.5](#315)
 - `3.0.x` Releases - [3.0.0](#300) | [3.0.1](#301)
 - `3.0.0` Betas - [3.0.0-beta.1](#300-beta1) | [3.0.0-beta.2](#300-beta2) | [3.0.0-beta.3](#300-beta3)
@@ -19,6 +20,59 @@ All notable changes to this project will be documented in this file.
 - `1.0.x` Releases - [1.0.0](#100) | [1.0.1](#101)
 
 ---
+
+## [3.3.0](https://github.com/Alamofire/Alamofire/releases/tag/3.3.0)
+Released on 2016-03-23. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.3.0).
+
+#### Added
+- Added override closures for all `SessionDelegate` APIs with completion handlers.
+  - Added by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1099](https://github.com/Alamofire/Alamofire/pull/1099).
+
+#### Updated
+- The `User-Agent` header implementation to use more aggresive type-safety checks.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Regards to Issue
+  [#1100](https://github.com/Alamofire/Alamofire/issues/1100).
+- All shared response serializers to accept a custom queue for execution.
+  - Updated by [Luca Torella](https://github.com/lucatorella) in Pull Request
+  [#1112](https://github.com/Alamofire/Alamofire/pull/1112).
+- The network reachability manager to use IPv4 on iOS 8.x and OSX 10.9.x.
+  - Updated by [Christian Noon](https://github.com/cnoon) in Regards to Issue
+  [#1086](https://github.com/Alamofire/Alamofire/issues/1086).
+- All source, test and example code to compile against Swift 2.2.
+  - Updated by [James Barrow](https://github.com/Baza207) and [Dominik Hadl](https://github.com/nickskull) in Pull Requests
+  [#1030](https://github.com/Alamofire/Alamofire/pull/1030) and
+  [#1128](https://github.com/Alamofire/Alamofire/pull/1128).
+- The Travis CI YAML file to use Xcode 7.3 and also updated matrix targets.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+
+#### Fixed
+- Issue in JSON response serialization test case where the wrong serializer was being tested.
+  - Fixed by [Gregory J.H. Rho](https://github.com/topchul) in Pull Request
+  [#1108](https://github.com/Alamofire/Alamofire/pull/1108).
+- Issue where multipart form data encoding was unnecessarily scheduling input and output
+  streams with the current runloop.
+  - Fixed by [Brian King](https://github.com/KingOfBrian) in Pull Request
+  [#1121](https://github.com/Alamofire/Alamofire/pull/1121).
+
+---
+
+## [3.2.1](https://github.com/Alamofire/Alamofire/releases/tag/3.2.1)
+Released on 2016-02-27. All issues associated with this milestone can be found using this
+[filter](https://github.com/Alamofire/Alamofire/issues?utf8=✓&q=milestone%3A3.2.1).
+
+#### Updated
+- `StringResponseSerializer` implementation to build with the latest Swift toolchain.
+  - Updated by [Chris Cieslak](https://github.com/vivid-cieslak) in Pull Request
+  [#1050](https://github.com/Alamofire/Alamofire/pull/1050).
+- Expanded the Component Libraries section and moved it up in the README.
+  - Updated by [Christian Noon](https://github.com/cnoon).
+
+#### Fixed
+- Issue where JSON and plist custom content types were not retained during parameter encoding.
+  - Fixed by [Christian Noon](https://github.com/cnoon) in Pull Request
+  [#1088](https://github.com/Alamofire/Alamofire/pull/1088).
 
 ## [3.2.0](https://github.com/Alamofire/Alamofire/releases/tag/3.2.0)
 Released on 2016-02-07. All issues associated with this milestone can be found using this

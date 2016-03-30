@@ -15,9 +15,12 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var artistLabel: UILabel!;
     @IBOutlet weak var timeLabel: UILabel!;
     @IBOutlet weak var playPauseButton: UIButton!;
-    @IBOutlet weak var songTable: SongTableView!;
     @IBOutlet weak var playButtonView: UIView!;
+    @IBOutlet weak var playerView: UIView!;
     @IBOutlet weak var upperProgressView: UIProgressView!;
+    
+    var songDrawer: SongDrawerView?;
+    var drawerUp = false;
     
     let manager = SessionManager.sharedInstance;
     var queuePlayer : AVQueuePlayer? = AVQueuePlayer();
@@ -58,6 +61,46 @@ class MusicPlayerViewController: UIViewController {
         
         upperProgressView.progressTintColor = transparentOrange;
         upperProgressView.trackTintColor = blueLight1;
+        
+        songDrawer = SongDrawerView.instanceFromNib()
+        var frame = self.view.frame
+        frame.origin.y = (frame.size.height - 60)
+        songDrawer?.frame = frame
+        songDrawer?.bounds = self.view.bounds
+        if let view = songDrawer {
+            self.view.addSubview(view)
+        }
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(MusicPlayerViewController.toggleSongDrawer))
+        songDrawer?.upNextView.addGestureRecognizer(recognizer)
+    }
+    
+    func toggleSongDrawer() {
+        if drawerUp {
+            drawerUp = false
+            lowerDrawer()
+        } else {
+            drawerUp = true
+            raiseDrawer()
+        }
+    }
+    
+    func raiseDrawer() {
+        UIView.animateWithDuration(0.5) {
+            var frame = self.view.frame
+            frame.origin.y = 20
+            self.songDrawer?.frame = frame
+            self.playerView.alpha = 0.0
+        }
+    }
+    
+    func lowerDrawer() {
+        UIView.animateWithDuration(0.5) {
+            var frame = self.view.frame
+            frame.origin.y = (frame.size.height - 60)
+            self.songDrawer?.frame = frame
+            self.playerView.alpha = 1.0
+        }
     }
     
     func queueChunkToPlay(chunkNumber: Int, data: NSData) {
@@ -111,11 +154,11 @@ class MusicPlayerViewController: UIViewController {
     }
     
     @IBAction func next() {
-        self.songTable.playNextSong();
+        self.songDrawer?.songTable.playNextSong();
     }
     
     @IBAction func previous() {
-        self.songTable.playPreviousSong();
+        self.songDrawer?.songTable.playPreviousSong();
     }
     
     func updateTime() {

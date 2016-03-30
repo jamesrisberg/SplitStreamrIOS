@@ -35,7 +35,7 @@ class SongManager: NSObject {
     }
     
     func registerToReceiveNewSongDownloadNotification() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "songDownloaded:", name: songDownloadedNotificationIdentifier, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SongManager.songDownloaded), name: songDownloadedNotificationIdentifier, object: nil);
     }
     
     func downloadSongs() {

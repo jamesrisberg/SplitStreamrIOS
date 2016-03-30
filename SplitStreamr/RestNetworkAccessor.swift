@@ -43,6 +43,32 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
     
     // POST
     
+    func signUpUser(username: String, password: String, fullname: String, completionBlock: UserDataClosure?) {
+        let parameters = ["username" : username, "password" : password, "fullname" : fullname]
+        Alamofire.request(.POST, URLStringWithExtension("user/signup"), parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                if let json = response.result.value {
+                    completionBlock?(error: nil, user: UserData(fromJson: json as! Dictionary<String, AnyObject>));
+                }
+                else {
+                    completionBlock?(error: response.result.error, user: nil)
+                }
+        }
+    }
+    
+    func signInUser(username: String, password: String, completionBlock: UserDataClosure?) {
+        let parameters = ["username" : username, "password" : password]
+        Alamofire.request(.POST, URLStringWithExtension("user/signin"), parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                if let json = response.result.value {
+                    completionBlock?(error: nil, user: UserData(fromJson: json as! Dictionary<String, AnyObject>));
+                }
+                else {
+                    completionBlock?(error: response.result.error, user: nil)
+                }
+        }
+    }
+    
     // Utility
     
     func URLStringWithExtension(urlExtension: String) -> String {

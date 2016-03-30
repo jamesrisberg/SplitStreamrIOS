@@ -9,6 +9,8 @@
 import UIKit
 
 class SongTableView: UITableView {
+    @IBOutlet weak var drawer: SongDrawerView!
+    
     var currentPlayerIndex : Int = 0;
     
     required init?(coder aDecoder: NSCoder) {
@@ -17,6 +19,8 @@ class SongTableView: UITableView {
         delegate = self;
         dataSource = self;
         
+        registerClass(SongCell.self, forCellReuseIdentifier: "songCell");
+
         if !SongManager.sharedInstance.didDownloadSongs {
             SongManager.sharedInstance.onSongsFinishedDownloading = {
                 self.reloadData();
@@ -56,6 +60,12 @@ extension SongTableView : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let song = SongManager.sharedInstance.songs[indexPath.row];
         SongManager.sharedInstance.playSongWhenReady(song.id);
+        
+        if SongManager.sharedInstance.songs.count > indexPath.row {
+            let nextSong = SongManager.sharedInstance.songs[indexPath.row + 1];
+            drawer.upNextLabel.text = "\(nextSong.name) - \(nextSong.artist)";
+        }
+        
         self.currentPlayerIndex = indexPath.row;
         self.deselectRowAtIndexPath(indexPath, animated: true);
     }
@@ -71,12 +81,23 @@ extension SongTableView : UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("songCell") as! SongCell;
-        
-        let song = SongManager.sharedInstance.songs[indexPath.row];
-        
-        cell.titleArtistLabel?.text = "\(song.name) - \(song.artist)";
-        
-        return cell;
+        if let cell = tableView.dequeueReusableCellWithIdentifier("songCell") as? SongCell {
+            
+            let song = SongManager.sharedInstance.songs[indexPath.row];
+            
+            cell.titleArtistLabel?.text = "\(song.name) - \(song.artist)";
+            
+            return cell;
+        } else {
+            
+            let cell: SongCell = SongCell(style: UITableViewCellStyle.Default, reuseIdentifier: "songCell")
+            
+            
+            let song = SongManager.sharedInstance.songs[indexPath.row];
+            
+            cell.titleArtistLabel?.text = "\(song.name) - \(song.artist)";
+            
+            return cell;
+        }
     }
 }

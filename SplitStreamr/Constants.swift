@@ -17,6 +17,7 @@ typealias SongArrayClosure = (error: NSError?, list: Array<Song>?) -> Void;
 typealias JsonClosure = (error: NSError?, jsonData: AnyObject?) -> Void;
 typealias DataClosure = (error: NSError?, data: NSData?) -> Void;
 typealias StringClosure = (error: NSError?, string: String?) -> Void;
+typealias UserDataClosure = (error: NSError?, user: UserData?) -> Void;
 
 // MARK: Color Scheme
 
@@ -54,7 +55,22 @@ let networkErrorDomain = "com.splitstreamr.network";
 
 let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0];
 
-// MARK: Debug
+// MARK: Helpers
+
+func randomStringWithLength (len : Int) -> NSString {
+    
+    let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    
+    let randomString : NSMutableString = NSMutableString(capacity: len)
+    
+    for (var i=0; i < len; i+=1){
+        let length = UInt32 (letters.length)
+        let rand = arc4random_uniform(length)
+        randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+    }
+    
+    return randomString
+}
 
 let dateFormatter: NSDateFormatter = {
     let formatter = NSDateFormatter()

@@ -53,7 +53,7 @@ extension NodeStreamManager {
     
     func startMonitoringStream() {
         debugLog("Timer created");
-        timer = NSTimer(timeInterval: 0.5, target: self, selector: "streamStatus", userInfo: nil, repeats: false);
+        timer = NSTimer(timeInterval: 0.5, target: self, selector: #selector(NodeStreamManager.streamStatus), userInfo: nil, repeats: false);
         NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes);
     }
     

@@ -14,11 +14,10 @@
 		150FFDEB1C78375C0090B436 /* NetworkingAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDE71C78375C0090B436 /* NetworkingAccessor.swift */; };
 		150FFDEC1C78375C0090B436 /* NetworkObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDE81C78375C0090B436 /* NetworkObjects.swift */; };
 		150FFDED1C78375C0090B436 /* RestNetworkAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDE91C78375C0090B436 /* RestNetworkAccessor.swift */; };
-		150FFDF91C7850F30090B436 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDF81C7850F30090B436 /* ViewController.swift */; };
+		150FFDF91C7850F30090B436 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDF81C7850F30090B436 /* MenuViewController.swift */; };
 		150FFDFB1C78604F0090B436 /* String+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFDFA1C78604F0090B436 /* String+JSON.swift */; };
 		150FFDFE1C7867760090B436 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */; };
 		150FFDFF1C7867760090B436 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		150FFE011C78C3300090B436 /* SocketTesterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFE001C78C3300090B436 /* SocketTesterViewController.swift */; };
 		150FFE031C78C4D30090B436 /* SocketMessageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFE021C78C4D30090B436 /* SocketMessageParser.swift */; };
 		150FFE051C78CEBA0090B436 /* NSError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FFE041C78CEBA0090B436 /* NSError+LocalizedDescription.swift */; };
 		1581CAEB1C7950D400A6DD48 /* SongManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1581CAEA1C7950D400A6DD48 /* SongManager.swift */; };
@@ -40,9 +39,16 @@
 		6E46457E1C799C9A0036BAA2 /* NodeStreamManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46457D1C799C9A0036BAA2 /* NodeStreamManager.swift */; };
 		6E4645801C79E5D40036BAA2 /* ProgressFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */; };
 		6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */; };
-		6E4645861C79FD530036BAA2 /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */; };
-		6E4645871C79FD530036BAA2 /* SVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E4645891C7A1C1F0036BAA2 /* SongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645881C7A1C1F0036BAA2 /* SongCell.swift */; };
+		6E8485B71CAB50C3002FD9CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485B61CAB50C3002FD9CE /* LoginViewController.swift */; };
+		6E8485B91CAB5596002FD9CE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485B81CAB5596002FD9CE /* User.swift */; };
+		6E8485BB1CAB59E4002FD9CE /* SongDrawerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E8485BA1CAB59E4002FD9CE /* SongDrawerView.xib */; };
+		6E8485BD1CAB59F1002FD9CE /* AccountView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E8485BC1CAB59F1002FD9CE /* AccountView.xib */; };
+		6E8485BE1CAB5D5F002FD9CE /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */; };
+		6E8485BF1CAB5DB8002FD9CE /* SVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6E8485C31CAB602E002FD9CE /* SongDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485C21CAB602E002FD9CE /* SongDrawerView.swift */; };
+		6E8485C71CAB712F002FD9CE /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485C61CAB712F002FD9CE /* AccountView.swift */; };
+		6E8485CC1CAB801F002FD9CE /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485CA1CAB801F002FD9CE /* UICKeyChainStore.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,9 +58,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6E8485BF1CAB5DB8002FD9CE /* SVProgressHUD.framework in Embed Frameworks */,
 				6E4645671C7833D30036BAA2 /* Starscream.framework in Embed Frameworks */,
 				6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */,
-				6E4645871C79FD530036BAA2 /* SVProgressHUD.framework in Embed Frameworks */,
 				150FFDFF1C7867760090B436 /* SwiftyJSON.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -70,10 +76,9 @@
 		150FFDE71C78375C0090B436 /* NetworkingAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingAccessor.swift; sourceTree = "<group>"; };
 		150FFDE81C78375C0090B436 /* NetworkObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObjects.swift; sourceTree = "<group>"; };
 		150FFDE91C78375C0090B436 /* RestNetworkAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestNetworkAccessor.swift; sourceTree = "<group>"; };
-		150FFDF81C7850F30090B436 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		150FFDF81C7850F30090B436 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		150FFDFA1C78604F0090B436 /* String+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+JSON.swift"; sourceTree = "<group>"; };
 		150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
-		150FFE001C78C3300090B436 /* SocketTesterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketTesterViewController.swift; sourceTree = "<group>"; };
 		150FFE021C78C4D30090B436 /* SocketMessageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketMessageParser.swift; sourceTree = "<group>"; };
 		150FFE041C78CEBA0090B436 /* NSError+LocalizedDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		1581CAEA1C7950D400A6DD48 /* SongManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongManager.swift; sourceTree = "<group>"; };
@@ -96,8 +101,16 @@
 		6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressFillView.swift; sourceTree = "<group>"; };
 		6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ultralight Beam.mp3"; sourceTree = "<group>"; };
 		6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
-		6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
 		6E4645881C7A1C1F0036BAA2 /* SongCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongCell.swift; sourceTree = "<group>"; };
+		6E8485B61CAB50C3002FD9CE /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6E8485B81CAB5596002FD9CE /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6E8485BA1CAB59E4002FD9CE /* SongDrawerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongDrawerView.xib; sourceTree = "<group>"; };
+		6E8485BC1CAB59F1002FD9CE /* AccountView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountView.xib; sourceTree = "<group>"; };
+		6E8485C21CAB602E002FD9CE /* SongDrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongDrawerView.swift; sourceTree = "<group>"; };
+		6E8485C61CAB712F002FD9CE /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		6E8485C91CAB801F002FD9CE /* SplitStreamr-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "SplitStreamr-Bridging-Header.h"; path = "SplitStreamr/SplitStreamr-Bridging-Header.h"; sourceTree = "<group>"; };
+		6E8485CA1CAB801F002FD9CE /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UICKeyChainStore.m; path = SplitStreamr/UICKeyChainStore.m; sourceTree = "<group>"; };
+		6E8485CB1CAB801F002FD9CE /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UICKeyChainStore.h; path = SplitStreamr/UICKeyChainStore.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,9 +118,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E8485BE1CAB5D5F002FD9CE /* SVProgressHUD.framework in Frameworks */,
 				6E4645661C7833D30036BAA2 /* Starscream.framework in Frameworks */,
 				6E4645681C7833D30036BAA2 /* Alamofire.framework in Frameworks */,
-				6E4645861C79FD530036BAA2 /* SVProgressHUD.framework in Frameworks */,
 				150FFDFE1C7867760090B436 /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,15 +140,18 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
-		150FFDD81C7829910090B436 /* UISubClasses */ = {
+		150FFDD81C7829910090B436 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6E8485C21CAB602E002FD9CE /* SongDrawerView.swift */,
+				6E4645751C78E2530036BAA2 /* SongTableView.swift */,
+				6E4645881C7A1C1F0036BAA2 /* SongCell.swift */,
 				150FFDD61C7829830090B436 /* NavigationController.swift */,
 				150FFDD91C7829DA0090B436 /* SongCellBackground.swift */,
 				6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */,
-				6E4645881C7A1C1F0036BAA2 /* SongCell.swift */,
+				6E8485C61CAB712F002FD9CE /* AccountView.swift */,
 			);
-			name = UISubClasses;
+			name = Views;
 			sourceTree = "<group>";
 		};
 		150FFDE51C7837390090B436 /* Networking */ = {
@@ -153,6 +169,9 @@
 		158D7F0D1C78246500FDEA56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6E8485C91CAB801F002FD9CE /* SplitStreamr-Bridging-Header.h */,
+				6E8485CA1CAB801F002FD9CE /* UICKeyChainStore.m */,
+				6E8485CB1CAB801F002FD9CE /* UICKeyChainStore.h */,
 				6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */,
 				150FFDFC1C78676D0090B436 /* SwiftyJSON.framework */,
 				158D7F0E1C7826E900FDEA56 /* Starscream.framework */,
@@ -164,7 +183,6 @@
 		6E4645361C781FC70036BAA2 = {
 			isa = PBXGroup;
 			children = (
-				6E4645851C79FD530036BAA2 /* SVProgressHUD.framework */,
 				6E4645411C781FC70036BAA2 /* SplitStreamr */,
 				158D7F0D1C78246500FDEA56 /* Frameworks */,
 				6E4645401C781FC70036BAA2 /* Products */,
@@ -184,10 +202,13 @@
 			children = (
 				6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */,
 				6E4645461C781FC70036BAA2 /* Main.storyboard */,
+				6E8485BA1CAB59E4002FD9CE /* SongDrawerView.xib */,
+				6E8485BC1CAB59F1002FD9CE /* AccountView.xib */,
 				6E46454B1C781FC70036BAA2 /* LaunchScreen.storyboard */,
 				150FFDD51C7828920090B436 /* Utilities */,
 				150FFDE51C7837390090B436 /* Networking */,
-				150FFDD81C7829910090B436 /* UISubClasses */,
+				6E8485C81CAB77A1002FD9CE /* Models */,
+				150FFDD81C7829910090B436 /* Views */,
 				6E46457C1C794ED80036BAA2 /* ViewControllers */,
 				6E46457B1C794EAD0036BAA2 /* ChunkManagement */,
 				6E46454E1C781FC70036BAA2 /* Info.plist */,
@@ -211,13 +232,20 @@
 		6E46457C1C794ED80036BAA2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				6E4645751C78E2530036BAA2 /* SongTableView.swift */,
-				150FFDF81C7850F30090B436 /* ViewController.swift */,
+				150FFDF81C7850F30090B436 /* MenuViewController.swift */,
 				6E46456F1C785D6F0036BAA2 /* JoinSessionViewController.swift */,
 				6E4645711C78D0740036BAA2 /* MusicPlayerViewController.swift */,
-				150FFE001C78C3300090B436 /* SocketTesterViewController.swift */,
+				6E8485B61CAB50C3002FD9CE /* LoginViewController.swift */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		6E8485C81CAB77A1002FD9CE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6E8485B81CAB5596002FD9CE /* User.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,7 +275,7 @@
 		6E4645371C781FC70036BAA2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = SplitStreamr;
 				TargetAttributes = {
@@ -281,8 +309,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E46454D1C781FC70036BAA2 /* LaunchScreen.storyboard in Resources */,
+				6E8485BB1CAB59E4002FD9CE /* SongDrawerView.xib in Resources */,
 				6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */,
 				6E46454A1C781FC70036BAA2 /* Assets.xcassets in Resources */,
+				6E8485BD1CAB59F1002FD9CE /* AccountView.xib in Resources */,
 				6E4645481C781FC70036BAA2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,27 +324,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E8485B91CAB5596002FD9CE /* User.swift in Sources */,
 				150FFDEC1C78375C0090B436 /* NetworkObjects.swift in Sources */,
 				150FFDD41C78288F0090B436 /* UIColor+Hex.swift in Sources */,
-				150FFE011C78C3300090B436 /* SocketTesterViewController.swift in Sources */,
 				150FFDED1C78375C0090B436 /* RestNetworkAccessor.swift in Sources */,
 				150FFDEA1C78375C0090B436 /* NetworkFacade.swift in Sources */,
 				150FFDD71C7829830090B436 /* NavigationController.swift in Sources */,
+				6E8485C71CAB712F002FD9CE /* AccountView.swift in Sources */,
 				150FFDDA1C7829DA0090B436 /* SongCellBackground.swift in Sources */,
 				6E46457E1C799C9A0036BAA2 /* NodeStreamManager.swift in Sources */,
 				1581CAEB1C7950D400A6DD48 /* SongManager.swift in Sources */,
 				6E4645721C78D0740036BAA2 /* MusicPlayerViewController.swift in Sources */,
 				6E4645761C78E2530036BAA2 /* SongTableView.swift in Sources */,
 				6E4645431C781FC70036BAA2 /* AppDelegate.swift in Sources */,
-				150FFDF91C7850F30090B436 /* ViewController.swift in Sources */,
+				150FFDF91C7850F30090B436 /* MenuViewController.swift in Sources */,
+				6E8485B71CAB50C3002FD9CE /* LoginViewController.swift in Sources */,
 				6E4645801C79E5D40036BAA2 /* ProgressFillView.swift in Sources */,
 				6E4645781C78FF150036BAA2 /* NodeChunkManager.swift in Sources */,
 				150FFDEB1C78375C0090B436 /* NetworkingAccessor.swift in Sources */,
 				6E4645891C7A1C1F0036BAA2 /* SongCell.swift in Sources */,
+				6E8485CC1CAB801F002FD9CE /* UICKeyChainStore.m in Sources */,
 				150FFE051C78CEBA0090B436 /* NSError+LocalizedDescription.swift in Sources */,
 				6E4645701C785D6F0036BAA2 /* JoinSessionViewController.swift in Sources */,
 				6E46457A1C7901540036BAA2 /* PlayerChunkManager.swift in Sources */,
 				6E4645551C7823230036BAA2 /* SessionManager.swift in Sources */,
+				6E8485C31CAB602E002FD9CE /* SongDrawerView.swift in Sources */,
 				150FFDFB1C78604F0090B436 /* String+JSON.swift in Sources */,
 				150FFE031C78C4D30090B436 /* SocketMessageParser.swift in Sources */,
 				158D7F111C7827B900FDEA56 /* Constants.swift in Sources */,
@@ -428,6 +462,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -439,6 +474,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SplitStreamr.SplitStreamr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "SplitStreamr/SplitStreamr-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -446,6 +483,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -457,6 +495,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SplitStreamr.SplitStreamr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "SplitStreamr/SplitStreamr-Bridging-Header.h";
 			};
 			name = Release;
 		};
