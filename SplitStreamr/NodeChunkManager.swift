@@ -162,7 +162,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
         debugLog("Finished receiving song: \(songId)");
     }
     
-    func sessionIdReceived(sessionId: String) {
+    func sessionIdReceived(sessionId: String, key: String) {
         
     }
     

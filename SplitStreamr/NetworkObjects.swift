@@ -8,25 +8,28 @@
 
 import Foundation
 
-struct UserData: CustomStringConvertible, Equatable {
+struct UserData: CustomStringConvertible, Equatable {    
     var id: String
-    var username: String
-    var fullname: String?
+    var email: String
+    var firstName: String?
+    var lastName: String?
     
-    init(username: String, fullname: String?) {
-        self.username = username
-        self.fullname = fullname
+    init(email: String, firstName: String?, lastName: String?) {
+        self.email = email
+        self.firstName = firstName
+        self.lastName = lastName
         self.id = randomStringWithLength(8) as String
     }
     
     init(fromJson: Dictionary<String, AnyObject>) {
         id = fromJson["_id"] as! String
-        username = fromJson["username"] as! String
-        fullname = fromJson["fullname"] as? String
+        email = fromJson["email"] as! String
+        firstName = fromJson["firstName"] as? String
+        lastName = fromJson["lastName"] as? String
     }
     
     var description: String {
-        return "username: \(username) id: \(id)"
+        return "email: \(email) id: \(id)"
     }
 }
 

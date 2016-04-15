@@ -17,7 +17,7 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var playPauseButton: UIButton!;
     @IBOutlet weak var playButtonView: UIView!;
     @IBOutlet weak var playerView: UIView!;
-    @IBOutlet weak var upperProgressView: UIProgressView!;
+    var upperProgressView: UIProgressView?;
     
     var songDrawer: SongDrawerView?;
     var drawerUp = false;
@@ -28,8 +28,8 @@ class MusicPlayerViewController: UIViewController {
     var timer: NSTimer?;
     var playing = false;
     
-    var currentSongTime = 0;
-    var currentSongDuration = 180;
+    var currentSongTime: Float = 0.0;
+    var currentSongDuration: Float = 180.0;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -40,12 +40,25 @@ class MusicPlayerViewController: UIViewController {
         manager.startBrowsing();
                 
         SongManager.sharedInstance.queueChunkToPlay = queueChunkToPlay;
+        SongManager.sharedInstance.downloadSongs();
         
-        queuePlayerTimeObserver = queuePlayer?.addPeriodicTimeObserverForInterval(CMTimeMake(1,1), queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), usingBlock: { (time) -> Void in
+        queuePlayerTimeObserver = queuePlayer?.addPeriodicTimeObserverForInterval(CMTimeMake(1,1), queue: dispatch_get_main_queue(), usingBlock: { (time) -> Void in
             self.updateTime();
         });
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MusicPlayerViewController.songSelected), name: "SongSelected", object: nil)
+        
         queuePlayer?.actionAtItemEnd = .Advance;
+    }
+    
+    func songSelected(notification: NSNotification) {
+        if let info = notification.userInfo as? [String : String] {
+            titleLabel.text = info["songName"]
+            artistLabel.text = info["songArtist"]
+            currentSongDuration = Float(info["songLength"]!)!
+        } else {
+            print("no info")
+        }
     }
     
     func configureSubviews() {
@@ -59,11 +72,17 @@ class MusicPlayerViewController: UIViewController {
         
         timeLabel.font = UIFont.monospacedDigitSystemFontOfSize(35.0, weight: UIFontWeightThin)
         
-        upperProgressView.progressTintColor = transparentOrange;
-        upperProgressView.trackTintColor = blueLight1;
+        var frame = self.view.frame
+        upperProgressView = UIProgressView(frame: frame)
+        
+        if let view = upperProgressView {
+            view.progressTintColor = transparentOrange;
+            view.trackTintColor = blueLight1;
+            self.view.addSubview(view)
+            self.view.sendSubviewToBack(view)
+        }
         
         songDrawer = SongDrawerView.instanceFromNib()
-        var frame = self.view.frame
         frame.origin.y = (frame.size.height - 60)
         songDrawer?.frame = frame
         songDrawer?.bounds = self.view.bounds
@@ -113,9 +132,7 @@ class MusicPlayerViewController: UIViewController {
         if queuePlayer?.canInsertItem(item, afterItem: nil) == true {
             queuePlayer?.insertItem(item, afterItem: nil);
         }
-        
-        print(queuePlayer?.items());
-        
+                
         if !playing {
             playing = true;
             self.play();
@@ -162,14 +179,17 @@ class MusicPlayerViewController: UIViewController {
     }
     
     func updateTime() {
-//        self.currentSongTime += 1;
-//
-//        self.upperProgressView.setProgress(Float(self.currentSongTime/self.currentSongDuration), animated: true);
-//        
-//        let minutes = self.currentSongTime / 60
-//        let seconds = self.currentSongTime % 60;
-//
-//        self.timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
+        self.currentSongTime += 1;
+
+        if let view = self.upperProgressView {
+            view.setProgress(self.currentSongTime/self.currentSongDuration, animated: true);
+        }
+        
+        let minutes = Int(self.currentSongTime) / 60
+        let seconds = Int(self.currentSongTime) % 60;
+        debugLog("\(currentSongTime) : \(minutes) : \(seconds)")
+
+        self.timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
     }
     
     @IBAction func backToMenu() {

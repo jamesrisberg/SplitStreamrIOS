@@ -3,3 +3,4 @@ github "daltoniam/Starscream" >= 1.1.1
 github "SwiftyJSON/SwiftyJSON"
 # github "mxcl/PromiseKit" ~> 2.0
 github "SVProgressHUD/SVProgressHUD"
+github "krzyzanowskim/CryptoSwift"

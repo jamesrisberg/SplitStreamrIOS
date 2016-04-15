@@ -14,13 +14,8 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
     // GET
     
     func getSongs(completionBlock: SongArrayClosure) {
-        Alamofire.request(.GET, URLStringWithExtension("songs"))
-            .responseJSON { response in
-                // DEBUG: debugLog(response.request)  // original URL request
-                // DEBUG: debugLog(response.response) // URL response
-                // DEBUG: debugLog(response.data)     // server data
-                // DEBUG: debugLog(response.result)   // result of response serialization
-                
+        Alamofire.request(.GET, URLStringWithExtension("songs/user/\(User.sharedInstance.id!)"))
+            .responseJSON { response in                
                 var songs : Array<Song> = Array<Song>();
                 
                 if let json = response.result.value {
@@ -38,13 +33,13 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
     }
     
     func getSong(songId: String, completionBlock: SongClosure) {
-        
+
     }
     
     // POST
     
-    func signUpUser(username: String, password: String, fullname: String, completionBlock: UserDataClosure?) {
-        let parameters = ["username" : username, "password" : password, "fullname" : fullname]
+    func signUpUser(username: String, password: String, completionBlock: UserDataClosure?) {
+        let parameters = ["email" : username, "password" : password, "firstName" : "Dave", "lastName" : "Small"]
         Alamofire.request(.POST, URLStringWithExtension("user/signup"), parameters: parameters, encoding: .JSON)
             .responseJSON { response in
                 if let json = response.result.value {
@@ -57,7 +52,7 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
     }
     
     func signInUser(username: String, password: String, completionBlock: UserDataClosure?) {
-        let parameters = ["username" : username, "password" : password]
+        let parameters = ["email" : username, "password" : password]
         Alamofire.request(.POST, URLStringWithExtension("user/signin"), parameters: parameters, encoding: .JSON)
             .responseJSON { response in
                 if let json = response.result.value {

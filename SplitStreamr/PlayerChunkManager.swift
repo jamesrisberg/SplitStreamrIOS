@@ -9,10 +9,12 @@
 import Foundation
 import MultipeerConnectivity
 import SwiftyJSON
+import CryptoSwift
 
 class PlayerChunkManager: NSObject {
     
     var sessionId: String?;
+    var key: String?;
     
     var streamDelegates: [MCPeerID : NodeStreamManager] = [:];
     var recievedChunks: [NSData?] = [];
@@ -87,6 +89,16 @@ class PlayerChunkManager: NSObject {
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
+//        var decrypted: [UInt8] = [];
+//        let encryptedBytes = Array(UnsafeBufferPointer(start: UnsafePointer<UInt8>(musicData.bytes), count: musicData.length))
+//        do {
+//            decrypted = try AES(key: key!, iv: "", blockMode: .CTR).decrypt(encryptedBytes, padding: PKCS7());
+//        } catch {
+//            debugLog("Decryption error");
+//        }
+//        
+//        let decryptedData = NSData(bytes: decrypted);
+        
         if chunkNumber == nextChunkToQueue {
             nextChunkToQueue += 1;
             SongManager.sharedInstance.queueChunk(chunkNumber, data: musicData);
@@ -160,8 +172,9 @@ extension PlayerChunkManager : NetworkFacadeDelegate {
         
     }
     
-    func sessionIdReceived(sessionId: String) {
+    func sessionIdReceived(sessionId: String, key: String) {
         self.sessionId = sessionId;
+        self.key = key;
         SessionManager.sharedInstance.setSessionId(sessionId);
     }
     

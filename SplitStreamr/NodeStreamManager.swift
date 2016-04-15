@@ -36,12 +36,13 @@ class NodeStreamManager: NSObject {
     
     func configureWithStream(stream: NSInputStream) {
         self.stream = stream;
+        self.stream.delegate = self
         self.stream.open();
     }
     
     func prepareForChunkWithSize(chunkSize: Int) {
         incomingChunkSize = chunkSize;
-        startMonitoringStream();
+        //startMonitoringStream();
     }
     
     func closeStream() {
@@ -49,53 +50,39 @@ class NodeStreamManager: NSObject {
     }
 }
 
-extension NodeStreamManager {
-    
-    func startMonitoringStream() {
-        debugLog("Timer created");
-        timer = NSTimer(timeInterval: 0.5, target: self, selector: #selector(NodeStreamManager.streamStatus), userInfo: nil, repeats: false);
-        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes);
-    }
-    
-    func streamStatus() {
-        self.timer?.invalidate();
-        
-        debugLog("Input Stream Status: \(stream.streamStatus.rawValue) \n Bytes Available: \(stream.hasBytesAvailable)");
-        if (stream.hasBytesAvailable) {
-            self.readBytes(stream);
-        } else {
-            self.startMonitoringStream();
-        }
-    }
-    
-    func readBytes(aStream: NSStream) {
-        var buffer = [UInt8](count: 4096, repeatedValue: 0);
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
-
-            while (self.stream.hasBytesAvailable) {
-                let len = self.stream.read(&buffer, maxLength: buffer.count);
+extension NodeStreamManager : NSStreamDelegate {
+    func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
+        switch (eventCode) {
+        case NSStreamEvent.ErrorOccurred:
+            debugLog("ErrorOccurred")
+        case NSStreamEvent.EndEncountered:
+            debugLog("EndEncountered")
+        case NSStreamEvent.None:
+            debugLog("None")
+        case NSStreamEvent.HasBytesAvailable:
+            debugLog("HasBytesAvail");
+            var buffer = [UInt8](count: incomingChunkSize!, repeatedValue: 0)
+            let len = self.stream.read(&buffer, maxLength: buffer.count);
                 
-                if len > 0 {
-                    self.chunkData.appendBytes(&buffer, length: len);
-                }
-                
-                debugLog("chunkData size: \(self.chunkData.length)");
-                if self.chunkData.length == self.incomingChunkSize {
-                    self.chunkFinished = true;
-                }
+            if len > 0 {
+                chunkData.appendBytes(&buffer, length: len);
+            }
+            debugLog("chunkData size: \(chunkData.length)");
+            if chunkData.length == incomingChunkSize {
+                debugLog("chunk finished");
+                delegate!.chunkFinishedStreaming(chunkData, manager: self);
+                incomingChunkSize = nil;
+                chunkData = NSMutableData();
             }
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if self.chunkFinished {
-                    debugLog("Got all the data!");
-                    self.delegate!.chunkFinishedStreaming(self.chunkData, manager: self);
-                    self.chunkData = NSMutableData();
-                    self.chunkFinished = false;
-                } else {
-                    self.startMonitoringStream();
-                }
-            });
-        });
+        case NSStreamEvent():
+            debugLog("allZeros")
+        case NSStreamEvent.OpenCompleted:
+            debugLog("OpenCompleted")
+        case NSStreamEvent.HasSpaceAvailable:
+            debugLog("HasSpaceAvailable")
+        default:
+            break
+        }
     }
 }

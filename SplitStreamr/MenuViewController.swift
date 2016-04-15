@@ -25,7 +25,8 @@ class MenuViewController: UIViewController {
             self.view.addSubview(view)
         }
         
-        accountDrawer?.usernameLabel.text = User.sharedInstance.username;
+        accountDrawer?.usernameLabel.text = "Account";
+        
         accountDrawer?.settingsButton.addTarget(self, action: #selector(MenuViewController.toggleAccountDrawer), forControlEvents: .TouchUpInside)
         accountDrawer?.logoutButton.addTarget(self, action: #selector(MenuViewController.logout), forControlEvents: .TouchUpInside)
     }

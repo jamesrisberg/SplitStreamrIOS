@@ -12,7 +12,7 @@ import Starscream
 protocol NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData);
     func didFinishReceivingSong(songId: String);
-    func sessionIdReceived(sessionId: String);
+    func sessionIdReceived(sessionId: String, key: String);
     func errorRecieved(error: NSError);
     func didEstablishConnection();
 }
@@ -28,6 +28,7 @@ class NetworkFacade : NSObject {
     let socket : WebSocket;
     
     var currentSessionId: String?;
+    var currentKey: String?;
     
     var expectedChunk : (songId: String, chunkNumber: Int)?;
     
@@ -120,16 +121,17 @@ class NetworkFacade : NSObject {
 // MARK: Message Parser Delegate
 
 extension NetworkFacade : SocketMessageParserDelegate {
-    func didCreateSession(sessionId: String) {
+    func didCreateSession(sessionId: String, key: String) {
         currentSessionId = sessionId;
+        currentKey = key;
         debugLog("Created session with id: \(sessionId)");
-        delegate?.sessionIdReceived(sessionId);
+        delegate?.sessionIdReceived(sessionId, key: key);
     }
     
     func didJoinSession(sessionId: String) {
         currentSessionId = sessionId;
         debugLog("Joined session with id: \(sessionId)");
-        delegate?.sessionIdReceived(sessionId);
+        delegate?.sessionIdReceived(sessionId, key: "");
     }
     
     func didFinishStreamingSong(songId: String) {

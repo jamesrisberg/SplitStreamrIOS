@@ -40,6 +40,8 @@
 		6E4645801C79E5D40036BAA2 /* ProgressFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */; };
 		6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */; };
 		6E4645891C7A1C1F0036BAA2 /* SongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645881C7A1C1F0036BAA2 /* SongCell.swift */; };
+		6E59621F1CBDE6FF0031C1D0 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */; };
+		6E5962201CBDE70A0031C1D0 /* CryptoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E8485B71CAB50C3002FD9CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485B61CAB50C3002FD9CE /* LoginViewController.swift */; };
 		6E8485B91CAB5596002FD9CE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485B81CAB5596002FD9CE /* User.swift */; };
 		6E8485BB1CAB59E4002FD9CE /* SongDrawerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E8485BA1CAB59E4002FD9CE /* SongDrawerView.xib */; };
@@ -58,6 +60,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6E5962201CBDE70A0031C1D0 /* CryptoSwift.framework in Embed Frameworks */,
 				6E8485BF1CAB5DB8002FD9CE /* SVProgressHUD.framework in Embed Frameworks */,
 				6E4645671C7833D30036BAA2 /* Starscream.framework in Embed Frameworks */,
 				6E4645691C7833D30036BAA2 /* Alamofire.framework in Embed Frameworks */,
@@ -102,6 +105,7 @@
 		6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ultralight Beam.mp3"; sourceTree = "<group>"; };
 		6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
 		6E4645881C7A1C1F0036BAA2 /* SongCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongCell.swift; sourceTree = "<group>"; };
+		6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
 		6E8485B61CAB50C3002FD9CE /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6E8485B81CAB5596002FD9CE /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6E8485BA1CAB59E4002FD9CE /* SongDrawerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongDrawerView.xib; sourceTree = "<group>"; };
@@ -118,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E59621F1CBDE6FF0031C1D0 /* CryptoSwift.framework in Frameworks */,
 				6E8485BE1CAB5D5F002FD9CE /* SVProgressHUD.framework in Frameworks */,
 				6E4645661C7833D30036BAA2 /* Starscream.framework in Frameworks */,
 				6E4645681C7833D30036BAA2 /* Alamofire.framework in Frameworks */,
@@ -169,6 +174,7 @@
 		158D7F0D1C78246500FDEA56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */,
 				6E8485C91CAB801F002FD9CE /* SplitStreamr-Bridging-Header.h */,
 				6E8485CA1CAB801F002FD9CE /* UICKeyChainStore.m */,
 				6E8485CB1CAB801F002FD9CE /* UICKeyChainStore.h */,

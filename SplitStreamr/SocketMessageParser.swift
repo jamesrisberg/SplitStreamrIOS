@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 protocol SocketMessageParserDelegate {
-    func didCreateSession(sessionId: String);
+    func didCreateSession(sessionId: String, key: String);
     // func didFailToCreateSession(error: NSError);
     
     func didJoinSession(sessionId: String);
@@ -42,7 +42,7 @@ class SocketMessageParser: NSObject {
                     mappedFunction(jsonObject: json);
                 }
                 else {
-                    print("no function defined for message: \(message)");
+                    debugLog("no function defined for message: \(message)");
                 }
             }
             else {
@@ -60,7 +60,7 @@ class SocketMessageParser: NSObject {
         var tempDictionary = Dictionary<String, (jsonObject: JSON) -> Void>();
         
         tempDictionary["new session"] = { (jsonObject: JSON) -> Void in
-            self.delegate?.didCreateSession(jsonObject["session"].stringValue);
+            self.delegate?.didCreateSession(jsonObject["session"].stringValue, key: jsonObject["key"].stringValue);
         };
         
         tempDictionary["join session"] = { (jsonObject: JSON) -> Void in

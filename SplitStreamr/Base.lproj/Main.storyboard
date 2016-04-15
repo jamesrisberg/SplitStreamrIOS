@@ -17,11 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fdm-7g-9G0" customClass="UIProgressView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DKp-L9-xiB">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
@@ -128,15 +123,11 @@
                         </subviews>
                         <color key="backgroundColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Fdm-7g-9G0" firstAttribute="top" secondItem="kEM-Bz-E4Y" secondAttribute="top" id="7p7-Ta-Hxa"/>
-                            <constraint firstItem="Fdm-7g-9G0" firstAttribute="leading" secondItem="kEM-Bz-E4Y" secondAttribute="leading" id="9Pt-W8-l2j"/>
                             <constraint firstAttribute="trailing" secondItem="DKp-L9-xiB" secondAttribute="trailing" id="CrC-F3-4k0"/>
                             <constraint firstItem="9cL-Th-Gjq" firstAttribute="top" secondItem="DKp-L9-xiB" secondAttribute="bottom" id="K48-py-rXf"/>
                             <constraint firstItem="DKp-L9-xiB" firstAttribute="leading" secondItem="kEM-Bz-E4Y" secondAttribute="leading" id="MOm-nl-HVy"/>
-                            <constraint firstItem="9cL-Th-Gjq" firstAttribute="top" secondItem="Fdm-7g-9G0" secondAttribute="bottom" id="OSt-8s-qgJ"/>
                             <constraint firstAttribute="trailing" secondItem="DKp-L9-xiB" secondAttribute="trailing" id="egx-i2-usR"/>
                             <constraint firstItem="DKp-L9-xiB" firstAttribute="top" secondItem="kEM-Bz-E4Y" secondAttribute="top" id="gfE-0p-SX4"/>
-                            <constraint firstAttribute="trailing" secondItem="Fdm-7g-9G0" secondAttribute="trailing" id="q9X-5J-dzW"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -151,7 +142,6 @@
                         <outlet property="playerView" destination="DKp-L9-xiB" id="DFI-cP-QIh"/>
                         <outlet property="timeLabel" destination="grc-VI-vac" id="fdG-j8-boS"/>
                         <outlet property="titleLabel" destination="3Oo-e7-VTp" id="YtZ-nC-zZY"/>
-                        <outlet property="upperProgressView" destination="Fdm-7g-9G0" id="NKw-ds-wdn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OmB-C1-lMw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -346,7 +336,7 @@
                                             <constraint firstAttribute="height" constant="4" id="5zK-SB-G6u"/>
                                         </constraints>
                                     </view>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="laX-S6-4YP">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="laX-S6-4YP">
                                         <rect key="frame" x="10" y="0.0" width="510" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="ftf-dy-PfK"/>

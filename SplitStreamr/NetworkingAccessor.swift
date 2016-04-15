@@ -13,5 +13,7 @@ protocol NetworkingAccessor {
     func getSong(songId: String, completionBlock: SongClosure);
     
     // POST
+    func signUpUser(username: String, password: String, completionBlock: UserDataClosure?);
+    func signInUser(username: String, password: String, completionBlock: UserDataClosure?);
     
 }

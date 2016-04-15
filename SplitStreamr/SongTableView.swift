@@ -61,8 +61,11 @@ extension SongTableView : UITableViewDelegate {
         let song = SongManager.sharedInstance.songs[indexPath.row];
         SongManager.sharedInstance.playSongWhenReady(song.id);
         
-        if SongManager.sharedInstance.songs.count > indexPath.row {
+        if SongManager.sharedInstance.songs.count > indexPath.row+1 {
             let nextSong = SongManager.sharedInstance.songs[indexPath.row + 1];
+            drawer.upNextLabel.text = "\(nextSong.name) - \(nextSong.artist)";
+        } else {
+            let nextSong = SongManager.sharedInstance.songs[0];
             drawer.upNextLabel.text = "\(nextSong.name) - \(nextSong.artist)";
         }
         

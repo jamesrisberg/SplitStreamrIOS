@@ -26,7 +26,6 @@ class SongManager: NSObject {
     
     override init() {
         super.init();
-        self.downloadSongs();
         self.registerToReceiveNewSongDownloadNotification();
     }
     
@@ -63,6 +62,8 @@ class SongManager: NSObject {
     }
     
     func playSongWhenReady(songId : String) {
+        let song = getSongForId(songId)
+        NSNotificationCenter.defaultCenter().postNotificationName("SongSelected", object: nil, userInfo: ["songName" : song!.name, "songArtist" : song!.artist, "songLength" : "\(song!.length)"]);
         self.shouldPlayWhenDownloaded = true;
         downloadSong(songId);
     }

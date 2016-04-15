@@ -79,8 +79,8 @@ class LoginViewController: UIViewController {
                 } else if let data = user {
                     User.sharedInstance.configureWithUserData(data)
                     
-                    UICKeyChainStore.setString(self.usernameField.text, forKey: "com.currentuser.username", service: "com.emojr")
-                    UICKeyChainStore.setString(self.passwordField.text, forKey: "com.currentuser.password", service: "com.emojr")
+                    UICKeyChainStore.setString(self.usernameField.text, forKey: "com.currentuser.username", service: "com.splitstreamr")
+                    UICKeyChainStore.setString(self.passwordField.text, forKey: "com.currentuser.password", service: "com.splitstreamr")
                     
                     self.performSegueWithIdentifier("login", sender: self)
                 }
@@ -91,7 +91,25 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func signUp() {
+        errorLabel.hidden = true
+        let (valid, message) = validLoginForm()
         
+        if valid {
+            restAccessor.signUpUser(usernameField.text!, password: passwordField.text!) { (error, user) in
+                if let e = error {
+                    self.displayError(e.localizedDescription)
+                } else if let data = user {
+                    User.sharedInstance.configureWithUserData(data)
+                    
+                    UICKeyChainStore.setString(self.usernameField.text, forKey: "com.currentuser.username", service: "com.splitstreamr")
+                    UICKeyChainStore.setString(self.passwordField.text, forKey: "com.currentuser.password", service: "com.splitstreamr")
+                    
+                    self.performSegueWithIdentifier("login", sender: self)
+                }
+            }
+        } else {
+            displayError(message)
+        }
     }
     
     func displayError(message: String) {
