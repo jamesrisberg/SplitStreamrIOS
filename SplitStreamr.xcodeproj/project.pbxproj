@@ -51,6 +51,7 @@
 		6E8485C31CAB602E002FD9CE /* SongDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485C21CAB602E002FD9CE /* SongDrawerView.swift */; };
 		6E8485C71CAB712F002FD9CE /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485C61CAB712F002FD9CE /* AccountView.swift */; };
 		6E8485CC1CAB801F002FD9CE /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8485CA1CAB801F002FD9CE /* UICKeyChainStore.m */; };
+		6ED60CBF1CC2C0D8000AA939 /* AudioPlayerLibrary in Resources */ = {isa = PBXBuildFile; fileRef = 6ED60CBE1CC2C0D8000AA939 /* AudioPlayerLibrary */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -115,6 +116,7 @@
 		6E8485C91CAB801F002FD9CE /* SplitStreamr-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "SplitStreamr-Bridging-Header.h"; path = "SplitStreamr/SplitStreamr-Bridging-Header.h"; sourceTree = "<group>"; };
 		6E8485CA1CAB801F002FD9CE /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UICKeyChainStore.m; path = SplitStreamr/UICKeyChainStore.m; sourceTree = "<group>"; };
 		6E8485CB1CAB801F002FD9CE /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UICKeyChainStore.h; path = SplitStreamr/UICKeyChainStore.h; sourceTree = "<group>"; };
+		6ED60CBE1CC2C0D8000AA939 /* AudioPlayerLibrary */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AudioPlayerLibrary; path = SplitStreamr/AudioPlayerLibrary; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 		158D7F0D1C78246500FDEA56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6ED60CBE1CC2C0D8000AA939 /* AudioPlayerLibrary */,
 				6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */,
 				6E8485C91CAB801F002FD9CE /* SplitStreamr-Bridging-Header.h */,
 				6E8485CA1CAB801F002FD9CE /* UICKeyChainStore.m */,
@@ -288,6 +291,11 @@
 					6E46453E1C781FC70036BAA2 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = M2JNHSR23U;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -315,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E46454D1C781FC70036BAA2 /* LaunchScreen.storyboard in Resources */,
+				6ED60CBF1CC2C0D8000AA939 /* AudioPlayerLibrary in Resources */,
 				6E8485BB1CAB59E4002FD9CE /* SongDrawerView.xib in Resources */,
 				6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */,
 				6E46454A1C781FC70036BAA2 /* Assets.xcassets in Resources */,
@@ -419,7 +428,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -457,7 +466,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -476,6 +485,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = SplitStreamr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SplitStreamr.SplitStreamr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -497,6 +507,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = SplitStreamr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SplitStreamr.SplitStreamr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
