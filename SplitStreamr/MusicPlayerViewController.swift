@@ -132,11 +132,14 @@ class MusicPlayerViewController: UIViewController {
         if queuePlayer?.canInsertItem(item, afterItem: nil) == true {
             queuePlayer?.insertItem(item, afterItem: nil);
         }
+        
+        print("Player status:")
+        print(queuePlayer?.status)
                 
-        if !playing {
-            playing = true;
-            self.play();
-        }
+//        if !playing {
+//            playing = true;
+//            self.play();
+//        }
     }
     
     @IBAction func playOrPause() {
@@ -151,6 +154,8 @@ class MusicPlayerViewController: UIViewController {
     
     func play() {
         queuePlayer?.play();
+        print("Player status:")
+        print(queuePlayer?.status)
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Pause") {
@@ -162,6 +167,7 @@ class MusicPlayerViewController: UIViewController {
     func pause() {
         queuePlayer?.pause();
         timer?.invalidate();
+        print("Player status:")
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Play") {
@@ -179,17 +185,17 @@ class MusicPlayerViewController: UIViewController {
     }
     
     func updateTime() {
-        self.currentSongTime += 1;
-
-        if let view = self.upperProgressView {
-            view.setProgress(self.currentSongTime/self.currentSongDuration, animated: true);
-        }
-        
-        let minutes = Int(self.currentSongTime) / 60
-        let seconds = Int(self.currentSongTime) % 60;
-        debugLog("\(currentSongTime) : \(minutes) : \(seconds)")
-
-        self.timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
+//        self.currentSongTime += 1;
+//
+//        if let view = self.upperProgressView {
+//            view.setProgress(self.currentSongTime/self.currentSongDuration, animated: true);
+//        }
+//        
+//        let minutes = Int(self.currentSongTime) / 60
+//        let seconds = Int(self.currentSongTime) % 60;
+//        debugLog("\(currentSongTime) : \(minutes) : \(seconds)")
+//
+//        self.timeLabel.text = NSString(format: "%02d:%02d", minutes,seconds) as String
     }
     
     @IBAction func backToMenu() {
