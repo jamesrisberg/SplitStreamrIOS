@@ -38,7 +38,6 @@
 		6E46457A1C7901540036BAA2 /* PlayerChunkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */; };
 		6E46457E1C799C9A0036BAA2 /* NodeStreamManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46457D1C799C9A0036BAA2 /* NodeStreamManager.swift */; };
 		6E4645801C79E5D40036BAA2 /* ProgressFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */; };
-		6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */; };
 		6E4645891C7A1C1F0036BAA2 /* SongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4645881C7A1C1F0036BAA2 /* SongCell.swift */; };
 		6E59621F1CBDE6FF0031C1D0 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */; };
 		6E5962201CBDE70A0031C1D0 /* CryptoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -102,7 +101,6 @@
 		6E4645791C7901540036BAA2 /* PlayerChunkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerChunkManager.swift; sourceTree = "<group>"; };
 		6E46457D1C799C9A0036BAA2 /* NodeStreamManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeStreamManager.swift; sourceTree = "<group>"; };
 		6E46457F1C79E5D40036BAA2 /* ProgressFillView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressFillView.swift; sourceTree = "<group>"; };
-		6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ultralight Beam.mp3"; sourceTree = "<group>"; };
 		6E4645831C79FD120036BAA2 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
 		6E4645881C7A1C1F0036BAA2 /* SongCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongCell.swift; sourceTree = "<group>"; };
 		6E59621E1CBDE6FF0031C1D0 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
@@ -206,7 +204,6 @@
 		6E4645411C781FC70036BAA2 /* SplitStreamr */ = {
 			isa = PBXGroup;
 			children = (
-				6E4645811C79EF660036BAA2 /* Ultralight Beam.mp3 */,
 				6E4645461C781FC70036BAA2 /* Main.storyboard */,
 				6E8485BA1CAB59E4002FD9CE /* SongDrawerView.xib */,
 				6E8485BC1CAB59F1002FD9CE /* AccountView.xib */,
@@ -316,7 +313,6 @@
 			files = (
 				6E46454D1C781FC70036BAA2 /* LaunchScreen.storyboard in Resources */,
 				6E8485BB1CAB59E4002FD9CE /* SongDrawerView.xib in Resources */,
-				6E4645821C79EF660036BAA2 /* Ultralight Beam.mp3 in Resources */,
 				6E46454A1C781FC70036BAA2 /* Assets.xcassets in Resources */,
 				6E8485BD1CAB59F1002FD9CE /* AccountView.xib in Resources */,
 				6E4645481C781FC70036BAA2 /* Main.storyboard in Resources */,

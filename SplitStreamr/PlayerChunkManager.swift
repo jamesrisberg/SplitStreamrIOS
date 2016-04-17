@@ -58,7 +58,7 @@ class PlayerChunkManager: NSObject {
         }
     }
     
-    func prepareForChunk(chunkNumber: String, chunkSize : String, fromPeer peer: MCPeerID) {
+    func prepareForChunk(chunkNumber: Int, chunkSize : String, fromPeer peer: MCPeerID) {
         if let del = streamDelegates[peer] {
             del.prepareForChunkWithSize(Int(chunkSize)!);
             
@@ -99,10 +99,15 @@ class PlayerChunkManager: NSObject {
 //        }
 //        
 //        let decryptedData = NSData(bytes: decrypted);
-        if let data = recievedChunks[nextChunkToQueue] {
+        
+        while let data = recievedChunks[nextChunkToQueue] {
             debugLog("Chunk \(nextChunkToQueue) queued!");
             nextChunkToQueue += 1;
             SongManager.sharedInstance.queueChunk(chunkNumber, data: data);
+            
+            if nextChunkToQueue == currentSongChunkCount {
+                break;
+            }
         }
         
         if chunksRecieved == currentSongChunkCount {
@@ -128,7 +133,7 @@ class PlayerChunkManager: NSObject {
         };
         
         tempDictionary["readyToSendChunk"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
-            self.prepareForChunk(jsonObject["chunkNumber"].stringValue, chunkSize: jsonObject["chunkSize"].stringValue, fromPeer: peer);
+            self.prepareForChunk(jsonObject["chunkNumber"].intValue, chunkSize: jsonObject["chunkSize"].stringValue, fromPeer: peer);
         };
         
         return tempDictionary;
@@ -155,10 +160,10 @@ extension PlayerChunkManager : NodeStreamDelegate {
             debugLog("JSON Error: \(error)");
         }
         
-        if let chunkNumber = json["chunkNumber"].string {
+        if let chunkNumber = json["chunkNumber"].int {
             if let musicString = json["musicData"].string {
                 let musicData = NSData(base64EncodedString: musicString, options: NSDataBase64DecodingOptions(rawValue:0));
-                addNodeChunk(Int(chunkNumber)!, musicData: musicData!, peer: manager.nodePeerID!);
+                addNodeChunk(chunkNumber, musicData: musicData!, peer: manager.nodePeerID!);
             } else {
                 debugLog("Error getting chunk data: \(json["musicData"].string)");
             }

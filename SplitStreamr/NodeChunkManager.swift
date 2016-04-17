@@ -18,7 +18,7 @@ class NodeChunkManager: NSObject {
     var outputStream: NSOutputStream?;
     
     var hasRecievedSongChunk: Bool = false;
-    var chunkBacklog : [String : NSData] = [:];
+    var chunkBacklog : [Int : NSData] = [:];
     
     var messageClosureMap : Dictionary<String, (jsonObject: JSON, peer: MCPeerID) -> Void>?;
     
@@ -78,7 +78,7 @@ class NodeChunkManager: NSObject {
         preparePlayerForChunk();
     }
     
-    func sendChunk(chunkNumber: String) {
+    func sendChunk(chunkNumber: Int) {
         if let musicData = chunkBacklog[chunkNumber] {
             chunkBacklog.removeValueForKey(chunkNumber);
             
@@ -101,7 +101,7 @@ class NodeChunkManager: NSObject {
         outputStream = nil;
     }
     
-    func getSizeOfChunkForNumber(chunkNumber: String) -> Int? {
+    func getSizeOfChunkForNumber(chunkNumber: Int) -> Int? {
         let musicData = chunkBacklog[chunkNumber];
         let jsonString = buildSingleChunkJSONString(chunkNumber, musicData: musicData!);
         if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
@@ -112,7 +112,7 @@ class NodeChunkManager: NSObject {
         }
     }
     
-    func buildSingleChunkJSONString(chunkNumber: String, musicData: NSData) -> String {
+    func buildSingleChunkJSONString(chunkNumber: Int, musicData: NSData) -> String {
         let musicString = musicData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0));
         let numberAndData = ["chunkNumber" : chunkNumber, "musicData" : musicString];
         let jsonString = "\(String.stringFromJson(numberAndData)!)";
@@ -131,7 +131,7 @@ class NodeChunkManager: NSObject {
         };
         
         tempDictionary["readyToRecieveChunk"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
-            self.sendChunk(jsonObject["chunkNumber"].stringValue);
+            self.sendChunk(jsonObject["chunkNumber"].intValue);
         };
         
         tempDictionary["didRecieveChunk"] = { (jsonObject: JSON, peer: MCPeerID) -> Void in
@@ -166,7 +166,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
             preparePlayerForStream();
         }
         
-        chunkBacklog["\(chunkNumber)"] = musicData;
+        chunkBacklog[chunkNumber] = musicData;
     }
     
     func didFinishReceivingSong(songId: String) {
