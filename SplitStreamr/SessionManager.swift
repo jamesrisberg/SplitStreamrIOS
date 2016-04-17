@@ -103,14 +103,14 @@ class SessionManager: NSObject {
         networkSessionId = id;
     }
     
-    func streamSong(song: Song) {
+    func sendStreamSongToNodes(song: Song) {
         if let _ = networkFacade {
             let json = ["message": "songID", "songID": song.id];
             let jsonString = "\(String.stringFromJson(json)!)";
             
             let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
             do {
-                try session.sendData(jsonString.dataUsingEncoding(NSUTF8StringEncoding)!, toPeers: session.connectedPeers, withMode: .Reliable);
+                try session.sendData(data!, toPeers: session.connectedPeers, withMode: .Reliable);
             } catch {
                 debugLog("Error sending song ID to nodes");
             }
@@ -122,6 +122,22 @@ class SessionManager: NSObject {
             }
             
             networkFacade!.startStreamingSong(song.id);
+        } else {
+            debugLog("NetworkFacade doesn't exist");
+        }
+    }
+    
+    func sendSongFinishedToNodes() {
+        if let _ = networkFacade {
+            let json = ["message": "allChunksDone"];
+            let jsonString = "\(String.stringFromJson(json)!)";
+            
+            let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding);
+            do {
+                try session.sendData(data!, toPeers: session.connectedPeers, withMode: .Reliable);
+            } catch {
+                debugLog("Error sending allChunksDone to nodes");
+            }
         } else {
             debugLog("NetworkFacade doesn't exist");
         }

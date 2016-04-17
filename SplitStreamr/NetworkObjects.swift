@@ -22,7 +22,12 @@ struct UserData: CustomStringConvertible, Equatable {
     }
     
     init(fromJson: Dictionary<String, AnyObject>) {
-        id = fromJson["_id"] as! String
+        if let id = fromJson["_id"] as? String {
+            self.id = id
+        } else {
+            self.id = ""
+            debugLog("ID not sent")
+        }
         email = fromJson["email"] as! String
         firstName = fromJson["firstName"] as? String
         lastName = fromJson["lastName"] as? String

@@ -65,6 +65,7 @@ class SongManager: NSObject {
         let song = getSongForId(songId)
         NSNotificationCenter.defaultCenter().postNotificationName("SongSelected", object: nil, userInfo: ["songName" : song!.name, "songArtist" : song!.artist, "songLength" : "\(song!.length)"]);
         self.shouldPlayWhenDownloaded = true;
+        debugLog("Chunks incoming: \(song?.numberOfChunks)");
         downloadSong(songId);
     }
     
@@ -80,7 +81,7 @@ class SongManager: NSObject {
     private func downloadSong(songId : String) {
         if let song = getSongForId(songId) {
             self.currentlyDownloadingSongId = songId;
-            SessionManager.sharedInstance.streamSong(song);
+            SessionManager.sharedInstance.sendStreamSongToNodes(song);
         }
     }
     

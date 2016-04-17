@@ -22,6 +22,8 @@ class NodeChunkManager: NSObject {
     
     var messageClosureMap : Dictionary<String, (jsonObject: JSON, peer: MCPeerID) -> Void>?;
     
+    var timer: NSTimer?
+    
     override init() {
         super.init();
         
@@ -54,18 +56,26 @@ class NodeChunkManager: NSObject {
     }
     
     func preparePlayerForChunk() {
-        if let chunkNumber = Array(chunkBacklog.keys).minElement() {
+        if chunkBacklog.count < 1 {
+            debugLog("Chunk backlog is empty! Rechecking in 0.3s");
+            timer = NSTimer(timeInterval: 0.3, target: self, selector: #selector(NodeChunkManager.recheckForChunk), userInfo: nil, repeats: false);
+            NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes);
+        } else if let chunkNumber = Array(chunkBacklog.keys).minElement() {
+            print(Array(chunkBacklog.keys).minElement())
             if let length = getSizeOfChunkForNumber(chunkNumber) {
-                debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) sending readyToSendChunk to \(playerPeer.displayName)");
+                debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) sending readyToSendChunk for Chunk \(chunkNumber) to \(playerPeer.displayName)");
                 let chunkData = ["message" : "readyToSendChunk", "chunkNumber" : chunkNumber, "chunkSize" : "\(length)"];
                 let jsonString = "\(String.stringFromJson(chunkData)!)";
                 SessionManager.sharedInstance.sendJSONString(jsonString, toPeer: playerPeer);
             }
         } else {
             debugLog("Error finding next chunk number");
-            // TODO: Is this always when the backlog is emtpy?
-            // Should check for chunks in backlog before trying
         }
+    }
+    
+    func recheckForChunk() {
+        timer?.invalidate();
+        preparePlayerForChunk();
     }
     
     func sendChunk(chunkNumber: String) {
@@ -86,6 +96,7 @@ class NodeChunkManager: NSObject {
     func allChunksDone() {
         hasRecievedSongChunk = false;
         chunkBacklog = [:];
+        timer?.invalidate();
         outputStream?.close();
         outputStream = nil;
     }
@@ -159,11 +170,9 @@ extension NodeChunkManager : NetworkFacadeDelegate {
     }
     
     func didFinishReceivingSong(songId: String) {
-        debugLog("Finished receiving song: \(songId)");
     }
     
     func sessionIdReceived(sessionId: String, key: String) {
-        
     }
     
     func errorRecieved(error: NSError) {

@@ -16,7 +16,7 @@ class PlayerChunkManager: NSObject {
     var sessionId: String?;
     var key: String?;
     
-    var streamDelegates: [MCPeerID : NodeStreamManager] = [:];
+    var streamDelegates: [MCPeerID : NodeStreamManager] = [MCPeerID : NodeStreamManager]();
     var recievedChunks: [NSData?] = [];
     
     var chunksRecieved = 0;
@@ -81,14 +81,15 @@ class PlayerChunkManager: NSObject {
     func addNodeChunk(chunkNumber: Int, musicData: NSData, peer: MCPeerID) {
         debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) received chunk \(chunkNumber) from \(peer.displayName)");
         
-        queueChunk(chunkNumber, musicData: musicData);
+        didReceiveChunkFromPeer(peer);
+        queueChunk(chunkNumber, musicData: musicData, peer: peer);
     }
     
-    func queueChunk(chunkNumber: Int, musicData: NSData) {
-        debugLog("Queueing chunk \(chunkNumber) for playback");
+    func queueChunk(chunkNumber: Int, musicData: NSData, peer: MCPeerID?) {
         recievedChunks[chunkNumber] = musicData;
         chunksRecieved += 1;
         
+        // TODO: Get decryption set up
 //        var decrypted: [UInt8] = [];
 //        let encryptedBytes = Array(UnsafeBufferPointer(start: UnsafePointer<UInt8>(musicData.bytes), count: musicData.length))
 //        do {
@@ -98,14 +99,20 @@ class PlayerChunkManager: NSObject {
 //        }
 //        
 //        let decryptedData = NSData(bytes: decrypted);
-        
-        if chunkNumber == nextChunkToQueue {
+        if let data = recievedChunks[nextChunkToQueue] {
+            debugLog("Chunk \(nextChunkToQueue) queued!");
             nextChunkToQueue += 1;
-            SongManager.sharedInstance.queueChunk(chunkNumber, data: musicData);
+            SongManager.sharedInstance.queueChunk(chunkNumber, data: data);
         }
         
-        if chunkNumber == currentSongChunkCount {
+        if chunksRecieved == currentSongChunkCount {
+            debugLog("Last chunk queued!");
             SongManager.sharedInstance.songDownloaded();
+            if let p = peer {
+                sendAllChunksDoneToPeer(p);
+            }
+            
+            streamDelegates = [MCPeerID : NodeStreamManager]();
         }
     }
     
@@ -165,7 +172,7 @@ extension PlayerChunkManager : NetworkFacadeDelegate {
     func musicPieceReceived(songId: String, chunkNumber: Int, musicData: NSData) {
         debugLog("\(SessionManager.sharedInstance.myPeerId.displayName) received chunk \(chunkNumber) from server");
         
-        queueChunk(chunkNumber, musicData: musicData);
+        queueChunk(chunkNumber, musicData: musicData, peer: nil);
     }
     
     func didFinishReceivingSong(songId: String) {

@@ -132,9 +132,6 @@ class MusicPlayerViewController: UIViewController {
         if queuePlayer?.canInsertItem(item, afterItem: nil) == true {
             queuePlayer?.insertItem(item, afterItem: nil);
         }
-        
-        print("Player status:")
-        print(queuePlayer?.status)
                 
 //        if !playing {
 //            playing = true;
@@ -154,8 +151,6 @@ class MusicPlayerViewController: UIViewController {
     
     func play() {
         queuePlayer?.play();
-        print("Player status:")
-        print(queuePlayer?.status)
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Pause") {
@@ -166,8 +161,6 @@ class MusicPlayerViewController: UIViewController {
     
     func pause() {
         queuePlayer?.pause();
-        timer?.invalidate();
-        print("Player status:")
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Play") {
