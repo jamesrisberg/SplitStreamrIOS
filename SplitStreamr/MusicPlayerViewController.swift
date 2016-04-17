@@ -23,13 +23,15 @@ class MusicPlayerViewController: UIViewController {
     var drawerUp = false;
     
     let manager = SessionManager.sharedInstance;
-    var queuePlayer : AVQueuePlayer? = AVQueuePlayer();
-    var queuePlayerTimeObserver: AnyObject?;
     var timer: NSTimer?;
     var playing = false;
     
+    var currentInputSongStream: NSInputStream?
+    var currentOutputSongStream: NSOutputStream?
+    
     var currentSongTime: Float = 0.0;
     var currentSongDuration: Float = 180.0;
+    var currentSongMetadata: TDAudioMetaInfo?
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -38,17 +40,23 @@ class MusicPlayerViewController: UIViewController {
         
         manager.configureForPlayMode();
         manager.startBrowsing();
-                
+        
+        var readStream: Unmanaged<CFReadStream>?
+        var writeStream: Unmanaged<CFWriteStream>?
+        let bufferSize: CFIndex = 128000;
+        
+        CFStreamCreateBoundPair(nil, &readStream, &writeStream, bufferSize);
+        
+        currentInputSongStream = readStream?.takeUnretainedValue();
+        currentOutputSongStream = writeStream?.takeUnretainedValue();
+        
+        currentInputSongStream?.open();
+        currentOutputSongStream?.open();
+
         SongManager.sharedInstance.queueChunkToPlay = queueChunkToPlay;
         SongManager.sharedInstance.downloadSongs();
         
-        queuePlayerTimeObserver = queuePlayer?.addPeriodicTimeObserverForInterval(CMTimeMake(1,1), queue: dispatch_get_main_queue(), usingBlock: { (time) -> Void in
-            self.updateTime();
-        });
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MusicPlayerViewController.songSelected), name: "SongSelected", object: nil)
-        
-        queuePlayer?.actionAtItemEnd = .Advance;
     }
     
     func songSelected(notification: NSNotification) {
@@ -56,8 +64,15 @@ class MusicPlayerViewController: UIViewController {
             titleLabel.text = info["songName"]
             artistLabel.text = info["songArtist"]
             currentSongDuration = Float(info["songLength"]!)!
+            
+            currentSongMetadata = TDAudioMetaInfo();
+            currentSongMetadata!.title = info["songName"];
+            currentSongMetadata!.artist = info["songArtist"];
+//            currentSongMetadata!.albumArtSmall = "http://www.some-address.com/track_id/low_res_image.png";
+//            currentSongMetadata!.albumArtLarge = "http://www.some-address.com/track_id/high_res_image.png";
+            currentSongMetadata!.duration = Float(info["songLength"]!)!;
         } else {
-            print("no info")
+            debugLog("Song info not found!")
         }
     }
     
@@ -122,21 +137,10 @@ class MusicPlayerViewController: UIViewController {
         }
     }
     
-    func queueChunkToPlay(chunkNumber: Int, data: NSData) {
-        let path = NSTemporaryDirectory().stringByAppendingString("\(chunkNumber).mp3");
-        data.writeToFile(path, atomically: true);
-        let filePath = NSURL(fileURLWithPath: path);
-        
-        let item = AVPlayerItem(URL: filePath);
-        
-        if queuePlayer?.canInsertItem(item, afterItem: nil) == true {
-            queuePlayer?.insertItem(item, afterItem: nil);
-        }
-                
-//        if !playing {
-//            playing = true;
-//            self.play();
-//        }
+    func queueChunkToPlay(chunkNumber: Int, musicData: NSData) {
+        var buffer = [UInt8](count: musicData.length, repeatedValue: 0);
+        musicData.getBytes(&buffer, length: musicData.length);
+        currentOutputSongStream?.write(&buffer, maxLength: musicData.length);
     }
     
     @IBAction func playOrPause() {
@@ -150,7 +154,7 @@ class MusicPlayerViewController: UIViewController {
     }
     
     func play() {
-        queuePlayer?.play();
+        TDAudioPlayer.sharedAudioPlayer().loadAudioFromStream(currentInputSongStream, withMetaData: currentSongMetadata);
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Pause") {
@@ -160,7 +164,6 @@ class MusicPlayerViewController: UIViewController {
     }
     
     func pause() {
-        queuePlayer?.pause();
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let image = UIImage(named: "Play") {
@@ -192,13 +195,7 @@ class MusicPlayerViewController: UIViewController {
     }
     
     @IBAction func backToMenu() {
-        queuePlayer?.pause();
-        queuePlayer?.removeAllItems();
-        if let observer = queuePlayerTimeObserver {
-            queuePlayer?.removeTimeObserver(observer);
-        }
         timer?.invalidate();
-        queuePlayer = nil;
         SessionManager.sharedInstance.disconnectFromSession();
         
         self.dismissViewControllerAnimated(true, completion: nil);

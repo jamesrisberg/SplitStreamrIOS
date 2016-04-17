@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Tony DiPasquale. The MIT License (MIT).
 //
 
+#include <Foundation/Foundation.h>
+
 extern NSString *const TDAudioPlayerDidChangeAudioNotification;
 extern NSString *const TDAudioPlayerDidPauseNotification;
 extern NSString *const TDAudioPlayerDidPlayNotification;
