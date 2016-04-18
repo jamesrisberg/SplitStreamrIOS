@@ -166,6 +166,7 @@ extension NodeChunkManager : NetworkFacadeDelegate {
             preparePlayerForStream();
         }
         
+        NSNotificationCenter.defaultCenter().postNotificationName("DownloadedData", object: nil, userInfo: ["dataSize": musicData.arrayOfBytes().count]);
         chunkBacklog[chunkNumber] = musicData;
     }
     

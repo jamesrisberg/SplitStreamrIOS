@@ -17,12 +17,14 @@ class JoinSessionViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var downloadedLabel: UILabel!
     
+    var currentDataValue: Int = 0;
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         
         NSNotificationCenter.defaultCenter().addObserverForName("InvitationAccepted", object: nil, queue: nil, usingBlock: invitationAccepted);
         NSNotificationCenter.defaultCenter().addObserverForName("DidDisconnectFromSession", object: nil, queue: nil, usingBlock: didDisconnect);
-        NSNotificationCenter.defaultCenter().addObserverForName("DownloadedSoFar", object: nil, queue: nil, usingBlock: updateData);
+        NSNotificationCenter.defaultCenter().addObserverForName("DownloadedData", object: nil, queue: nil, usingBlock: updateData);
         
         manager.startAdvertising();
     }
@@ -52,9 +54,10 @@ class JoinSessionViewController: UIViewController {
 
     func updateData(notification: NSNotification) {
         if let userInfo = notification.userInfo {
-            if let dataCount = userInfo["soFar"] {
+            if let dataCount = userInfo["dataSize"] {
                 let kilobytes: Int = Int(dataCount as! NSNumber)/1024;
-                self.downloadedLabel.text = "\(kilobytes) Kb";
+                currentDataValue += kilobytes;
+                self.downloadedLabel.text = "\(currentDataValue) Kb";
             }
         }
     }
