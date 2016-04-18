@@ -75,7 +75,7 @@ class PlayerChunkManager: NSObject {
     }
     
     func sendAllChunksDoneToPeer(peer: MCPeerID) {
-        SessionManager.sharedInstance.sendSimpleJSONMessage("allChunksDone", toPeer: peer);
+        SessionManager.sharedInstance.sendSimpleJSONMessageToAllPeers("allChunksDone");
     }
     
     func addNodeChunk(chunkNumber: Int, musicData: NSData, peer: MCPeerID) {
@@ -102,8 +102,9 @@ class PlayerChunkManager: NSObject {
         
         while let data = recievedChunks[nextChunkToQueue] {
             debugLog("Chunk \(nextChunkToQueue) queued!");
+            SongManager.sharedInstance.queueChunk(nextChunkToQueue, data: data);
+            
             nextChunkToQueue += 1;
-            SongManager.sharedInstance.queueChunk(chunkNumber, data: data);
             
             if nextChunkToQueue == currentSongChunkCount {
                 break;

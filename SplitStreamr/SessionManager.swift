@@ -205,6 +205,21 @@ class SessionManager: NSObject {
         sendJSONString(jsonString, toPeer: peer);
     }
     
+    func sendSimpleJSONMessageToAllPeers(message: String) {
+        debugLog("\(myPeerId.displayName) sending \(message) to all peers");
+        let messageData = ["message" : message];
+        let jsonString = "\(String.stringFromJson(messageData)!)";
+        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                try session.sendData(data, toPeers: session.connectedPeers, withMode: .Reliable);
+            } catch {
+                debugLog("Error sending \(jsonString) from \(myPeerId.displayName) to all peers");
+            }
+        } else {
+            debugLog("Error building \(jsonString) from \(myPeerId.displayName) to all peers");
+        }
+    }
+    
     func sendJSONString(jsonString: String, toPeer peer: MCPeerID) {
         if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
