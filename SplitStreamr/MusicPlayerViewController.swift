@@ -27,6 +27,7 @@ class MusicPlayerViewController: UIViewController {
     var queuePlayerTimeObserver: AnyObject?;
     var timer: NSTimer?;
     var playing = false;
+    var firstChunkQueued = false;
     
     var currentSongTime: Float = 0.0;
     var currentSongDuration: Float = 180.0;
@@ -133,10 +134,10 @@ class MusicPlayerViewController: UIViewController {
             queuePlayer?.insertItem(item, afterItem: nil);
         }
                 
-//        if !playing {
-//            playing = true;
-//            self.play();
-//        }
+        if !firstChunkQueued {
+            firstChunkQueued = true;
+            self.play();
+        }
     }
     
     @IBAction func playOrPause() {
