@@ -63,7 +63,7 @@ func randomStringWithLength (len : Int) -> NSString {
     
     let randomString : NSMutableString = NSMutableString(capacity: len)
     
-    for (var i=0; i < len; i+=1){
+    for _ in 0 ..< len {
         let length = UInt32 (letters.length)
         let rand = arc4random_uniform(length)
         randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
