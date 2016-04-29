@@ -15,7 +15,13 @@ class AccountView: UIView {
     @IBOutlet weak var accountBarView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
     
+    var logoutCallback: (() -> ())?;
+    
     class func instanceFromNib() -> AccountView {
         return UINib(nibName: "AccountView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! AccountView
+    }
+    
+    @IBAction func logout(sender: AnyObject) {
+        logoutCallback?();
     }
 }

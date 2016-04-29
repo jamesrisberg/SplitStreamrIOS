@@ -27,8 +27,12 @@ class MenuViewController: UIViewController {
         
         accountDrawer?.usernameLabel.text = "Account";
         
+        if User.sharedInstance.isGuest {
+            accountDrawer?.logoutButton.setTitle("Login", forState: .Normal)
+        }
+        
         accountDrawer?.settingsButton.addTarget(self, action: #selector(MenuViewController.toggleAccountDrawer), forControlEvents: .TouchUpInside)
-        accountDrawer?.logoutButton.addTarget(self, action: #selector(MenuViewController.logout), forControlEvents: .TouchUpInside)
+        accountDrawer?.logoutCallback = logout;
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,6 +66,25 @@ class MenuViewController: UIViewController {
             var frame = self.view.frame
             frame.origin.y = (frame.size.height - 60)
             self.accountDrawer?.frame = frame
+        }
+    }
+    
+    @IBAction func musicPlayerPressed(sender: AnyObject) {
+        if User.sharedInstance.isGuest {
+            // Show error alert
+            let alertController = UIAlertController(title: "Please Sign In", message: "You must be signed in to access the music player", preferredStyle: .Alert)
+            let signInAction = UIAlertAction(title: "Sign In", style: .Default, handler: { (_) in
+                self.logout()
+            })
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(signInAction)
+            presentViewController(alertController, animated: true, completion: nil)
+        }
+        else {
+            self.performSegueWithIdentifier("menutomusicplayer", sender: self)
         }
     }
 }

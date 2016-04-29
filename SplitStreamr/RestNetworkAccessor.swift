@@ -38,7 +38,7 @@ class RestNetworkAccessor: NSObject, NetworkingAccessor {
     
     // POST
     
-    func signUpUser(username: String, password: String, completionBlock: UserDataClosure?) {
+    func signUpUser(username: String, password: String, firstName: String, lastName: String, completionBlock: UserDataClosure?) {
         let parameters = ["email" : username, "password" : password, "firstName" : "Dave", "lastName" : "Small"]
         Alamofire.request(.POST, URLStringWithExtension("user/signup"), parameters: parameters, encoding: .JSON)
             .responseJSON { response in

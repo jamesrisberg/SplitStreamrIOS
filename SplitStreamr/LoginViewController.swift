@@ -20,8 +20,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
-    var restAccessor = RestNetworkAccessor();
-    
+    var networkFacade = NetworkFacade();
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +36,11 @@ class LoginViewController: UIViewController {
             if let password = UICKeyChainStore.stringForKey("com.currentuser.password", service: "com.splitstreamr") {
                 passwordField.text = password
             }
+        }
+        else {
+            // Add login credentials for WWDC
+            usernameField.text = "username"
+            passwordField.text = "password"
         }
     }
     
@@ -73,7 +77,7 @@ class LoginViewController: UIViewController {
         let (valid, message) = validLoginForm()
         
         if valid {
-            restAccessor.signInUser(usernameField.text!, password: passwordField.text!) { (error, user) in
+            networkFacade.signInUser(usernameField.text!, password: passwordField.text!) { (error, user) in
                 if let e = error {
                     self.displayError(e.localizedDescription)
                 } else if let data = user {
@@ -90,26 +94,9 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @IBAction func signUp() {
-        errorLabel.hidden = true
-        let (valid, message) = validLoginForm()
-        
-        if valid {
-            restAccessor.signUpUser(usernameField.text!, password: passwordField.text!) { (error, user) in
-                if let e = error {
-                    self.displayError(e.localizedDescription)
-                } else if let data = user {
-                    User.sharedInstance.configureWithUserData(data)
-                    
-                    UICKeyChainStore.setString(self.usernameField.text, forKey: "com.currentuser.username", service: "com.splitstreamr")
-                    UICKeyChainStore.setString(self.passwordField.text, forKey: "com.currentuser.password", service: "com.splitstreamr")
-                    
-                    self.performSegueWithIdentifier("login", sender: self)
-                }
-            }
-        } else {
-            displayError(message)
-        }
+    @IBAction func continueAsGuest() {
+        User.sharedInstance.isGuest = true;
+        self.performSegueWithIdentifier("login", sender: self)
     }
     
     func displayError(message: String) {

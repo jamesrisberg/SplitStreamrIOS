@@ -184,7 +184,7 @@
                                     <color key="titleColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="iP8-Aa-Igt" kind="presentation" id="ljT-4b-hWh"/>
+                                    <action selector="musicPlayerPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Aw-7D-iji"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -199,6 +199,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Menu" id="JNu-My-VZe"/>
+                    <connections>
+                        <segue destination="iP8-Aa-Igt" kind="presentation" identifier="menutomusicplayer" id="YgO-OD-lBh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -311,13 +314,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmb-SE-zuh">
-                                <rect key="frame" x="264" y="450" width="72" height="30"/>
+                                <rect key="frame" x="229" y="450" width="143" height="30"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
-                                <state key="normal" title="or Sign Up">
+                                <state key="normal" title="or Continue as Guest">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="signUp" destination="to6-2j-xnV" eventType="touchUpInside" id="tjs-NU-xzV"/>
+                                    <action selector="continueAsGuest" destination="to6-2j-xnV" eventType="touchUpInside" id="Mgv-9L-YdC"/>
                                 </connections>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" minimumFontSize="15" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vmh-SV-N9c">
@@ -420,6 +423,15 @@
                                     <constraint firstAttribute="height" constant="170" id="pT2-1h-7JJ"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: guests may only act as a node" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t6R-Yo-d6r">
+                                <rect key="frame" x="0.0" y="533" width="600" height="67"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="67" id="r9M-vs-qsu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.39607843139999999" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -436,6 +448,9 @@
                             <constraint firstAttribute="trailing" secondItem="o6t-Gs-p2C" secondAttribute="trailing" constant="40" id="UOY-vm-G8m"/>
                             <constraint firstItem="Vmh-SV-N9c" firstAttribute="leading" secondItem="qEm-ek-6vn" secondAttribute="leading" constant="10" id="VXc-za-PWP"/>
                             <constraint firstAttribute="trailing" secondItem="a9I-lg-559" secondAttribute="trailing" constant="40" id="XZr-V0-o1M"/>
+                            <constraint firstItem="t6R-Yo-d6r" firstAttribute="leading" secondItem="qEm-ek-6vn" secondAttribute="leading" id="ZKi-ae-F09"/>
+                            <constraint firstItem="eVW-Qx-pzS" firstAttribute="top" secondItem="t6R-Yo-d6r" secondAttribute="bottom" id="Zcl-DJ-u9G"/>
+                            <constraint firstAttribute="trailing" secondItem="t6R-Yo-d6r" secondAttribute="trailing" id="bav-nt-yjm"/>
                             <constraint firstItem="a9I-lg-559" firstAttribute="top" secondItem="Vmh-SV-N9c" secondAttribute="bottom" constant="8" id="m9S-Q6-Fe3"/>
                             <constraint firstItem="o6t-Gs-p2C" firstAttribute="leading" secondItem="qEm-ek-6vn" secondAttribute="leading" constant="40" id="sWX-cB-X0p"/>
                             <constraint firstItem="70E-HF-60M" firstAttribute="top" secondItem="MBC-ow-HKf" secondAttribute="bottom" constant="30" id="taT-NP-lre"/>

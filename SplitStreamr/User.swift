@@ -17,7 +17,11 @@ class User : NSObject {
     var firstName: String?
     var lastName: String?
     
+    var isGuest: Bool = true
+    
     func configureWithUserData(data: UserData) {
+        isGuest = false;
+        
         self.id = data.id
         self.email = data.email
         self.firstName = data.firstName

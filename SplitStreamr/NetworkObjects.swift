@@ -14,6 +14,14 @@ struct UserData: CustomStringConvertible, Equatable {
     var firstName: String?
     var lastName: String?
     
+    init(id: String, email: String, firstName: String?, lastName: String?) {
+        self.id = id
+        self.email = email
+        self.firstName = firstName
+        self.lastName = lastName
+        self.id = randomStringWithLength(8) as String
+    }
+    
     init(email: String, firstName: String?, lastName: String?) {
         self.email = email
         self.firstName = firstName
@@ -28,7 +36,16 @@ struct UserData: CustomStringConvertible, Equatable {
             self.id = ""
             debugLog("ID not sent")
         }
-        email = fromJson["email"] as! String
+        
+        let jsonEmail = fromJson["email"] as? String
+        
+        if let email = jsonEmail {
+            self.email = email
+        }
+        else {
+            email = "noemail"
+        }
+ 
         firstName = fromJson["firstName"] as? String
         lastName = fromJson["lastName"] as? String
     }

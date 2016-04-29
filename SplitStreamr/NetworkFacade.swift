@@ -52,6 +52,14 @@ class NetworkFacade : NSObject {
         restDataAccessor.getSongs(completionBlock);
     }
     
+    func signUpUser(username: String, password: String, firstName: String, lastName: String, completionBlock: UserDataClosure?) {
+        restDataAccessor.signUpUser(username, password: password, firstName: firstName, lastName: lastName, completionBlock: completionBlock);
+    }
+    
+    func signInUser(username: String, password: String, completionBlock: UserDataClosure?) {
+        restDataAccessor.signInUser(username, password: password, completionBlock: completionBlock);
+    }
+    
     func createNewSession() {
         let sessionCreate = ["message" : "new session"];
         
